@@ -78,7 +78,7 @@ export const fillRestaurantHTML = (restaurant = self.restaurant) => {
  */
 export const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => {
   const hours = document.getElementById('restaurant-hours');
-  for (let key in operatingHours) {
+  for (const key in operatingHours) {
     const row = document.createElement('tr');
 
     const day = document.createElement('td');

@@ -75,15 +75,14 @@ export const fillCuisinesHTML = (cuisines = self.cuisines) => {
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
-  let loc = {
-    lat: 40.722216,
-    lng: -73.987501
-  };
-  self.map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 12,
-    center: loc,
-    scrollwheel: false
-  });
+  const lat = 40.722216;
+  const lng = -73.987501;
+  const loc = {lat, lng};
+  const center = {loc};
+  const zoom = 12;
+  const scrollwheel = false;
+  const el = document.getElementById('map');
+  self.map = new google.maps.Map(el, {zoom, center, scrollwheel});
   updateRestaurants();
 };
 

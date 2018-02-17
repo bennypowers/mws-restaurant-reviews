@@ -16,7 +16,7 @@ export default class DBHelper {
    * Fetch all restaurants.
    */
   static fetchRestaurants(callback) {
-    let xhr = new XMLHttpRequest();
+    const xhr = new XMLHttpRequest();
     xhr.open('GET', DBHelper.DATABASE_URL);
     xhr.onload = () => {
       if (xhr.status === 200) { // Got a success response from server!
@@ -91,14 +91,13 @@ export default class DBHelper {
       if (error) {
         callback(error, null);
       } else {
-        let results = restaurants;
-        if (cuisine != 'all') { // filter by cuisine
-          results = results.filter(r => r.cuisine_type == cuisine);
-        }
-        if (neighborhood != 'all') { // filter by neighborhood
-          results = results.filter(r => r.neighborhood == neighborhood);
-        }
-        callback(null, results);
+        const filterCuisine = r => r.cuisine_type == cuisine;
+        const filterNeighborhood = r => r.neighborhood == neighborhood;
+        const filter =
+            cuisine != 'all' ? filterCuisine
+          : neighborhood != 'all' ? filterNeighborhood
+          : x => x;
+        callback(null, restaurants.filter(filter));
       }
     });
   }
