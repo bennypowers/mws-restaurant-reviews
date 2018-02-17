@@ -1,6 +1,6 @@
 import DBHelper from './dbhelper.js';
-let restaurant;
-var map;
+window.restaurant = window.restaurant || undefined;
+window.map = window.map || undefined;
 
 /**
  * Initialize Google map, called from HTML.

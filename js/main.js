@@ -1,10 +1,10 @@
 import DBHelper from './dbhelper.js';
 
-let restaurants;
-let neighborhoods;
-let cuisines;
-var map;
-var markers = [];
+window.restaurants = window.restaurants || undefined;
+window.neighborhoods = window.neighborhoods || undefined;
+window.cuisines = window.cuisines || undefined;
+window.map = window.map || undefined;
+window.markers = window.markers || [];
 
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
