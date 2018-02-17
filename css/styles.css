@@ -393,6 +393,13 @@ nav h1 a {
   }
 }
 
+@media screen and (min-width: 1030px) {
+  #reviews-list {
+    grid-template-columns: 33% 33% 33%;
+    grid-column-gap: 0.5%;
+  }
+}
+
 #reviews-container {
   padding: 30px 40px 80px;
 }
