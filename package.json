@@ -1,0 +1,22 @@
+{
+  "name": "mws-restaurant-stage-1",
+  "version": "1.0.0",
+  "description": "Project files for MWS Nanodegree",
+  "main": "index.html",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^4.18.0",
+    "eslint-config-recommended": "^2.0.0",
+    "htmlhint": "^0.9.13",
+    "stylelint": "^8.4.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:bennypowers:mws-restaurant-stage-1.git"
+  },
+  "author": "Benny Powers",
+  "license": "ISC"
+}
