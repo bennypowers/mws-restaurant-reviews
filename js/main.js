@@ -15,6 +15,18 @@ document.addEventListener('DOMContentLoaded', event => {
 });
 
 /**
+ * Initialize Google map, called from HTML.
+ */
+window.initMap = () => {
+  const el = document.getElementById('map');
+  const zoom = 12;
+  const scrollwheel = false;
+  const center = new google.maps.LatLng(40.722216, -73.987501);
+  self.map = new google.maps.Map(el, {zoom, center, scrollwheel});
+  updateRestaurants();
+};
+
+/**
  * Fetch all neighborhoods and set their HTML.
  */
 export const fetchNeighborhoods = () => {
@@ -69,21 +81,6 @@ export const fillCuisinesHTML = (cuisines = self.cuisines) => {
     option.value = cuisine;
     select.append(option);
   });
-};
-
-/**
- * Initialize Google map, called from HTML.
- */
-window.initMap = () => {
-  const lat = 40.722216;
-  const lng = -73.987501;
-  const loc = {lat, lng};
-  const center = {loc};
-  const zoom = 12;
-  const scrollwheel = false;
-  const el = document.getElementById('map');
-  self.map = new google.maps.Map(el, {zoom, center, scrollwheel});
-  updateRestaurants();
 };
 
 /**
