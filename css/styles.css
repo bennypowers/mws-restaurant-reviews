@@ -220,7 +220,6 @@ nav h1 a {
   display: block;
   margin: 0;
   max-width: calc(100% + 60px);
-  min-height: 248px;
   min-width: 100%;
   left: -30px;
   position: relative;
