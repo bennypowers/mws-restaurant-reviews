@@ -1,8 +1,11 @@
 module.exports = {
   extends: "eslint:recommended",
+  plugins: ['html'],
   env: {
     browser: true,
-    es5: true,
+    es6: true,
   },
-  semi: [2, 'always'],
+  rules: {
+    semi: [2, 'always'],
+  }
 };
