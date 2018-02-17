@@ -266,7 +266,7 @@ nav h1 a {
   z-index: 1000;
 }
 
-@media screen and (min-width: 960px) {
+@media screen and (min-width: 730px) {
   .inside #maincontent {
     display: flex;
     flex-wrap: wrap;
@@ -374,22 +374,22 @@ nav h1 a {
 
 @media screen and (min-width: 500px) {
   #restaurants-list {
-    grid-template-columns: 50% 50%;
-    grid-column-gap: 20px;
+    grid-template-columns: 49% 49%;
+    grid-column-gap: 2%;
   }
 }
 
 @media screen and (min-width: 670px) {
   #reviews-list {
-    grid-template-columns: 50% 50%;
-    grid-column-gap: 20px;
+    grid-template-columns: 49% 49%;
+    grid-column-gap: 2%;
   }
 }
 
 @media screen and (min-width: 960px) {
   #restaurants-list {
     grid-template-columns: 33% 33% 33%;
-    grid-column-gap: 0;
+    grid-column-gap: 0.5%;
   }
 }
 
