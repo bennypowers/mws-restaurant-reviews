@@ -315,7 +315,7 @@ nav h1 a {
 .inside #footer {
   bottom: 0;
   position: absolute;
-  width: 100%;
+  width: calc(100% - 50px);
   /* large screens */
   /* width: 50%; */
 }
