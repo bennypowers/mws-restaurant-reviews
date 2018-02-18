@@ -265,35 +265,6 @@ nav h1 a {
   z-index: 1000;
 }
 
-@media screen and (min-width: 730px) {
-  .inside #maincontent {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .inside #restaurant-container,
-  .inside #reviews-container,
-  .inside #map-container {
-    flex: 1 1 auto;
-    max-width: 50%;
-    height: auto !important;
-  }
-
-  .inside #restaurant-container {
-    order: 0;
-  }
-
-  .inside #map-container {
-    order: 1;
-  }
-
-  .inside #reviews-container {
-    order: 2;
-    max-width: 100%;
-  }
-
-}
-
 .inside #map-container {
   background: blue none repeat scroll 0 0;
   position: relative;
@@ -356,6 +327,16 @@ nav h1 a {
   /* width: 90%; */
 }
 
+#restaurant-container {
+  display: grid;
+  max-width: 100%;
+}
+
+#restaurant-container h1 {
+  width: 100%;
+  flex: 1 0 auto;
+}
+
 #restaurant-container,
 #reviews-container {
   border-bottom: 1px solid #d9d9d9;
@@ -366,23 +347,64 @@ nav h1 a {
   /* width: 50%; */
 }
 
+#restaurant-details-container,
+#restaurant-image-container {
+  margin: 0;
+}
+
 #restaurants-list,
 #reviews-list {
   display: grid;
 }
 
 @media screen and (min-width: 500px) {
+  .inside #maincontent {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .inside #restaurant-container,
+  .inside #reviews-container,
+  .inside #map-container {
+    flex: 1 1 auto;
+    max-width: 50%;
+    height: auto !important;
+  }
+
+  .inside #restaurant-container {
+    order: 0;
+  }
+
+  .inside #map-container {
+    order: 1;
+  }
+
+  .inside #reviews-container {
+    order: 2;
+    max-width: 100%;
+  }
+
   #restaurants-list {
     grid-template-columns: 49% 49%;
     grid-column-gap: 2%;
   }
 }
 
-@media screen and (min-width: 670px) {
+@media screen and (min-width: 630px) {
   #reviews-list {
     grid-template-columns: 49% 49%;
     grid-column-gap: 2%;
   }
+
+  #restaurant-container h1 {
+    grid-column-end: span 2;
+  }
+
+  #restaurant-container {
+    display: flex;
+    flex-flow: row wrap;
+  }
+
 }
 
 @media screen and (min-width: 960px) {
@@ -390,9 +412,16 @@ nav h1 a {
     grid-template-columns: 33% 33% 33%;
     grid-column-gap: 0.5%;
   }
+
 }
 
 @media screen and (min-width: 1030px) {
+  #restaurant-container {
+    display: grid;
+    grid-column-gap: 2%;
+    grid-template-columns: 48% 48%;
+  }
+
   #reviews-list {
     grid-template-columns: 33% 33% 33%;
     grid-column-gap: 0.5%;
