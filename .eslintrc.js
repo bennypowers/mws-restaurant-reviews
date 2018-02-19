@@ -3,6 +3,7 @@ module.exports = {
   plugins: ['html'],
   parserOptions: {
     sourceType: 'module',
+    ecmaVersion: 2017,
   },
   env: {
     browser: true,
@@ -20,5 +21,11 @@ module.exports = {
     cuisines: true,
     map: true,
     markers: true,
-  }
+  },
+  overrides: {
+    files: ['service-worker.js'],
+    env: {
+      serviceworker: true,
+    },
+  },
 };
