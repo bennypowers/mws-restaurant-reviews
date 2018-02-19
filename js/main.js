@@ -12,6 +12,10 @@ window.markers = window.markers || [];
 document.addEventListener('DOMContentLoaded', event => {
   fetchNeighborhoods(event);
   fetchCuisines(event);
+  const neighborhoods = document.getElementById('neighborhoods-select');
+        neighborhoods.addEventListener('change', updateRestaurants);
+  const cuisines = document.getElementById('cuisines-select');
+        cuisines.addEventListener('change', updateRestaurants);
 });
 
 /**

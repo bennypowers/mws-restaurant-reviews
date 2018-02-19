@@ -27,11 +27,11 @@
       <div class="filter-options">
         <h2>Filter Results</h2>
 
-        <select id="neighborhoods-select" name="neighborhoods" aria-label="Neighbourhoods" onchange="updateRestaurants()">
+        <select id="neighborhoods-select" name="neighborhoods" aria-label="Neighbourhoods">
           <option value="all">All Neighborhoods</option>
         </select>
 
-        <select id="cuisines-select" name="cuisines" aria-label="Cuisines" onchange="updateRestaurants()">
+        <select id="cuisines-select" name="cuisines" aria-label="Cuisines">
           <option value="all">All Cuisines</option>
         </select>
 
@@ -40,7 +40,7 @@
     </section>
   </main>
 
-  <script type="module" charset="utf-8" src="js/main.js"></script>
+  <script type="module" src="js/main.js" charset="utf-8"></script>
   <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB83Tm6s1TFhPLKGlbn5zhco7yhDzyjRvM&libraries=places&callback=initMap"></script>
 
   <footer id="footer">
