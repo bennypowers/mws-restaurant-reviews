@@ -90,30 +90,34 @@ const formatOpeningToClosing = string =>
     .map(trim)
     .join(' - ');
 
+// element -> object -> element
+const impureOutputHoursHTML = table =>
+  ([dayString, hoursString]) => {
+    const times = hoursString
+      .split(', ')
+      .map(formatOpeningToClosing)
+      .join(', ');
+
+    const day = document.createElement('td');
+          day.innerHTML = `<time>${dayString}</time>`;
+
+    const time = document.createElement('td');
+          time.innerHTML = times;
+
+    const row = document.createElement('tr');
+          row.appendChild(day);
+          row.appendChild(time);
+
+    return table.appendChild(row);
+  };
+
 /**
  * Create restaurant operating hours HTML table and add it to the webpage.
  */
 export const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => {
-  const hours = document.getElementById('restaurant-hours');
-
-  for (const key in operatingHours) {
-    const row = document.createElement('tr');
-
-    const day = document.createElement('td');
-    day.innerHTML = `<time>${key}</time>`;
-    row.appendChild(day);
-
-    const times = operatingHours[key]
-        .split(', ')
-        .map(formatOpeningToClosing)
-        .join(', ');
-
-    const time = document.createElement('td');
-    time.innerHTML = times;
-    row.appendChild(time);
-
-    hours.appendChild(row);
-  }
+  const hoursTable = document.getElementById('restaurant-hours');
+  Object.entries(operatingHours)
+    .forEach(impureOutputHoursHTML(hoursTable));
 };
 
 /**
