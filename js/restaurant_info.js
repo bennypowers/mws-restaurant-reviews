@@ -73,20 +73,43 @@ export const fillRestaurantHTML = (restaurant = self.restaurant) => {
   fillReviewsHTML();
 };
 
+// str -> html | str
+const formatTimeString = time =>
+  time.match(/(([01]?[0-9]):[0-5][0-9]) [AaPp][Mm]/)
+    ? `<time>${time}</time>`
+    : time;
+
+// str -> str
+const trim = str => str.trim();
+
+// takes a string like "11:00 am - 5:00 pm" and returns semantic html
+// str -> str
+const formatOpeningToClosing = string =>
+  string.split(' - ')
+    .map(formatTimeString)
+    .map(trim)
+    .join(' - ');
+
 /**
  * Create restaurant operating hours HTML table and add it to the webpage.
  */
 export const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => {
   const hours = document.getElementById('restaurant-hours');
+
   for (const key in operatingHours) {
     const row = document.createElement('tr');
 
     const day = document.createElement('td');
-    day.innerHTML = key;
+    day.innerHTML = `<time>${key}</time>`;
     row.appendChild(day);
 
+    const times = operatingHours[key]
+        .split(', ')
+        .map(formatOpeningToClosing)
+        .join(', ');
+
     const time = document.createElement('td');
-    time.innerHTML = operatingHours[key];
+    time.innerHTML = times;
     row.appendChild(time);
 
     hours.appendChild(row);
