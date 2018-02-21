@@ -89,13 +89,22 @@ section {
 nav {
   display: flex;
   width: 100%;
-  height: 80px;
+  min-height: 80px;
   background-color: #252831;
-  text-align: center;
+  flex-wrap: wrap;
 }
 
 nav h1 {
   margin: auto;
+  min-height: 80px;
+  display: flex;
+  justify-content: center;
+}
+
+nav h1,
+nav #breadcrumb {
+  width: 100%;
+  align-items: center;
 }
 
 nav h1 a {
@@ -445,7 +454,19 @@ nav h1 a {
   padding: 0;
 }
 
-#reviews-list li {
+meter {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 4px;
+}
+
+meter::before {
+  content: attr(value);
+  display: inline-block;
+  flex: 1 0 1em;
+}
+
+#reviews-list article {
   background-color: #fff;
   border: 2px solid #f3f3f3;
   display: block;
@@ -459,7 +480,7 @@ nav h1 a {
   /* width: 85%; */
 }
 
-#reviews-list li header {
+#reviews-list article header {
   align-items: center;
   background: #444;
   color: white;
@@ -473,17 +494,17 @@ nav h1 a {
   z-index: 0;
 }
 
-#reviews-list li h1 {
+#reviews-list article h1 {
   font-size: 18px;
   margin: 0;
 }
 
-#reviews-list li time {
+#reviews-list article time {
   margin: 0;
   color: #eee;
 }
 
-#reviews-list li span {
+#reviews-list article span {
   background-color: crimson;
   color: white;
   font-weight: bold;
@@ -491,6 +512,8 @@ nav h1 a {
   margin-bottom: 20px;
   border-radius: 4px;
   text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
 }
 
 #restaurant-hours td {

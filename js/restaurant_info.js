@@ -1,4 +1,4 @@
-import { trace, traceError } from './log.js';
+import { traceError } from './log.js';
 import DBHelper from './dbhelper.js';
 
 window.restaurant = window.restaurant || undefined;
@@ -147,28 +147,37 @@ export const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
 /**
  * Create review HTML and add it to the webpage.
  */
-export const createReviewHTML = (review) => {
-  const li = document.createElement('li');
+export const createReviewHTML = ({comments, date, name, rating}) => {
+  const article = document.createElement('article');
   const header = document.createElement('header');
-  li.appendChild(header);
 
-  const name = document.createElement('h1');
-  name.innerHTML = review.name;
-  header.appendChild(name);
+  const h1 = document.createElement('h1');
+        h1.innerHTML = name;
+  header.appendChild(h1);
 
-  const date = document.createElement('time');
-  date.innerHTML = review.date;
-  header.appendChild(date);
+  const time = document.createElement('time');
+        time.innerHTML = date;
+  header.appendChild(time);
 
-  const rating = document.createElement('span');
-  rating.innerHTML = `Rating: ${review.rating}`;
-  li.appendChild(rating);
+  article.appendChild(header);
 
-  const comments = document.createElement('p');
-  comments.innerHTML = review.comments;
-  li.appendChild(comments);
+  const meter = document.createElement('meter');
+        meter.min = 0;
+        meter.max = 5;
+        meter.low = 2;
+        meter.high = 4;
+        meter.value = rating;
+        meter.optimum = 5;
+  const span = document.createElement('span');
+        span.innerHTML = 'Rating: ';
+        span.appendChild(meter);
+  article.appendChild(span);
 
-  return li;
+  const p = document.createElement('p');
+        p.innerHTML = comments;
+  article.appendChild(p);
+
+  return article;
 };
 
 /**
