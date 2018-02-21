@@ -1,51 +1,67 @@
+import { trace, traceError } from './log.js';
 import DBHelper from './dbhelper.js';
+
 window.restaurant = window.restaurant || undefined;
 window.map = window.map || undefined;
+
+// str -> html | str
+const formatTimeString = time =>
+  time.match(/(([01]?[0-9]):[0-5][0-9]) [AaPp][Mm]/)
+    ? `<time>${time}</time>`
+    : time;
+
+// str -> str
+const trim = str => str.trim();
+
+// takes a string like "11:00 am - 5:00 pm" and returns semantic html
+// str -> str
+const formatOpeningToClosing = string =>
+  string.split(' - ')
+    .map(formatTimeString)
+    .map(trim)
+    .join(' - ');
+
+const setRestaurantReference = restaurant =>
+  (self.restaurant = restaurant, restaurant);
+
+const fillMapForRestaurant = restaurant => {
+  const zoom = 16;
+  const center = restaurant.latlng;
+  const scrollwheel = false;
+  const mapEl = document.getElementById('map');
+  const map = new google.maps.Map(mapEl, { center, scrollwheel, zoom });
+
+  self.map = map;
+
+  DBHelper.mapMarkerForRestaurant(restaurant, map);
+
+  return restaurant;
+};
 
 /**
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
-  fetchRestaurantFromURL((error, restaurant) => {
-    if (error) { // Got an error!
-      // eslint-disable-next-line no-console
-      console.error(error);
-    } else {
-      self.map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 16,
-        center: restaurant.latlng,
-        scrollwheel: false
-      });
-      fillBreadcrumb();
-      DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
-    }
-  });
+  const id = getParameterByName('id');
+  fetchRestaurantFromURL(id)
+    // .then(trace('fetchRestaurantFromURL in initMap'))
+    .then(setRestaurantReference)
+    .then(fillRestaurantHTML)
+    .then(fillMapForRestaurant)
+    .then(fillBreadcrumb)
+    .catch(traceError('fetchRestaurantFromURL'));
 };
 
 /**
  * Get current restaurant from page URL.
  */
-export const fetchRestaurantFromURL = (callback) => {
-  if (self.restaurant) { // restaurant already fetched!
-    callback(null, self.restaurant);
-    return;
-  }
-  const id = getParameterByName('id');
-  if (!id) { // no id found in URL
-    const error = 'No restaurant id in URL';
-    callback(error, null);
-  } else {
-    DBHelper.fetchRestaurantById(id, (error, restaurant) => {
-      self.restaurant = restaurant;
-      if (!restaurant) {
-        // eslint-disable-next-line no-console
-        console.error(error);
-        return;
-      }
-      fillRestaurantHTML();
-      callback(null, restaurant);
-    });
-  }
+export const fetchRestaurantFromURL = id => {
+  // use of parens aids in tabulating ternary without running afoul of ASI.
+  return (
+      !id ? Promise.reject(new Error('No restaurant id in URL'))  // no id found in URL
+    : self.restaurant ? Promise.resolve(self.restaurant)             // restaurant already fetched!
+    : DBHelper.fetchRestaurantById(id)
+  );
 };
 
 /**
@@ -71,24 +87,9 @@ export const fillRestaurantHTML = (restaurant = self.restaurant) => {
   }
   // fill reviews
   fillReviewsHTML();
+
+  return restaurant;
 };
-
-// str -> html | str
-const formatTimeString = time =>
-  time.match(/(([01]?[0-9]):[0-5][0-9]) [AaPp][Mm]/)
-    ? `<time>${time}</time>`
-    : time;
-
-// str -> str
-const trim = str => str.trim();
-
-// takes a string like "11:00 am - 5:00 pm" and returns semantic html
-// str -> str
-const formatOpeningToClosing = string =>
-  string.split(' - ')
-    .map(formatTimeString)
-    .map(trim)
-    .join(' - ');
 
 // element -> object -> element
 const impureOutputHoursHTML = table =>
@@ -135,6 +136,7 @@ export const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
     container.appendChild(noReviews);
     return;
   }
+
   const ul = document.getElementById('reviews-list');
   reviews.forEach(review => {
     ul.appendChild(createReviewHTML(review));
@@ -177,20 +179,14 @@ export const fillBreadcrumb = (restaurant=self.restaurant) => {
   const li = document.createElement('li');
   li.innerHTML = restaurant.name;
   breadcrumb.appendChild(li);
+  return restaurant;
 };
 
 /**
  * Get a parameter by name from page URL.
  */
-export const getParameterByName = (name, url) => {
-  if (!url)
-    url = window.location.href;
-  name = name.replace(/[[]]/g, '\\$&');
-  const regex = new RegExp(`[?&]${name}(=([^&#]*)|&|#|$)`),
-    results = regex.exec(url);
-  if (!results)
-    return null;
-  if (!results[2])
-    return '';
-  return decodeURIComponent(results[2].replace(/\+/g, ' '));
-};
+export const getParameterByName = (name, urlString) =>
+  // URL constructor obviates need to parse urls ourselves.
+  (new URL(urlString || window.location.href))
+    .searchParams
+    .get(name);
