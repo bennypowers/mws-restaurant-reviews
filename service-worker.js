@@ -7,7 +7,7 @@ const deleteCache = x => caches.delete(x);
 const not = x => y => y !== x;
 
 // eslint-disable-next-line no-console
-const trace = tag => x => {console.log(tag, x); return x;};
+const trace = tag => x => (console.log(tag, x), x);
 
 // promise([bool])
 const clearOldCaches = () => {
