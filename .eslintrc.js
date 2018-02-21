@@ -1,6 +1,9 @@
 module.exports = {
-  extends: "eslint:recommended",
-  plugins: ['html'],
+  extends: 'eslint:recommended',
+  plugins: [
+    'html',
+    'no-loops'
+  ],
   parserOptions: {
     sourceType: 'module',
     ecmaVersion: 2017,
@@ -11,6 +14,7 @@ module.exports = {
   },
   rules: {
     semi: [2, 'always'],
+    'no-loops/no-loops': 2,
   },
   globals: {
     google: true,

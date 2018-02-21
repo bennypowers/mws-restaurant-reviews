@@ -8,6 +8,7 @@
     "eslint": "^4.18.0",
     "eslint-config-recommended": "^2.0.0",
     "eslint-plugin-html": "^4.0.2",
+    "eslint-plugin-no-loops": "^0.3.0",
     "htmlhint": "^0.9.13",
     "stylelint": "^8.4.0"
   },
