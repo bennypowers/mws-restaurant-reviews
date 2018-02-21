@@ -115,45 +115,6 @@ nav h1 a {
   text-transform: uppercase;
 }
 
-#breadcrumb {
-  padding: 10px 40px 16px;
-  list-style: none;
-  background-color: #ddd;
-  font-size: 20px;
-  margin: 0;
-  /* large screens */
-  /* font-size: 17px; */
-  /* width: calc(50% - 80px); */
-}
-
-/* Display list items side by side */
-
-#breadcrumb li {
-  display: inline;
-}
-
-/* Add a slash symbol (/) before/behind each list item */
-
-#breadcrumb li + li::before {
-  padding: 8px;
-  color: black;
-  content: "/\00a0";
-}
-
-/* Add a color to all links inside the list */
-
-#breadcrumb li a {
-  color: #0062b5;
-  text-decoration: none;
-}
-
-/* Add a color on mouse-over */
-
-#breadcrumb li a:hover {
-  color: #01447e;
-  text-decoration: underline;
-}
-
 /* ====================== Map ====================== */
 
 #map {
@@ -265,40 +226,6 @@ nav h1 a {
   text-transform: uppercase;
 }
 
-/* ====================== Restaurant Details ====================== */
-
-.inside header {
-  position: relative;
-  top: 0;
-  width: 100%;
-  z-index: 1000;
-}
-
-.inside #map-container {
-  background: blue none repeat scroll 0 0;
-  position: relative;
-  height: 50vh;
-  /* height: 87%; */
-  /* position: fixed; */
-  /* right: 0; */
-  /* top: 80px; */
-  /* width: 50%; */
-}
-
-.inside #map {
-  background-color: #ccc;
-  height: 100%;
-  width: 100%;
-}
-
-.inside #footer {
-  bottom: 0;
-  position: absolute;
-  width: calc(100% - 50px);
-  /* large screens */
-  /* width: 50%; */
-}
-
 #restaurant-name {
   color: crimson;
   font-family: Arial, sans-serif;
@@ -367,32 +294,6 @@ nav h1 a {
 }
 
 @media screen and (min-width: 500px) {
-  .inside #maincontent {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .inside #restaurant-container,
-  .inside #reviews-container,
-  .inside #map-container {
-    flex: 1 1 auto;
-    max-width: 50%;
-    height: auto !important;
-  }
-
-  .inside #restaurant-container {
-    order: 0;
-  }
-
-  .inside #map-container {
-    order: 1;
-  }
-
-  .inside #reviews-container {
-    order: 2;
-    max-width: 100%;
-  }
-
   #restaurants-list {
     grid-template-columns: 49% 49%;
     grid-column-gap: 2%;
