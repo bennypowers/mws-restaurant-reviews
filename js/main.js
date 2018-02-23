@@ -1,4 +1,6 @@
 import { traceError } from './log.js';
+import { nameToId } from './string.js';
+import { titleMap } from './maphelper.js';
 import DBHelper from './dbhelper.js';
 
 window.restaurants = window.restaurants || undefined;
@@ -45,7 +47,12 @@ window.initMap = () => {
   const zoom = 12;
   const scrollwheel = false;
   const center = new google.maps.LatLng(40.722216, -73.987501);
-  self.map = new google.maps.Map(el, {zoom, center, scrollwheel});
+  const map = new google.maps.Map(el, {zoom, center, scrollwheel});
+
+  titleMap(map, 'Restaurant Map');
+
+  self.map = map;
+
   updateRestaurants();
 };
 

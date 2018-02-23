@@ -1,4 +1,6 @@
 import { traceError } from './log.js';
+import { nameToId } from './string.js';
+import { titleMap } from './maphelper.js';
 import DBHelper from './dbhelper.js';
 
 window.restaurant = window.restaurant || undefined;
@@ -30,6 +32,8 @@ const fillMapForRestaurant = restaurant => {
   const scrollwheel = false;
   const mapEl = document.getElementById('map');
   const map = new google.maps.Map(mapEl, { center, scrollwheel, zoom });
+
+  titleMap(map, `Map to ${restaurant.name || 'Restaurant'}`);
 
   self.map = map;
 
