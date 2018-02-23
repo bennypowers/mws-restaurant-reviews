@@ -69,22 +69,21 @@ export const fetchRestaurantFromURL = id => {
  */
 export const fillRestaurantHTML = (restaurant = self.restaurant) => {
   const name = document.getElementById('restaurant-name');
-  name.innerHTML = restaurant.name;
+        name.innerHTML = restaurant.name;
 
   const address = document.getElementById('restaurant-address');
-  address.innerHTML = restaurant.address;
+        address.innerHTML = restaurant.address;
 
   const image = document.getElementById('restaurant-img');
-  image.className = 'restaurant-img';
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+        image.className = 'restaurant-img';
+        image.src = DBHelper.imageUrlForRestaurant(restaurant);
 
   const cuisine = document.getElementById('restaurant-cuisine');
-  cuisine.innerHTML = restaurant.cuisine_type;
+        cuisine.innerHTML = restaurant.cuisine_type;
 
   // fill operating hours
-  if (restaurant.operating_hours) {
-    fillRestaurantHoursHTML();
-  }
+  if (restaurant.operating_hours) fillRestaurantHoursHTML();
+
   // fill reviews
   fillReviewsHTML();
 
@@ -127,20 +126,19 @@ export const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operati
 export const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h2');
-  title.innerHTML = 'Reviews';
+        title.innerHTML = 'Reviews';
+        title.tabIndex = 0;
   container.appendChild(title);
 
   if (!reviews) {
     const noReviews = document.createElement('p');
-    noReviews.innerHTML = 'No reviews yet!';
+          noReviews.innerHTML = 'No reviews yet!';
     container.appendChild(noReviews);
     return;
   }
 
   const ul = document.getElementById('reviews-list');
-  reviews.forEach(review => {
-    ul.appendChild(createReviewHTML(review));
-  });
+  reviews.forEach(review => ul.appendChild(createReviewHTML(review)));
   container.appendChild(ul);
 };
 
@@ -153,6 +151,7 @@ export const createReviewHTML = ({comments, date, name, rating}) => {
 
   const h1 = document.createElement('h1');
         h1.innerHTML = name;
+        h1.tabIndex = 0;
   header.appendChild(h1);
 
   const time = document.createElement('time');
