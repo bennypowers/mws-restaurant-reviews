@@ -147,7 +147,9 @@ export const fillRestaurantsHTML = (restaurants = self.restaurants) => {
  * Create restaurant HTML.
  */
 export const createRestaurantHTML = (restaurant) => {
+  const id = nameToId(restaurant.name);
   const li = document.createElement('li');
+        li.setAttribute('aria-labelledby', id);
 
   const image = document.createElement('img');
         image.className = 'restaurant-img';
@@ -157,6 +159,12 @@ export const createRestaurantHTML = (restaurant) => {
 
   const name = document.createElement('h1');
         name.innerHTML = restaurant.name;
+        // NOTE: We opt to use h1 in restaurant and review listings, since h1 is
+        //       allowed and prefered by the outline algorithm. However, since
+        //       UAs don't implement outline, we assist users by using the
+        //       aria-labelledby attribute to explicitly link h1s to their sections.
+        // see https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Using_HTML_sections_and_outlines
+        name.id = id;
         // NOTE: we opt not to tab-index restaurant header, since the interactive
         // control 'view details' will receive focus.
         // name.tabIndex = 0;

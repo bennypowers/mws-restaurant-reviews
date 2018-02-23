@@ -141,9 +141,9 @@ export const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
     return;
   }
 
-  const ul = document.getElementById('reviews-list');
-  reviews.forEach(review => ul.appendChild(createReviewHTML(review)));
-  container.appendChild(ul);
+  const div = document.getElementById('reviews-list');
+  reviews.forEach(review => div.appendChild(createReviewHTML(review)));
+  container.appendChild(div);
 };
 
 /**
@@ -152,10 +152,16 @@ export const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
 export const createReviewHTML = ({comments, date, name, rating}) => {
   const article = document.createElement('article');
   const header = document.createElement('header');
+  const id = nameToId(name);
 
   const h1 = document.createElement('h1');
         h1.innerHTML = name;
         h1.tabIndex = 0;
+        // NOTE: We opt to use h1 in restaurant and review listings, since h1 is
+        //       allowed and prefered by the outline algorithm. However, since
+        //       UAs don't implement outline, we assist users by using the
+        //       aria-labelledby attribute to explicitly link h1s to their sections.
+        h1.id = id;
   header.appendChild(h1);
 
   const time = document.createElement('time');
@@ -163,6 +169,7 @@ export const createReviewHTML = ({comments, date, name, rating}) => {
   header.appendChild(time);
 
   article.appendChild(header);
+  article.setAttribute('aria-labelledby', id);
 
   const meter = document.createElement('meter');
         meter.min = 0;
