@@ -196,7 +196,8 @@ export const createReviewHTML = ({comments, date, name, rating}) => {
 export const fillBreadcrumb = (restaurant=self.restaurant) => {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
-  li.innerHTML = restaurant.name;
+        li.innerHTML = restaurant.name;
+        li.setAttribute('aria-current', 'page');
   breadcrumb.appendChild(li);
   return restaurant;
 };
