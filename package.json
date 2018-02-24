@@ -10,9 +10,13 @@
     "eslint-plugin-html": "^4.0.2",
     "eslint-plugin-no-loops": "^0.3.0",
     "htmlhint": "^0.9.13",
+    "local-web-server": "^2.4.0",
+    "lws-compress": "^0.2.1",
+    "lws-http2": "^0.2.2",
     "stylelint": "^8.4.0"
   },
   "scripts": {
+    "start": "ws",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
