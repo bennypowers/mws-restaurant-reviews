@@ -12,6 +12,10 @@ export const eq = a => b => a == b;
 // eqeq :: a -> b -> bool
 export const eqeq = a => b => a === b;
 
+/** Returns unique values for a key in a list of objects. */
+// uniqueByKey :: s -> obj -> bool
+export const uniqueByKey = key => compose(uniq, map(prop(key)));
+
 /*
  * COMBINATORS
  */
@@ -137,3 +141,18 @@ export const returnOrThrow = message => value => {
   if (value) return value;
   else throw new Error(message);
 };
+
+/*
+ * DOM HELPERS
+ */
+
+
+/** Generates a CustomEvent. Reduces boilerplate. */
+// customEvent :: (str, o) -> CustomEvent o
+export const customEvent = (type, detail) => new CustomEvent(type, {
+  bubbles: true, composed: true, detail
+});
+
+/** Point-free DOM append. */
+// append :: DOM -> DOM -> ()
+export const append = parent => child => parent.append(child);

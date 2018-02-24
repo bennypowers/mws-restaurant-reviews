@@ -48,9 +48,13 @@ Even among evergreen browsers, ES2015 and API support is not uniform, therefore,
 
 Having said that, we stop short of incorporating production-ready FP libraries like [Crocks](https://github.com/evilsoft/crocks) or functional templating engines like [lit-html](https://github.com/Polymer/lit-html) for the sake of simplicity. So in cases where FP-purism conflicts with the KISS principle, we opt for simplicity.
 
+## Weird Parts of JavaScript
+
+We have, in places, opted to use some lesser-known features of JavaScript to communicate our intent more clearly. There are many cases in main.js where some side effect is desired as part of an otherwise pure data flow. (see previous note). In these cases, we use the comma operator to run our side effects, returning the parameter afterward in order to maintain data flow. In these cases, parentheses help to emphasize that we are essentially performing the identity (`x => x`) with a brief, non-pure interlude.
+
 # Conformance to the Rubric
 
-The rubric for this stage requires the use of the IndexedDB API. We found we were able to satisfactorily implement all features (offline caching of API requests) using the service worker's `caches` API. Therefore we have submitted two versions of this stage, one that relies on the `caches` API, and one that uses the indexedDB API as required in the rubric. The IDB version is found on the `idb` branch of this repository.
+The rubric for this stage requires the use of the IndexedDB API. We found we were able to satisfactorily implement all features (offline caching of API requests) using the service worker's `caches` API. Since the primary advantage to IDB is when the service worker is not accessible (i.e. when using websockets), and since we won't be implementing web sockets in this app, therefore we have opted to keep it simple and not implement IDB caching.
 
 ```
 git checkout idb

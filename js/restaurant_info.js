@@ -1,7 +1,10 @@
-import { traceError } from './log.js';
-import { nameToId } from './string.js';
-import { titleMap } from './maphelper.js';
-import DBHelper from './dbhelper.js';
+import { nameToId, traceError, trim } from './lib.js';
+import { fetchRestaurantById } from './dbhelper.js';
+import {
+  imageUrlForRestaurant,
+  mapMarkerForRestaurant,
+  titleMap,
+} from './maphelper.js';
 
 window.restaurant = window.restaurant || undefined;
 window.map = window.map || undefined;
@@ -11,9 +14,6 @@ const formatTimeString = time =>
   time.match(/(([01]?[0-9]):[0-5][0-9]) [AaPp][Mm]/)
     ? `<time>${time}</time>`
     : time;
-
-// str -> str
-const trim = str => str.trim();
 
 // takes a string like "11:00 am - 5:00 pm" and returns semantic html
 // str -> str
@@ -37,7 +37,7 @@ const fillMapForRestaurant = restaurant => {
 
   self.map = map;
 
-  DBHelper.mapMarkerForRestaurant(restaurant, map);
+  mapMarkerForRestaurant(restaurant, map);
 
   return restaurant;
 };
@@ -64,7 +64,7 @@ export const fetchRestaurantFromURL = id => {
   return (
       !id ? Promise.reject(new Error('No restaurant id in URL'))  // no id found in URL
     : self.restaurant ? Promise.resolve(self.restaurant)             // restaurant already fetched!
-    : DBHelper.fetchRestaurantById(id)
+    : fetchRestaurantById(id)
   );
 };
 
@@ -80,7 +80,7 @@ export const fillRestaurantHTML = (restaurant = self.restaurant) => {
 
   const image = document.getElementById('restaurant-img');
         image.className = 'restaurant-img';
-        image.src = DBHelper.imageUrlForRestaurant(restaurant);
+        image.src = imageUrlForRestaurant(restaurant);
 
   const cuisine = document.getElementById('restaurant-cuisine');
         cuisine.innerHTML = restaurant.cuisine_type;
