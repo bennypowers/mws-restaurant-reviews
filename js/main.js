@@ -9,7 +9,6 @@ import {
   filter,
   nameToId,
   prop,
-  trace,
   traceError,
   uniqueByKey,
 } from './lib.js';
@@ -107,7 +106,6 @@ window.initMap = () => {
   self.map = map;
 
   return fetchRestaurants(self.restaurants)
-    .then(trace('in initMap'))
     .then(dispatchRestaurants)
     .then(setRestaurantsReference)
     .then(updateRestaurants)

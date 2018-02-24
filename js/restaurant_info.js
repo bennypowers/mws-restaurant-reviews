@@ -48,7 +48,6 @@ const fillMapForRestaurant = restaurant => {
 window.initMap = () => {
   const id = getParameterByName('id');
   fetchRestaurantFromURL(id)
-    // .then(trace('fetchRestaurantFromURL in initMap'))
     .then(setRestaurantReference)
     .then(fillRestaurantHTML)
     .then(fillMapForRestaurant)
