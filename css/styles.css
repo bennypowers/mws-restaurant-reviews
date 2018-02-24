@@ -185,6 +185,15 @@ nav h1 a {
   /* width: 270px; */
 }
 
+#restaurants-list li.no-restaurants {
+  border: none;
+  background: none;
+  padding: 20px;
+  width: auto;
+  min-height: initial;
+  text-align: center;
+}
+
 #restaurants-list .restaurant-img {
   background-color: #ccc;
   display: block;
@@ -291,51 +300,6 @@ nav h1 a {
 #restaurants-list,
 #reviews-list {
   display: grid;
-}
-
-@media screen and (min-width: 500px) {
-  #restaurants-list {
-    grid-template-columns: 49% 49%;
-    grid-column-gap: 2%;
-  }
-}
-
-@media screen and (min-width: 630px) {
-  #reviews-list {
-    grid-template-columns: 49% 49%;
-    grid-column-gap: 2%;
-  }
-
-  #restaurant-container h1 {
-    grid-column-end: span 2;
-  }
-
-  #restaurant-container {
-    display: flex;
-    flex-flow: row wrap;
-  }
-
-}
-
-@media screen and (min-width: 960px) {
-  #restaurants-list {
-    grid-template-columns: 33% 33% 33%;
-    grid-column-gap: 0.5%;
-  }
-
-}
-
-@media screen and (min-width: 1030px) {
-  #restaurant-container {
-    display: grid;
-    grid-column-gap: 2%;
-    grid-template-columns: 48% 48%;
-  }
-
-  #reviews-list {
-    grid-template-columns: 33% 33% 33%;
-    grid-column-gap: 0.5%;
-  }
 }
 
 #reviews-container {

@@ -1,0 +1,10 @@
+  #restaurant-container {
+    display: grid;
+    grid-column-gap: 2%;
+    grid-template-columns: 48% 48%;
+  }
+
+  #reviews-list {
+    grid-template-columns: 33% 33% 33%;
+    grid-column-gap: 0.5%;
+  }
