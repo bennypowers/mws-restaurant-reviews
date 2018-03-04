@@ -11,8 +11,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="theme-color" content="crimson"/>
   <title>Restaurant Reviews</title>
-  <script src="bower_components/webcomponentsjs/webcomponents-loader.js" charset="utf-8"></script>
-  <link rel="import" href="bower_components/service-worker/service-worker.html"/>
+  <script defer src="bower_components/webcomponentsjs/webcomponents-loader.js" charset="utf-8"></script>
+  <link async rel="import" href="bower_components/service-worker/service-worker.html"/>
   <style>
 
   /* ====================== Critical Rendering Path ====================== */
@@ -114,12 +114,12 @@
     </section>
   </main>
 
-  <script type="module" src="js/main.js" charset="utf-8"></script>
-  <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB83Tm6s1TFhPLKGlbn5zhco7yhDzyjRvM&libraries=places&callback=initMap"></script>
-
   <footer id="footer">
     Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
   </footer>
+
+  <script type="module" src="js/main.js" charset="utf-8"></script>
+  <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB83Tm6s1TFhPLKGlbn5zhco7yhDzyjRvM&libraries=places&callback=initMap"></script>
 
   <script> {
     const link = document.createElement('link')

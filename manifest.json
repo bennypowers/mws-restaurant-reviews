@@ -5,7 +5,7 @@
   "theme_color": "crimson",
   "display": "standalone",
   "name": "Restaurant Reviews",
-  "short_name": "Resto Reviews",
+  "short_name": "Restaurants",
   "lang": "en-US",
   "orientation": "portrait-primary",
   "scope": "/",
