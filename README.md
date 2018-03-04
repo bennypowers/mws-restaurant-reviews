@@ -5,17 +5,19 @@
 
 We opted not to use the [development server provided by udacity]( https://github.com/udacity/mws-restaurant-stage-2), instead we have created our own much simpler dev server within this very repository. It uses [local-web-server](https://github.com/lwsjs/local-web-server/wiki) to serve the static HTML, JS, and CSS, as well as provide database access via a mocked REST API available at `/api/`. As such, we have obviated the need for a database URL and port in the client side JS, as all requests now share a common origin.
 
-To start the local server, simply clone down the repo and run `npm start`
+To make sure that the server redirects HTTP requests to HTTPS, I've rolled the dev server up in a docker image. To run it, just enter the following commands:
 
-```
-git clone git@github.com:bennypowers/mws-restaurant-stage-1.git
-cd mws-restaurant-stage-1
-npm i && npm start
+```bash
+docker build -t udacity/mws-restaurant-stage-2 .
+docker run -p 8000:8080 -d udacity/mws-restaurant-stage-2
 ```
 
-# HTTPS
+Then you should be able to browse to http://localhost:8000 on your local machine.
+
+# HTTPS Certificates
 
 The development server is set to serve over http2, which requires a secure connection. In order to make this work locally, you must trust [lws' certicates](https://github.com/lwsjs/local-web-server/wiki/How-to-get-the-%22green-padlock%22-using-the-built-in-certificate), or you can use your own [self-signed cert](https://github.com/lwsjs/local-web-server/wiki/How-to-get-the-%22green-padlock%22-with-a-new-self-signed-certificate).
+To install the lws cert, even on windows, just follow the instructions in the link above. If you want to use a self-signed cert instead, just rebuild the docker image when you're done.
 
 # Opinions
 
@@ -51,12 +53,3 @@ Having said that, we stop short of incorporating production-ready FP libraries l
 ## Weird Parts of JavaScript
 
 We have, in places, opted to use some lesser-known features of JavaScript to communicate our intent more clearly. There are many cases in main.js where some side effect is desired as part of an otherwise pure data flow. (see previous note). In these cases, we use the comma operator to run our side effects, returning the parameter afterward in order to maintain data flow. In these cases, parentheses help to emphasize that we are essentially performing the identity (`x => x`) with a brief, non-pure interlude.
-
-# Conformance to the Rubric
-
-The rubric for this stage requires the use of the IndexedDB API. We found we were able to satisfactorily implement all features (offline caching of API requests) using the service worker's `caches` API. Since the primary advantage to IDB is when the service worker is not accessible (i.e. when using websockets), and since we won't be implementing web sockets in this app, therefore we have opted to keep it simple and not implement IDB caching.
-
-```
-git checkout idb
-npm start
-```
