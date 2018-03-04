@@ -16,7 +16,7 @@
     "stylelint": "^8.4.0"
   },
   "scripts": {
-    "start": "ws",
+    "start": "npx ws",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
