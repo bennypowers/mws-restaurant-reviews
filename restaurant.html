@@ -5,7 +5,6 @@
   <!-- Normalize.css for better cross-browser consistency -->
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
   <!-- Main CSS file -->
-  <link rel="stylesheet" href="css/styles.css"/>
   <link rel="stylesheet" media="(min-width: 500px)" href="/css/width-500.css"/>
   <link rel="stylesheet" media="(min-width: 630px)" href="/css/width-630.css"/>
   <link rel="stylesheet" media="(min-width: 960px)" href="/css/width-960.css"/>
@@ -13,6 +12,72 @@
   <link rel="stylesheet" href="css/restaurant.css"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Restaurant Info</title>
+  <style>
+
+  /* ====================== Critical Rendering Path ====================== */
+  body,
+  td,
+  th,
+  p {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+    color: #333;
+    line-height: 1.5;
+  }
+
+  body {
+    background-color: #fdfdfd;
+    margin: 0;
+    position: relative;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0 0 20px;
+  }
+
+  #maincontent {
+    background-color: #f3f3f3;
+    min-height: 100%;
+    /* padding-top: calc(80px + 51px); */
+  }
+
+  /* ====================== Navigation ====================== */
+
+  nav {
+    display: flex;
+    width: 100%;
+    min-height: 80px;
+    background-color: #252831;
+    flex-wrap: wrap;
+  }
+
+  nav h1 {
+    margin: auto;
+    min-height: 80px;
+    display: flex;
+    justify-content: center;
+  }
+
+  nav h1,
+  nav #breadcrumb {
+    width: 100%;
+    align-items: center;
+  }
+
+  nav h1 a {
+    color: #fff;
+    font-size: 14pt;
+    font-weight: 200;
+    letter-spacing: 10px;
+    text-transform: uppercase;
+  }
+  </style>
 </head>
 
 <body class="inside">
@@ -70,6 +135,13 @@
   <script type="module" charset="utf-8" src="js/restaurant_info.js"></script>
   <!-- Google Maps -->
   <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_tKbW6A5pQ-eupxI56myUnHLqYCzOjKo&libraries=places&callback=initMap"></script>
+  <script> {
+    const link = document.createElement('link')
+          link.rel = 'stylesheet';
+          link.href = 'css/styles.css';
+    document.head.appendChild(link);
+  }
+  </script>
   <!-- End scripts -->
 
 </body>
