@@ -1,5 +1,3 @@
-importScripts('./node_modules/idb-keyval/dist/idb-keyval-min.js');
-
 const STATIC_ASSETS = 'static-assets-v6';
 
 // str -> promise(bool)
