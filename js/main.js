@@ -173,7 +173,6 @@ const createRestaurantHTML = restaurant => {
   const image = document.createElement('img');
         image.className = 'restaurant-img';
         image.alt = `Restaurant photograph of ${restaurant.name}`;
-        image.src = imageUrlForRestaurant(restaurant);
   li.append(image);
 
   const name = document.createElement('h1');
@@ -201,6 +200,14 @@ const createRestaurantHTML = restaurant => {
         more.innerHTML = 'View Details';
         more.href = urlForRestaurant(restaurant);
   li.append(more);
+
+  const rootMargin = '20px';
+  const ioCallback = entries =>
+    entries.some(entry =>
+      entry.isIntersecting ? image.src = imageUrlForRestaurant(restaurant) : null );
+
+  const observer = new IntersectionObserver(ioCallback, {rootMargin});
+        observer.observe(li);
 
   return li;
 };
