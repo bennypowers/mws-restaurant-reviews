@@ -9,5 +9,5 @@ RUN npx bower i --allow-root
 
 COPY . .
 
-EXPOSE 8080
+EXPOSE 80 443
 CMD [ "npm", "start" ]
