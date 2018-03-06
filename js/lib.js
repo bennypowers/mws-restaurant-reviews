@@ -137,7 +137,7 @@ export const handleAsJson = response => response.json();
  * @param  {Response} response
  * @return {any}      Text response
  */
-export const handleAsJson = response => response.text();
+export const handleAsText = response => response.text();
 
 /**
  * Helper function used to reject promise chains if final values are falsy.
