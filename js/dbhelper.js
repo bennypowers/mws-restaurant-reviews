@@ -1,5 +1,5 @@
 import idbKeyval from './idb-keyval.js';
-import { handleAsJson, rejectNon200, returnOrThrow, trace } from './lib.js';
+import { handleAsJson, handleAsText, rejectNon200, returnOrThrow, trace } from './lib.js';
 
 // Database URL
 const DATABASE_URL = `/api/restaurants/`;
@@ -47,3 +47,41 @@ export const fetchRestaurantById = (id) =>
     .then(rejectNon200)
     .then(handleAsJson)
     .then(returnOrThrow(`Restaurant id ${id} does not exist`));
+
+export const putFavorite = ({ restaurant_id, is_favorite }) =>
+  fetch(`/api/restaurant/${restaurant_id}?is_favorite=${!!is_favorite}`, {
+    method: 'PUT',
+  })
+  .then(rejectNon200)
+  .then(handleAsJson)
+  .then(returnOrThrow(`Couldn't update favorite status for restaurant ${restaurant_id}:`));
+
+export const postReview = ({ comments, name, rating, restaurant_id }) =>
+  fetch('/api/reviews', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ comments, name, rating, restaurant_id }),
+  })
+  .then(rejectNon200)
+  .then(handleAsJson)
+  .then(returnOrThrow(`Couldn't post review for restaurant ${restaurant_id}:`));
+
+export const putReview = ({ comments, name, rating, review_id }) =>
+  fetch(`/api/reviews/${review_id}`, {
+    method: 'PUT',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ comments, name, rating }),
+  })
+  .then(rejectNon200)
+  .then(handleAsJson)
+  .then(returnOrThrow(`Couldn't update review ${review_id}:`));
+
+export const deleteReview = ({ comments, name, rating, review_id }) =>
+  fetch(`/api/reviews/${review_id}`, {
+    method: 'DELETE',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ comments, name, rating, review_id }),
+  })
+  .then(rejectNon200)
+  .then(handleAsText)
+  .then(returnOrThrow(`Couldn't delete review ${review_id}:`));

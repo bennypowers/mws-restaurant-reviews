@@ -133,6 +133,13 @@ export const rejectNon200 = response =>
 export const handleAsJson = response => response.json();
 
 /**
+ * Parses a response as Text
+ * @param  {Response} response
+ * @return {any}      Text response
+ */
+export const handleAsJson = response => response.text();
+
+/**
  * Helper function used to reject promise chains if final values are falsy.
  * @param  {String} message error message if result is falsey
  * @return {any}    return value
