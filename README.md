@@ -5,7 +5,13 @@
 
 We opted not to use the [development server provided by udacity]( https://github.com/udacity/mws-restaurant-stage-2), instead we have created our own much simpler dev server within this very repository. It uses [local-web-server](https://github.com/lwsjs/local-web-server/wiki) to serve the static HTML, JS, and CSS, as well as provide database access via a mocked REST API available at `/api/`. As such, we have obviated the need for a database URL and port in the client side JS, as all requests now share a common origin.
 
-To run the dev server, install npm dependencies then run `npm start`. The page will be available at https://localhost:8080.
+To run the dev server, install npm dependencies then run `npm start` (`sudo npm start` on mac 🍎 or linux 🐧, since we're running on the default ports). The page will be available at https://localhost.
+
+## Windows Server Bug
+
+I've found an issue which causes some lighthouse tests to fail specifically on Windows. While I'm working with the author of `local-web-server` to fix the issue, some lighthouse tests scores on windows may be affected. I've therefore uploaded a copy of the lighthouse test json that I got on my mac:
+
+https://pastebin.com/b4SFgdA5
 
 # HTTPS Certificates
 
