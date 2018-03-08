@@ -8,7 +8,7 @@
     "local-web-server": "^2.5.0",
     "lws-compress": "^0.2.1",
     "lws-http2": "^0.2.2",
-    "node": "^8.9.4"
+    "node": "^9.8.0"
   },
   "devDependencies": {
     "bower": "^1.8.2",
