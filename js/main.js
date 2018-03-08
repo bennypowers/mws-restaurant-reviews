@@ -20,21 +20,15 @@ import {
   urlForRestaurant,
 } from './maphelper.js';
 
-window.restaurants = window.restaurants || undefined;
-window.neighborhoods = window.neighborhoods || undefined;
-window.cuisines = window.cuisines || undefined;
-window.map = window.map || undefined;
-window.markers = window.markers || [];
-
 // uniqueNeighborhoods :: o -> ks
-const uniqueNeighborhoods = uniqueByKey('neighborhood');
+export const uniqueNeighborhoods = uniqueByKey('neighborhood');
 
 // uniqueCuisines :: o -> ks
-const uniqueCuisines = uniqueByKey('cuisine_type');
+export const uniqueCuisines = uniqueByKey('cuisine_type');
 
 /** Predicate the filters by cuisine, neighborhood, or both. */
 // byCuisineAndNeighborhood :: (s, s) -> f
-const byCuisineAndNeighborhood = (cuisine='all', neighborhood='all') => {
+export const byCuisineAndNeighborhood = (cuisine='all', neighborhood='all') => {
   const filterCuisine = compose(eq(cuisine), prop('cuisine_type'));
   const filterNeighborhood = compose(eq(neighborhood), prop('neighborhood'));
   return (
@@ -47,7 +41,7 @@ const byCuisineAndNeighborhood = (cuisine='all', neighborhood='all') => {
 
 /** Creates an <option> element. */
 // createOption :: str -> DOM
-const createOption = name => {
+export const createOption = name => {
   const option = document.createElement('option');
         option.innerHTML = name;
         option.value = name;
@@ -64,36 +58,13 @@ const addMarkersToMap = restaurants =>
   (restaurants.forEach(addMarkerToMap), restaurants);
 
 /** Fires a 'restaurant-fetched' event on the document. */
-const dispatchRestaurants = restaurants => (
+export const dispatchRestaurants = restaurants => (
   document.dispatchEvent(customEvent('restaurants-fetched', {restaurants})),
   restaurants
 );
 
-/**
- * Fetch neighborhoods and cuisines as soon as the page is loaded.
- * Update restaurants when user makes a selection.
- */
-document.addEventListener('restaurants-fetched', event => {
-  const {restaurants} = event.detail;
-
-  const neighborhoodsSelect = document.getElementById('neighborhoods-select');
-  const cuisinesSelect = document.getElementById('cuisines-select');
-
-  // Update the restaurant list when user selects a filter
-  neighborhoodsSelect.addEventListener('change', () => updateRestaurants(self.restaurants));
-  cuisinesSelect.addEventListener('change', () => updateRestaurants(self.restaurants));
-
-  uniqueNeighborhoods(restaurants)
-    .map(createOption)                  // [options]
-    .map(append(neighborhoodsSelect));  // side effect
-
-  uniqueCuisines(restaurants)
-    .map(createOption)              // [options]
-    .map(append(cuisinesSelect)); // side effect
-});
-
 // Initialize Google map, called from HTML.
-window.initMap = () => {
+export const renderMap = () => {
   const el = document.getElementById('map');
   // initialize google maps
   const zoom = 12;
@@ -114,7 +85,7 @@ window.initMap = () => {
 
 /** Update page and map for current restaurants. */
 // updateRestaurants :: rs -> Promise rs
-const updateRestaurants = restaurants => {
+export const updateRestaurants = restaurants => {
   if (!restaurants) return;
 
   const cuisine = document.getElementById('cuisines-select').value;
@@ -131,7 +102,7 @@ const updateRestaurants = restaurants => {
 
 /** Clear current restaurants, their HTML and remove their map markers. */
 // resetRestaurants :: rs -> rs
-const resetRestaurants = restaurants => {
+export const resetRestaurants = restaurants => {
   const ul = document.getElementById('restaurants-list');
         ul.innerHTML = '';
   return restaurants;
@@ -139,7 +110,7 @@ const resetRestaurants = restaurants => {
 
 /** Remove all map markers. */
 // removeAllMapMarkers :: rs -> rs
-const removeAllMapMarkers = restaurants => {
+export const removeAllMapMarkers = restaurants => {
   self.markers.forEach(m => m.setMap(null));
   self.markers = [];
   return restaurants;
@@ -147,7 +118,7 @@ const removeAllMapMarkers = restaurants => {
 
 /** Create all restaurants HTML and add them to the webpage. */
 // fillRestaurantsHTML :: rs -> rs
-const fillRestaurantsHTML = restaurants => {
+export const fillRestaurantsHTML = restaurants => {
   if (!Array.isArray(restaurants)) throw new Error('Could not generate restauratn DOM');
   const ul = document.getElementById('restaurants-list');
   const nodes = restaurants.map(createRestaurantHTML);
@@ -165,7 +136,7 @@ const fillRestaurantsHTML = restaurants => {
 
 /** Create restaurant HTML. */
 // createRestaurantHTML :: r -> DOM
-const createRestaurantHTML = restaurant => {
+export const createRestaurantHTML = restaurant => {
   const id = nameToId(restaurant.name);
   const li = document.createElement('li');
         li.setAttribute('aria-labelledby', id);
@@ -214,7 +185,7 @@ const createRestaurantHTML = restaurant => {
 
 /** Add marker to the map */
 // addMarkerToMap :: r -> r
-const addMarkerToMap = restaurant => {
+export const addMarkerToMap = restaurant => {
   const marker = mapMarkerForRestaurant(restaurant, self.map);
   google.maps.event.addListener(marker, 'click', () => {
     window.location.href = marker.url;
