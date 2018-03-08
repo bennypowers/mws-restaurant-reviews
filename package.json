@@ -21,7 +21,8 @@
   },
   "scripts": {
     "postinstall": "bower i --allow-root",
-    "start": "npx ws & npx ws -c lws.redirect.config.js",
+    "prestart": "npx ws -c lws.redirect.config.js &",
+    "start": "npx ws",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
