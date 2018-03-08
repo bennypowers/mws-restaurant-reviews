@@ -8,9 +8,9 @@ module.exports = {
     'lws-static',
     'lws-cors',
   ],
-  port: process.env.PORT,
   http2: true,
+  port: 443,
   compress: true,
   mocks: 'restaurant-mocks.js',
-  logFormat: 'stats',
+  logFormat: 'dev',
 };

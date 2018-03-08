@@ -2,7 +2,7 @@
   "name": "mws-restaurant-stage-1",
   "version": "1.0.0",
   "description": "Project files for MWS Nanodegree",
-  "main": "server.js",
+  "main": "index.html",
   "dependencies": {
     "express": "^4.16.2",
     "local-web-server": "^2.5.0",
@@ -20,7 +20,8 @@
     "stylelint": "^8.4.0"
   },
   "scripts": {
-    "start": "npx ws --log.format combined",
+    "postinstall": "bower i --allow-root",
+    "start": "npx ws & npx ws -c lws.redirect.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
