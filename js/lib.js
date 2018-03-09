@@ -163,3 +163,7 @@ export const customEvent = (type, detail) => new CustomEvent(type, {
 /** Point-free DOM append. */
 // append :: DOM -> DOM -> ()
 export const append = parent => child => parent.append(child);
+
+/** Point-free DOM remove. */
+// remove :: DOM -> DOM -> ()
+export const remove = element => element.remove();

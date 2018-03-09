@@ -32,6 +32,13 @@
   /* width: 50%; */
 }
 
+#form-fab {
+  position: fixed;
+  bottom: 1em;
+  right: 1em;
+  z-index: 2000;
+}
+
 #breadcrumb {
   padding: 10px 40px 16px;
   list-style: none;

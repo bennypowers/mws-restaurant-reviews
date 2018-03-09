@@ -47,7 +47,7 @@ module.exports = MockBase => class RestaurantMocks extends MockBase {
             },
           }, {
             request: { method: 'POST' },
-            response(ctx) {
+            async response(ctx) {
               // timestamp the review
               const createdAt = Date.now();
               const updatedAt = createdAt;
@@ -55,11 +55,20 @@ module.exports = MockBase => class RestaurantMocks extends MockBase {
               // create a new ID
               const id = Math.max(...reviews.map(r => r.id)) + 1;
 
+              const parseReview = ({comments, name, rating, restaurant_id}) => ({
+                comments,
+                name,
+                rating: Number(rating),
+                restaurant_id: Number(restaurant_id)
+              });
+
               // create a review entry
-              const review = { ...ctx.request.body, id, createdAt, updatedAt };
+              const review = { ...parseReview(ctx.request.body), id, createdAt, updatedAt };
 
               // 'write' the review to the 'database'
               reviews.push(review);
+
+              await new Promise((res) => setTimeout(res, Math.random() * 800))
 
               // respond with the new review obj
               ctx.body = review;

@@ -5,6 +5,13 @@
   <!-- Normalize.css for better cross-browser consistency -->
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
   <!-- Main CSS file -->
+  <link rel="import" href="/bower_components/polymer/elements/dom-bind.html">
+  <link rel="import" href="/bower_components/paper-input/paper-input.html">
+  <link rel="import" href="/bower_components/paper-input/paper-textarea.html">
+  <link rel="import" href="/bower_components/paper-slider/paper-slider.html">
+  <link rel="import" href="/bower_components/paper-fab/paper-fab.html">
+  <link rel="import" href="/bower_components/paper-spinner/paper-spinner.html">
+  <link rel="import" href="/bower_components/paper-button/paper-button.html">
   <link rel="stylesheet" media="(min-width: 500px)" href="/css/width-500.css"/>
   <link rel="stylesheet" media="(min-width: 630px)" href="/css/width-630.css"/>
   <link rel="stylesheet" media="(min-width: 960px)" href="/css/width-960.css"/>
@@ -118,6 +125,26 @@
     <!-- end restaurant -->
     <!-- Beginning reviews -->
     <section id="reviews-container" tabindex="0" aria-label="Reviews">
+      <h2>Reviews</h2>
+      <!-- Beginning form -->
+      <paper-fab id="form-fab" label="+" title="Add Review"></paper-fab>
+      <dialog id="form-dialog">
+        <paper-spinner id="spinner"></paper-spinner>
+        <form id="form" method="dialog">
+          <h3>Add Your Review</h3>
+          <div class="flex center">
+            <label for="rating-input">Rating</label>
+            <paper-slider id="rating-input" name="rating" min="1" max="5" pin required></paper-slider>
+          </div>
+          <paper-textarea id="comments-input" name="comments" label="Comments" required></paper-textarea>
+          <paper-input id="name-input" name="name" label="Your Name" required></paper-input>
+          <div class="flex">
+            <paper-button id="submit-button" type="submit">Submit</paper-button>
+            <paper-button id="cancel-button">Cancel</paper-button>
+          </div>
+        </form>
+      </dialog>
+      <!-- end form -->
       <div id="reviews-list"></div>
     </section>
     <!-- End reviews -->
@@ -131,17 +158,9 @@
   <!-- End footer -->
 
   <!-- Beginning scripts -->
-  <!-- Main javascript file -->
-  <script type="module" charset="utf-8" src="js/restaurant_info.js"></script>
+  <script src="/js/restaurant.js"></script>
   <!-- Google Maps -->
-  <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_tKbW6A5pQ-eupxI56myUnHLqYCzOjKo&libraries=places&callback=initMap"></script>
-  <script> {
-    const link = document.createElement('link')
-          link.rel = 'stylesheet';
-          link.href = 'css/styles.css';
-    document.head.appendChild(link);
-  }
-  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_tKbW6A5pQ-eupxI56myUnHLqYCzOjKo&libraries=places&callback=initMap"></script>
   <!-- End scripts -->
 
 </body>

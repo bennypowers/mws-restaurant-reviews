@@ -1,5 +1,6 @@
-import { nameToId, traceError, trim } from './lib.js';
+import { nameToId, remove, traceError, trim } from './lib.js';
 import { fetchRestaurantById } from './dbhelper.js';
+import formatDistance from '/node_modules/date-fns/esm/formatDistance/index.js'
 import {
   imageUrlForRestaurant,
   mapMarkerForRestaurant,
@@ -43,19 +44,6 @@ const fillMapForRestaurant = restaurant => {
 };
 
 /**
- * Initialize Google map, called from HTML.
- */
-window.initMap = () => {
-  const id = getParameterByName('id');
-  fetchRestaurantFromURL(id)
-    .then(setRestaurantReference)
-    .then(fillRestaurantHTML)
-    .then(fillMapForRestaurant)
-    .then(fillBreadcrumb)
-    .catch(traceError('fetchRestaurantFromURL'));
-};
-
-/**
  * Get current restaurant from page URL.
  */
 export const fetchRestaurantFromURL = id => {
@@ -67,10 +55,17 @@ export const fetchRestaurantFromURL = id => {
   );
 };
 
+export const resetReviewsHTML = () => {
+  const container = document.getElementById('reviews-list');
+  Array.from(container.children)
+    .forEach(remove);
+  return Promise.resolve();
+}
+
 /**
  * Create restaurant HTML and add it to the webpage
  */
-export const fillRestaurantHTML = (restaurant = self.restaurant) => {
+export const fillRestaurantHTML = restaurant => {
   const name = document.getElementById('restaurant-name');
         name.innerHTML = restaurant.name;
 
@@ -83,12 +78,6 @@ export const fillRestaurantHTML = (restaurant = self.restaurant) => {
 
   const cuisine = document.getElementById('restaurant-cuisine');
         cuisine.innerHTML = restaurant.cuisine_type;
-
-  // fill operating hours
-  if (restaurant.operating_hours) fillRestaurantHoursHTML();
-
-  // fill reviews
-  fillReviewsHTML();
 
   return restaurant;
 };
@@ -117,38 +106,36 @@ const impureOutputHoursHTML = table =>
 /**
  * Create restaurant operating hours HTML table and add it to the webpage.
  */
-export const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => {
+export const fillRestaurantHoursHTML = restaurant => {
   const hoursTable = document.getElementById('restaurant-hours');
-  Object.entries(operatingHours)
+  Object.entries(restaurant.operating_hours)
     .forEach(impureOutputHoursHTML(hoursTable));
+  return restaurant
 };
 
 /**
  * Create all reviews HTML and add them to the webpage.
  */
-export const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+export const fillReviewsHTML = reviews => {
   const container = document.getElementById('reviews-container');
-  const title = document.createElement('h2');
-        title.innerHTML = 'Reviews';
-        title.tabIndex = 0;
-  container.appendChild(title);
 
-  if (!reviews) {
+  if (!reviews || !reviews.length) {
     const noReviews = document.createElement('p');
           noReviews.innerHTML = 'No reviews yet!';
     container.appendChild(noReviews);
-    return;
+    return reviews;
   }
 
   const div = document.getElementById('reviews-list');
   reviews.forEach(review => div.appendChild(createReviewHTML(review)));
   container.appendChild(div);
+  return reviews;
 };
 
 /**
  * Create review HTML and add it to the webpage.
  */
-export const createReviewHTML = ({comments, date, name, rating}) => {
+export const createReviewHTML = ({comments, createdAt, updatedAt, name, rating}) => {
   const article = document.createElement('article');
   const header = document.createElement('header');
   const id = nameToId(name);
@@ -162,6 +149,8 @@ export const createReviewHTML = ({comments, date, name, rating}) => {
         //       aria-labelledby attribute to explicitly link h1s to their sections.
         h1.id = id;
   header.appendChild(h1);
+
+  const date = formatDistance(updatedAt || createdAt, Date.now(), {addSuffix: true});
 
   const time = document.createElement('time');
         time.innerHTML = date;
