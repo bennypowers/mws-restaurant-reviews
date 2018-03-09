@@ -62,12 +62,6 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  // here we make use of idb in order to satisfy the rubric. In production code,
-  // we would not use idb for this use case, as cache is simpler, more readable,
-  // more maintainable, and more aligned with the use case
-  // (the database is URL-addressable, and will update on the next load).
-  if (new URL(event.request.url).pathname.startsWith('/api')) return;
-
   event.respondWith(fromCacheOrFetch(event.request));
   event.waitUntil(updateCache(event.request));
 });
