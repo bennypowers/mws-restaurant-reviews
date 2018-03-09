@@ -76,7 +76,7 @@ export const renderMap = () => {
 
   self.map = map;
 
-  return fetchRestaurants(self.restaurants)
+  return fetchRestaurants(restaurants)
     .then(dispatchRestaurants)
     .then(setRestaurantsReference)
     .then(updateRestaurants)
