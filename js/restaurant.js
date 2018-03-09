@@ -1,46 +1,10 @@
-{
+(function() {
+  'use strict';
+
 const link = document.createElement('link')
       link.rel = 'stylesheet';
       link.href = 'css/styles.css';
 document.head.appendChild(link);
-
-const fab = document.getElementById('form-fab');
-const dialog = document.getElementById('form-dialog');
-const submit = document.getElementById('submit-button');
-const form = document.getElementById('form');
-
-fab.addEventListener('click', () => {
-  dialog.showModal();
-})
-
-submit.addEventListener('click', async function submitReview() {
-  const form = document.getElementById('form');
-  const spinner = document.getElementById('spinner');
-  const nameEl = document.getElementById('name-input');
-  const ratingEl = document.getElementById('rating-input');
-  const commentsEl = document.getElementById('comments-input');
-
-  const name = nameEl.value;
-  const rating = ratingEl.value;
-  const comments = commentsEl.value;
-
-  const { getParameterByName } = await import('/js/restaurant_info.js');
-  const { postReview } = await import('/js/dbhelper.js');
-
-  const restaurant_id = getParameterByName('id');
-
-  form.style.opacity = 0;
-  spinner.active = true;
-
-  const review = await postReview({comments, name, rating, restaurant_id});
-
-  form.style.opacity = 1;
-
-  dialog.close();
-
-  loadReviews(restaurant_id);
-})
-}
 
 async function loadReviews(id) {
   const { fetchReviews } = await import('/js/dbhelper.js');
@@ -50,9 +14,7 @@ async function loadReviews(id) {
   resetReviewsHTML();
 
   return fetchReviews(id)
-    .then(trace('fetchReviews'))
     .then(fillReviewsHTML)
-    .then(trace('fillReviewsHTML'))
     .catch(traceError('fetchRestaurantFromURL'));
 }
 
@@ -78,3 +40,62 @@ async function initMap() {
 
   loadReviews(id)
 };
+
+async function submitReview() {
+  const ironForm = document.getElementById('iron-form');
+  const nameEl = document.getElementById('name-input');
+  const ratingEl = document.getElementById('rating-input');
+  const commentsEl = document.getElementById('comments-input');
+
+  const name = nameEl.value;
+  const rating = ratingEl.value;
+  const comments = commentsEl.value;
+
+  const resetForm = () => {
+    [nameEl, commentsEl].forEach(l => l.value = null);
+    ratingEl.value = 0;
+    spinner.active = false;
+    form.style.opacity = 1;
+  };
+
+  if (ironForm.validate()) {
+    const { getParameterByName } = await import('/js/restaurant_info.js');
+    const { postReview } = await import('/js/dbhelper.js');
+
+    const restaurant_id = getParameterByName('id');
+
+    form.style.opacity = 0;
+    spinner.active = true;
+
+    const review = await postReview({comments, name, rating, restaurant_id});
+
+    resetForm();
+
+    dialog.close(review);
+
+    loadReviews(restaurant_id);
+  }
+}
+
+function openModal() {
+  return dialog.showModal();
+}
+
+function closeModal() {
+  return dialog.close();
+}
+
+document
+  .getElementById('form-fab')
+  .addEventListener('click', openModal)
+
+document
+  .getElementById('cancel-button')
+  .addEventListener('click', closeModal);
+
+document
+  .getElementById('submit-button')
+  .addEventListener('click', submitReview);
+
+window.initMap = initMap;
+}());

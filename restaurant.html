@@ -5,12 +5,9 @@
   <!-- Normalize.css for better cross-browser consistency -->
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
   <!-- Main CSS file -->
-  <link rel="import" href="/bower_components/paper-input/paper-input.html">
-  <link rel="import" href="/bower_components/paper-input/paper-textarea.html">
-  <link rel="import" href="/bower_components/paper-slider/paper-slider.html">
-  <link rel="import" href="/bower_components/paper-fab/paper-fab.html">
-  <link rel="import" href="/bower_components/paper-spinner/paper-spinner.html">
-  <link rel="import" href="/bower_components/paper-button/paper-button.html">
+  <link rel="manifest" href="manifest.json"/>
+  <meta name="theme-color" content="crimson"/>
+  <link async rel="import" href="/review-fab.html">
   <link rel="stylesheet" media="(min-width: 500px)" href="/css/width-500.css"/>
   <link rel="stylesheet" media="(min-width: 630px)" href="/css/width-630.css"/>
   <link rel="stylesheet" media="(min-width: 960px)" href="/css/width-960.css"/>
@@ -105,7 +102,7 @@
   <!-- Beginning main -->
   <main id="maincontent">
     <!-- Beginning map -->
-    <section id="map-container" aria-role="widget">
+    <section id="map-container" role="application">
       <div id="map"></div>
     </section>
     <!-- End map -->
@@ -127,21 +124,23 @@
       <h2>Reviews</h2>
       <!-- Beginning form -->
       <paper-fab id="form-fab" label="+" title="Add Review"></paper-fab>
-      <dialog id="form-dialog">
+      <dialog id="dialog">
         <paper-spinner id="spinner"></paper-spinner>
-        <form id="form" method="dialog">
-          <h3>Add Your Review</h3>
-          <div class="flex center">
-            <label for="rating-input">Rating</label>
-            <paper-slider id="rating-input" name="rating" min="1" max="5" pin required></paper-slider>
-          </div>
-          <paper-textarea id="comments-input" name="comments" label="Comments" required></paper-textarea>
-          <paper-input id="name-input" name="name" label="Your Name" required></paper-input>
-          <div class="flex">
-            <paper-button id="submit-button" type="submit">Submit</paper-button>
-            <paper-button id="cancel-button">Cancel</paper-button>
-          </div>
-        </form>
+        <iron-form id="iron-form">
+          <form id="form" method="dialog">
+            <h3>Add Your Review</h3>
+            <div class="flex center">
+              <label for="rating-input">Rating</label>
+              <paper-slider id="rating-input" name="rating" value="0" min="1" max="5" pin required></paper-slider>
+            </div>
+            <paper-textarea id="comments-input" name="comments" label="Comments" error-message="Please enter your comments" required></paper-textarea>
+            <paper-input id="name-input" name="name" label="Your Name" error-message="Please enter your name" required></paper-input>
+            <footer class="flex">
+              <paper-button id="submit-button">Submit</paper-button>
+              <paper-button id="cancel-button">Cancel</paper-button>
+            </footer>
+          </form>
+        </iron-form>
       </dialog>
       <!-- end form -->
       <div id="reviews-list"></div>
@@ -162,6 +161,7 @@
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_tKbW6A5pQ-eupxI56myUnHLqYCzOjKo&libraries=places&callback=initMap"></script>
   <!-- End scripts -->
 
+  <service-worker id="service-worker"></service-worker>
 </body>
 
 </html>
