@@ -4,6 +4,7 @@
   "description": "Project files for MWS Nanodegree",
   "main": "index.html",
   "dependencies": {
+    "date-fns": "^2.0.0-alpha.7",
     "express": "^4.16.2",
     "local-web-server": "^2.5.0",
     "lws-compress": "^0.2.1",
