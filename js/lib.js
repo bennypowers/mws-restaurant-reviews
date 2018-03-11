@@ -38,15 +38,15 @@ export const and = (f, g) => function _and() {
 
 /** Point-free array map. Naive implementation. */
 // map :: f -> as -> bs
-export const map = f => arr => (arr || []).map(f);
+export const map = f => m => (m.map ? m : []).map(f);
 
 /** Point-free array filter. Naive implementation. */
 // find :: f -> as -> as
-export const filter = f => arr => arr.filter(f);
+export const filter = f => m => (m.filter ? m : []).filter(f);
 
 /** Point-free array find. Naive implementation. */
 // find :: f -> as -> a
-export const find = f => arr => arr.find(f);
+export const find = f => m => (m.find ? m : []).find(f);
 
 /** Removes duplicates from an array. Naive implementation. */
 // uniq :: as -> as
@@ -57,9 +57,9 @@ export const uniq = compose(Array.from, x => new Set(x));
  * Functions for dealing with Plain Old JavaScript Objects
  */
 
-/** Returns a property by key */
-// prop :: str -> obj -> a
-export const prop = name => o => o[name];
+/** Returns a property by key, or by array of deep keys. */
+// prop :: (str|arr) -> obj -> a
+export const prop = p => o => Array.isArray(p) ? p.reduce((a, b) => a[b], o) : o[p];
 
 /*
  * STRING FUNCTIONS
@@ -67,7 +67,7 @@ export const prop = name => o => o[name];
 
 /** Point-free string trim. Naive implementation. */
 // trim :: s -> s
-export const trim = str => str.trim();
+export const trim = trimmable => (trimmable.trim ? trimmable : '').trim();
 
 /**
  * Returns part of a GUID-like pseudo-random string.

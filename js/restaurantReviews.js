@@ -8,6 +8,8 @@ import { render } from '/node_modules/lit-html/lit-html.js';
 
 import { until } from '/node_modules/lit-html/lib/until.js';
 
+import { filter, map, trace } from './lib.js';
+
 import formatDistance from '/node_modules/date-fns/esm/formatDistance/index.js';
 
 import {
@@ -55,17 +57,6 @@ const formatOpeningToClosing = string =>
   string.split(' - ')
     .map(trim)
     .join(' - ');
-
-const loadingTemplate = html`
-${styles}
-<main id="maincontent">
-  <section name="restaurants">
-    <section id="map-container" role="application">
-      <div id="map"></div>
-    </section>
-  </section>
-</main>
-`;
 
 const mapMarker = restaurant =>  html`
   <google-map-marker
@@ -117,9 +108,6 @@ const restaurantCardsTemplate = restaurants =>
   : restaurants.map(restaurantCardTemplate);
 
 const restaurantsTemplate = (component, restaurants, cuisine, neighbourhood) => {
-  const filteredRestaurants = restaurants
-    .filter(byCuisineAndNeighbourhood(cuisine, neighbourhood));
-
   return html`
   ${styles}
   <main id="maincontent">
@@ -131,8 +119,10 @@ const restaurantsTemplate = (component, restaurants, cuisine, neighbourhood) => 
             latitude="40.722216"
             longitude="-73.987501"
             zoom="12"
-            additionalMapOptions='{"scrollwheel": false}'>
-          ${filteredRestaurants.map(mapMarker)}
+            additional-map-options="${({scrollwheel: false})}">
+          ${restaurants
+              .then(filter(byCuisineAndNeighbourhood(cuisine, neighbourhood)))
+              .then(map(mapMarker))}
         </google-map>
       </div>
       <section>
@@ -144,7 +134,9 @@ const restaurantsTemplate = (component, restaurants, cuisine, neighbourhood) => 
               aria-label="Neighbourhoods"
               on-change="${event => component.neighbourhood = event.target.value}">
             <option value="all">All Neighbourhoods</option>
-            ${uniqueNeighbourhoods(restaurants).map(optionTemplate(neighbourhood))}
+            ${restaurants.then(rs =>
+                uniqueNeighbourhoods(rs)
+                  .map(optionTemplate(neighbourhood)))}
           </select>
 
           <select id="cuisines-select"
@@ -152,12 +144,18 @@ const restaurantsTemplate = (component, restaurants, cuisine, neighbourhood) => 
               aria-label="Cuisines"
               on-change="${event => component.cuisine = event.target.value}">
             <option value="all">All Cuisines</option>
-            ${uniqueCuisines(restaurants).map(optionTemplate(cuisine))}
+            ${restaurants.then(rs =>
+                uniqueCuisines(rs)
+                  .map(optionTemplate(cuisine)))}
           </select>
 
         </div>
 
-        <ul id="restaurants-list">${restaurantCardsTemplate(filteredRestaurants)}</ul>
+        <ul id="restaurants-list">${
+          restaurants
+            .then(filter(byCuisineAndNeighbourhood(cuisine, neighbourhood)))
+            .then(restaurantCardsTemplate)
+          }</ul>
 
       </section>
     </section>
@@ -197,7 +195,7 @@ const reviewsTemplate = reviews =>
   : !reviews.length ? html`<p>No Reviews Yet!</p>`
   : reviews.map(reviewTemplate);
 
-const restaurantTemplate = (component, restaurant, reviews) => {
+const restaurantTemplate = (component, restaurant) => {
   import('/js/submitReview.js');
   return html`
   ${styles}
@@ -206,33 +204,33 @@ const restaurantTemplate = (component, restaurant, reviews) => {
     <section id="map-container">
       <google-map id="map"
           fit-to-markers
+          latitude="${restaurant.then(prop(['latlng', 'lat']))}"
+          longitude="${restaurant.then(prop(['latlng', 'lng']))}"
           api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc"
-          latitude="40.722216"
-          longitude="-73.987501"
           zoom="12"
-          additional-map-options='{"scrollwheel": false}'>
-        ${mapMarker(restaurant)}
+          additional-map-options='${{scrollwheel: false}}'>
+        ${restaurant.then(mapMarker)}
       </google-map>
     </section>
     <section id="restaurant-container">
-      <h1 id="restaurant-name" tabindex="0">${restaurant.name}</h1>
+      <h1 id="restaurant-name" tabindex="0">${restaurant.then(prop('name'))}</h1>
       <figure id="restaurant-image-container">
-        <img id="restaurant-image" src="${imageUrlForRestaurant(restaurant)}" alt="Iterior or Exterior of ${restaurant.name}">
-        <figcaption id="restaurant-cuisine">${restaurant.cuisine_type}</figcaption>
+        <img id="restaurant-image" src="${restaurant.then(imageUrlForRestaurant)}" alt="Iterior or Exterior of ${restaurant.then(prop('id'))}">
+        <figcaption id="restaurant-cuisine">${restaurant.then(prop('cuisine_type'))}</figcaption>
       </figure>
       <div id="restaurant-details-container">
-        <address id="restaurant-address" tabindex="0" aria-label="Address">${restaurant.address}</address>
-        <table id="restaurant-hours" tabindex="0" aria-label="Hours">${hoursTemplate(restaurant.operating_hours)}</table>
+        <address id="restaurant-address" tabindex="0" aria-label="Address">${restaurant.then(prop('address'))}</address>
+        <table id="restaurant-hours" tabindex="0" aria-label="Hours">${restaurant.then(prop('operating_hours')).then(hoursTemplate)}</table>
       </div>
     </section>
 
     <section id="reviews-container" tabindex="0" aria-label="Reviews">
       <h2>Reviews</h2>
       <div id="reviews-list">
-        ${fetchReviews(restaurant.id).then(reviewsTemplate)}
+        ${restaurant.then(prop('id')).then(fetchReviews).then(reviewsTemplate)}
       </div>
     </section>
-    <submit-review id="review-fab" restaurantId="${restaurant.id}" on-review-submitted="${event => reviews = fetchReviews(restaurant.id)}"></submit-review>
+    <submit-review id="review-fab" restaurantId="${restaurant.then(prop('id'))}" on-review-submitted="${() => component.reviews = restaurant.then(prop('id')).then(fetchReviews)}"></submit-review>
   </main>`;
 };
 
@@ -282,12 +280,8 @@ export default class RestaurantReviews extends LitElement {
   }
 
   render({cuisine, neighbourhood, restaurantId}) {
-    return html`${until(
-        restaurantId ? fetchRestaurantById(restaurantId)
-          .then(restaurant => restaurantTemplate(this, restaurant))
-      : fetchRestaurants().then(restaurants => restaurantsTemplate(this, restaurants, cuisine, neighbourhood)),
-      loadingTemplate
-    )}`;
+    return restaurantId ? restaurantTemplate(this, fetchRestaurantById(restaurantId))
+      : restaurantsTemplate(this, fetchRestaurants(), cuisine, neighbourhood);
   }
 }
 
