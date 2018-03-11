@@ -8,6 +8,9 @@ import { render } from '/node_modules/lit-html/lit-html.js';
 
 import { until } from '/node_modules/lit-html/lib/until.js';
 
+import './lazyImage.js';
+import '/js/submitReview.js';
+
 import { filter, map, trace } from './lib.js';
 
 import formatDistance from '/node_modules/date-fns/esm/formatDistance/index.js';
@@ -26,6 +29,8 @@ import {
 import styles from './styles.js';
 
 import restaurantStyles from './restaurantStyles.js';
+
+const placeholderImage = 'data:image/svg;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%0D%0A%20%20%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%0D%0A%20%20%20%20%3Cpath%20fill%3D%22%23000%22%20fill-rule%3D%22nonzero%22%20d%3D%22M11%2C9%20L9%2C9%20L9%2C2%20L7%2C2%20L7%2C9%20L5%2C9%20L5%2C2%20L3%2C2%20L3%2C9%20C3%2C11.12%204.66%2C12.84%206.75%2C12.97%20L6.75%2C22%20L9.25%2C22%20L9.25%2C12.97%20C11.34%2C12.84%2013%2C11.12%2013%2C9%20L13%2C2%20L11%2C2%20L11%2C9%20Z%20M16%2C6%20L16%2C14%20L18.5%2C14%20L18.5%2C22%20L21%2C22%20L21%2C2%20C18.24%2C2%2016%2C4.24%2016%2C6%20Z%22%2F%3E%0D%0A%20%20%20%20%3Cpolygon%20points%3D%220%200%2024%200%2024%2024%200%2024%22%2F%3E%0D%0A%20%20%3C%2Fg%3E%0D%0A%3C%2Fsvg%3E';
 
 // uniqueNeighbourhoods :: o -> ks
 export const uniqueNeighbourhoods = uniqueByKey('neighbourhood');
@@ -91,7 +96,10 @@ export const imageUrlForRestaurant = ({photograph}) =>
  */
 const restaurantCardTemplate = restaurant => html`
   <li id="${restaurant.name}" aria-labelledby="${restaurant.name}">
-    <img src="${imageUrlForRestaurant(restaurant)}" alt="Interior or exterior of ${restaurant.name}" class="restaurant-image"/>
+    <lazy-image class="restaurant-image" fade
+        placeholder="${placeholderImage}"
+        src="${imageUrlForRestaurant(restaurant)}"
+        alt="Interior or exterior of ${restaurant.name}"></lazy-image>
     <h1 id="${restaurant.name}">${restaurant.name}</h1>
     <p>${restaurant.neighbourhood}</p>
     <address>${restaurant.address}</address>
@@ -119,7 +127,7 @@ const restaurantsTemplate = (component, restaurants, cuisine, neighbourhood) => 
             latitude="40.722216"
             longitude="-73.987501"
             zoom="12"
-            additional-map-options="${({scrollwheel: false})}">
+            additional-map-options='{"scrollwheel": false}'>
           ${restaurants
               .then(filter(byCuisineAndNeighbourhood(cuisine, neighbourhood)))
               .then(map(mapMarker))}
@@ -134,9 +142,7 @@ const restaurantsTemplate = (component, restaurants, cuisine, neighbourhood) => 
               aria-label="Neighbourhoods"
               on-change="${event => component.neighbourhood = event.target.value}">
             <option value="all">All Neighbourhoods</option>
-            ${restaurants.then(rs =>
-                uniqueNeighbourhoods(rs)
-                  .map(optionTemplate(neighbourhood)))}
+            ${restaurants.then(compose(map(optionTemplate(neighbourhood)), uniqueNeighbourhoods))}
           </select>
 
           <select id="cuisines-select"
@@ -144,9 +150,7 @@ const restaurantsTemplate = (component, restaurants, cuisine, neighbourhood) => 
               aria-label="Cuisines"
               on-change="${event => component.cuisine = event.target.value}">
             <option value="all">All Cuisines</option>
-            ${restaurants.then(rs =>
-                uniqueCuisines(rs)
-                  .map(optionTemplate(cuisine)))}
+            ${restaurants.then(compose(map(optionTemplate(cuisine)), uniqueCuisines))}
           </select>
 
         </div>
@@ -196,31 +200,40 @@ const reviewsTemplate = reviews =>
   : reviews.map(reviewTemplate);
 
 const restaurantTemplate = (component, restaurant) => {
-  import('/js/submitReview.js');
   return html`
   ${styles}
   ${restaurantStyles}
   <main id="maincontent">
     <section id="map-container">
-      <google-map id="map"
-          fit-to-markers
-          latitude="${restaurant.then(prop(['latlng', 'lat']))}"
-          longitude="${restaurant.then(prop(['latlng', 'lng']))}"
-          api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc"
-          zoom="12"
-          additional-map-options='${{scrollwheel: false}}'>
-        ${restaurant.then(mapMarker)}
-      </google-map>
+      ${html`${until(restaurant.then(
+        restaurant => html`
+        <google-map id="map"
+            fit-to-markers
+            latitude="${restaurant.latlng.lat}"
+            longitude="${restaurant.latlng.lng}"
+            api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc"
+            zoom="12"
+            additional-map-options='{"scrollwheel": false}'>
+          ${mapMarker(restaurant)}
+        </google-map>`
+      ), '')}`}
     </section>
     <section id="restaurant-container">
       <h1 id="restaurant-name" tabindex="0">${restaurant.then(prop('name'))}</h1>
       <figure id="restaurant-image-container">
-        <img id="restaurant-image" src="${restaurant.then(imageUrlForRestaurant)}" alt="Iterior or Exterior of ${restaurant.then(prop('id'))}">
+        <lazy-image id="restaurant-image" fade
+            placeholder="${placeholderImage}"
+            src="${restaurant.then(imageUrlForRestaurant)}"
+            alt="${html`Interior or exterior of ${restaurant.then(prop('name'))}`}"></lazy-image>
         <figcaption id="restaurant-cuisine">${restaurant.then(prop('cuisine_type'))}</figcaption>
       </figure>
       <div id="restaurant-details-container">
-        <address id="restaurant-address" tabindex="0" aria-label="Address">${restaurant.then(prop('address'))}</address>
-        <table id="restaurant-hours" tabindex="0" aria-label="Hours">${restaurant.then(prop('operating_hours')).then(hoursTemplate)}</table>
+        <address id="restaurant-address"
+            tabindex="0"
+            aria-label="Address">${restaurant.then(prop('address'))}</address>
+        <table id="restaurant-hours"
+            tabindex="0"
+            aria-label="Hours">${restaurant.then(compose(hoursTemplate, prop('operating_hours')))}</table>
       </div>
     </section>
 

@@ -161,7 +161,7 @@ google-map {
   left: -30px;
   margin: 0;
   max-width: calc(100% + 60px);
-  min-width: 100%;
+  min-width: calc(100% + 60px);
   position: relative;
 }
 
@@ -203,6 +203,7 @@ google-map {
 
 #restaurant-image {
   width: 100%;
+  max-width: 100%;
 }
 
 #restaurant-address {
