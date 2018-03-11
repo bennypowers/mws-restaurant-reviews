@@ -1,7 +1,6 @@
 import { LitElement, html } from '/node_modules/@polymer/lit-element/lit-element.js';
-import { getParameterByName } from '/js/restaurant_info.js';
-import { postReview } from '/js/dbhelper.js';
-
+import { postReview } from './dbhelper.js';
+import { customEvent } from './lib.js';
 
 class SubmitReview extends LitElement {
   static get properties() {
@@ -13,11 +12,12 @@ class SubmitReview extends LitElement {
   }
 
   toggleOpened() {
-    this.opened = !!this.opened;
+    this.opened = !this.opened;
   }
 
   async submitReview() {
     const form = this.shadowRoot.querySelector('#form');
+    const dialog = this.shadowRoot.querySelector('#dialog');
     const ironForm = this.shadowRoot.querySelector('#iron-form');
     const nameEl = this.shadowRoot.querySelector('#name-input');
     const ratingEl = this.shadowRoot.querySelector('#rating-input');
@@ -42,17 +42,31 @@ class SubmitReview extends LitElement {
 
       const review = await postReview({comments, name, rating, restaurant_id});
 
+      this.dispatchEvent(customEvent('review-submitted', review));
+
       resetForm();
 
       this.opened = false;
     }
   }
 
-  render({opened, restaurantId}) {
+  render({opened, restaurantId, spinning}) {
     return html`
-    <paper-fab id="form-fab" label="+" title="Add Review" on-click="${this.toggleOpened}"></paper-fab>
-    <dialog id="dialog" opened="${opened}">
-      <paper-spinner id="spinner" active="${this.spinning}"></paper-spinner>
+    <style>
+    :host {
+      display: block;
+      position: fixed;
+      bottom: 1em;
+      right: 1em;
+    }
+    dialog {
+      position: fixed;
+      top: calc(50% - 150px);
+    }
+    </style>
+    <paper-fab id="form-fab" label="+" title="Add Review" on-click="${() => this.toggleOpened()}"></paper-fab>
+    <dialog id="dialog" open="${opened}">
+      <paper-spinner id="spinner" active="${spinning}"></paper-spinner>
       <iron-form id="iron-form">
         <form id="form" method="dialog">
           <input id="restaurant-id" hidden type="text" name="restaurant_id" value="${restaurantId}" />
@@ -64,8 +78,8 @@ class SubmitReview extends LitElement {
           <paper-textarea id="comments-input" name="comments" label="Comments" error-message="Please enter your comments" required></paper-textarea>
           <paper-input id="name-input" name="name" label="Your Name" error-message="Please enter your name" required></paper-input>
           <footer class="flex">
-            <paper-button id="submit-button" on-click="${this.submitReview}">Submit</paper-button>
-            <paper-button id="cancel-button" on-click="${this.toggleOpened}">Cancel</paper-button>
+            <paper-button id="submit-button" on-click="${() => this.submitReview()}">Submit</paper-button>
+            <paper-button id="cancel-button" on-click="${() => this.toggleOpened()}">Cancel</paper-button>
           </footer>
         </form>
       </iron-form>
@@ -74,24 +88,3 @@ class SubmitReview extends LitElement {
 }
 
 customElements.define('submit-review', SubmitReview);
-
-
-function openModal() {
-  return dialog.showModal();
-}
-
-function closeModal() {
-  return dialog.close();
-}
-
-document
-  .getElementById('form-fab')
-  .addEventListener('click', openModal);
-
-document
-  .getElementById('cancel-button')
-  .addEventListener('click', closeModal);
-
-document
-  .getElementById('submit-button')
-  .addEventListener('click', submitReview);

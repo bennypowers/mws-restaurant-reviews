@@ -197,42 +197,44 @@ const reviewsTemplate = reviews =>
   : !reviews.length ? html`<p>No Reviews Yet!</p>`
   : reviews.map(reviewTemplate);
 
-const restaurantTemplate = (component, restaurant) => html`
+const restaurantTemplate = (component, restaurant, reviews) => {
+  import('/js/submitReview.js');
+  return html`
   ${styles}
   ${restaurantStyles}
   <main id="maincontent">
+    <section id="map-container">
+      <google-map id="map"
+          fit-to-markers
+          api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc"
+          latitude="40.722216"
+          longitude="-73.987501"
+          zoom="12"
+          additional-map-options='{"scrollwheel": false}'>
+        ${mapMarker(restaurant)}
+      </google-map>
+    </section>
+    <section id="restaurant-container">
+      <h1 id="restaurant-name" tabindex="0">${restaurant.name}</h1>
+      <figure id="restaurant-image-container">
+        <img id="restaurant-image" src="${imageUrlForRestaurant(restaurant)}" alt="Iterior or Exterior of ${restaurant.name}">
+        <figcaption id="restaurant-cuisine">${restaurant.cuisine_type}</figcaption>
+      </figure>
+      <div id="restaurant-details-container">
+        <address id="restaurant-address" tabindex="0" aria-label="Address">${restaurant.address}</address>
+        <table id="restaurant-hours" tabindex="0" aria-label="Hours">${hoursTemplate(restaurant.operating_hours)}</table>
+      </div>
+    </section>
 
-      <section id="map-container">
-        <google-map id="map"
-            fit-to-markers
-            api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc"
-            latitude="40.722216"
-            longitude="-73.987501"
-            zoom="12"
-            additional-map-options='{"scrollwheel": false}'>
-          ${mapMarker(restaurant)}
-        </google-map>
-      </section>
-      <section id="restaurant-container">
-        <h1 id="restaurant-name" tabindex="0">${restaurant.name}</h1>
-        <figure id="restaurant-image-container">
-          <img id="restaurant-image" src="${imageUrlForRestaurant(restaurant)}" alt="Iterior or Exterior of ${restaurant.name}">
-          <figcaption id="restaurant-cuisine">${restaurant.cuisine_type}</figcaption>
-        </figure>
-        <div id="restaurant-details-container">
-          <address id="restaurant-address" tabindex="0" aria-label="Address">${restaurant.address}</address>
-          <table id="restaurant-hours" tabindex="0" aria-label="Hours">${hoursTemplate(restaurant.operating_hours)}</table>
-        </div>
-      </section>
-
-      <section id="reviews-container" tabindex="0" aria-label="Reviews">
-        <h2>Reviews</h2>
-        <div id="reviews-list">
-          ${fetchReviews(restaurant.id).then(reviewsTemplate)}
-        </div>
-      </section>
-  </main>
-`;
+    <section id="reviews-container" tabindex="0" aria-label="Reviews">
+      <h2>Reviews</h2>
+      <div id="reviews-list">
+        ${fetchReviews(restaurant.id).then(reviewsTemplate)}
+      </div>
+    </section>
+    <submit-review id="review-fab" restaurantId="${restaurant.id}" on-review-submitted="${event => reviews = fetchReviews(restaurant.id)}"></submit-review>
+  </main>`;
+};
 
 const breadcrumbTemplate = ({name}) => html`
   <ul id="breadcrumb" aria-label="Breadcrumb">
@@ -258,6 +260,7 @@ export default class RestaurantReviews extends LitElement {
     return {
       restaurantId: String,
       restaurant: Object,
+      reviews: Array,
       neighbourhood: String,
       cuisine: String,
     };
@@ -280,7 +283,8 @@ export default class RestaurantReviews extends LitElement {
 
   render({cuisine, neighbourhood, restaurantId}) {
     return html`${until(
-        restaurantId ? fetchRestaurantById(restaurantId).then(restaurant => restaurantTemplate(this, restaurant))
+        restaurantId ? fetchRestaurantById(restaurantId)
+          .then(restaurant => restaurantTemplate(this, restaurant))
       : fetchRestaurants().then(restaurants => restaurantsTemplate(this, restaurants, cuisine, neighbourhood)),
       loadingTemplate
     )}`;
