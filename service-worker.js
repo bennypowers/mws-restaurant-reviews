@@ -11,12 +11,12 @@ const trace = tag => x => (console.log(tag, x), x);
 
 // promise([bool])
 const clearOldCaches = () => {
-  caches.keys().then(cacheNames => {
+  return caches.keys().then(cacheNames => {
     return Promise.all(cacheNames
       .filter(not(STATIC_ASSETS))
       .map(trace('caches to delete'))
       .map(deleteCache));
-  });
+  }).catch(() => null);
 };
 
 // _ -> promise([response])
@@ -42,7 +42,7 @@ const precache = async () => {
 // request -> promise(void)
 const updateCache = async request => {
   const cache = await caches.open(STATIC_ASSETS);
-  const response = await fetch(request).catch();
+  const response = await fetch(request).catch(() => null);
   return cache.put(request, response);
 };
 
@@ -50,20 +50,20 @@ const updateCache = async request => {
 const fromCacheOrFetch = async request => {
   const cache = await caches.open(STATIC_ASSETS);
   const match = await cache.match(request);
-  return match || fetch(request).catch();
+  return match || fetch(request).catch(() => null);
 };
 
 self.addEventListener('install', event => {
-  event.waitUntil(precache());
+  event.waitUntil(precache().catch(() => null));
 });
 
 self.addEventListener('activate', event => {
-  event.waitUntil(clearOldCaches());
+  event.waitUntil(clearOldCaches().catch(() => null));
 });
 
 self.addEventListener('fetch', event => {
-  event.respondWith(fromCacheOrFetch(event.request));
-  event.waitUntil(updateCache(event.request));
+  event.respondWith(fromCacheOrFetch(event.request).catch(() => null));
+  event.waitUntil(updateCache(event.request).catch(() => null));
 });
 
 self.addEventListener('message', event => {
