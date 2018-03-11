@@ -100,7 +100,7 @@ const restaurantCardTemplate = restaurant => html`
         placeholder="${placeholderImage}"
         src="${imageUrlForRestaurant(restaurant)}"
         alt="Interior or exterior of ${restaurant.name}"></lazy-image>
-    <h1 id="${restaurant.name}">${restaurant.name}</h1>
+    <h1 id="${restaurant.name}">${restaurant.name} <input type="checkbox" value="favourite" checked?="${restaurant.is_favorite}"/></h1>
     <p>${restaurant.neighbourhood}</p>
     <address>${restaurant.address}</address>
     <a href="${urlForRestaurant(restaurant)}">More Details</a>

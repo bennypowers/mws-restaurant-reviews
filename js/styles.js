@@ -125,6 +125,24 @@ google-map {
   padding: 0 10px;
 }
 
+input[type="checkbox"] {
+  visibility: hidden;
+  position: relative;
+  cursor: pointer;
+}
+
+input[type="checkbox"]:before {
+  content: '😐'
+  position: absolute;
+  visibility: visible;
+}
+
+input[type="checkbox"]:checked:before {
+  content: '😍'
+}
+
+
+
 /* ====================== Restaurant Listing ====================== */
 
 #restaurants-list {
