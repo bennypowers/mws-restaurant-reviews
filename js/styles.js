@@ -1,4 +1,15 @@
-@charset "utf-8";
+import { html } from '/node_modules/lit-html/lit-html.js';
+
+/**
+ * NOTE: Ordinarily we'd prefer to write css in css files, but since we're using
+ * lit-element and rendering DOM according to the data, it's advantageous to use
+ * css-in-js, or we should say inline-css-in-lit-templates. Hopefully soon, we
+ * have shadow-piercing selectors and css modules as a standard feature of the
+ * platform, which would let us import and use css dynamically and reach shadow
+ * elements from the document. Until then, we settle for this.
+ */
+
+const styles = html`<style>
 
 /* CSS Document */
 
@@ -75,8 +86,10 @@ section {
 
 /* ====================== Map ====================== */
 
-#map {
-  height: 400px;
+#map,
+#map-container,
+google-map {
+  min-height: 400px;
   width: 100%;
   background-color: #ccc;
 }
@@ -105,7 +118,7 @@ section {
   background-color: white;
   border: 1px solid #fff;
   flex: 1 1 auto;
-  font-family: 11pt Arial, sans-serif;
+  font: 11pt Arial, sans-serif;
   height: 35px;
   letter-spacing: 0;
   margin: 10px;
@@ -142,7 +155,7 @@ section {
   width: auto;
 }
 
-#restaurants-list .restaurant-img {
+#restaurants-list .restaurant-image {
   background-color: #ccc;
   display: block;
   left: -30px;
@@ -188,7 +201,7 @@ section {
   text-transform: uppercase;
 }
 
-#restaurant-img {
+#restaurant-image {
   width: 100%;
 }
 
@@ -208,28 +221,6 @@ section {
   text-align: center;
   text-transform: uppercase;
   width: 100%;
-}
-
-#restaurant-container {
-  display: grid;
-  max-width: 100%;
-}
-
-#restaurant-container h1 {
-  width: 100%;
-  flex: 1 0 auto;
-}
-
-#restaurant-container,
-#reviews-container {
-  border-bottom: 1px solid #d9d9d9;
-  border-top: 1px solid #fff;
-  padding: 30px 40px;
-}
-
-#restaurant-details-container,
-#restaurant-image-container {
-  margin: 0;
 }
 
 #restaurants-list,
@@ -317,3 +308,29 @@ meter::before {
 #restaurant-hours td {
   color: #666;
 }
+
+@media (min-width: 500px) {
+  #restaurants-list {
+    grid-template-columns: 49% 49%;
+    grid-column-gap: 2%;
+  }
+}
+
+@media (min-width: 630px) {
+  #reviews-list {
+    grid-template-columns: 49% 49%;
+    grid-column-gap: 2%;
+  }
+
+}
+
+@media (min-width: 960px) {
+  #restaurants-list {
+    grid-template-columns: 33% 33% 33%;
+    grid-column-gap: 0.5%;
+  }
+}
+
+</style>`;
+
+export default styles;

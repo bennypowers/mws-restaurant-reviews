@@ -1,4 +1,5 @@
 module.exports = {
+  parser: 'babel-eslint',
   extends: 'eslint:recommended',
   plugins: [
     'html',
@@ -15,16 +16,6 @@ module.exports = {
   rules: {
     semi: [2, 'always'],
     'no-loops/no-loops': 2,
-  },
-  globals: {
-    google: true,
-    restaurant: true,
-    map: true,
-    restaurants: true,
-    neighborhoods: true,
-    cuisines: true,
-    map: true,
-    markers: true,
   },
   overrides: {
     files: ['service-worker.js'],

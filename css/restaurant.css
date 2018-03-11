@@ -1,37 +1,5 @@
 /* ====================== Restaurant Details ====================== */
 
-.inside header {
-  position: relative;
-  top: 0;
-  width: 100%;
-  z-index: 1000;
-}
-
-.inside #map-container {
-  background: blue none repeat scroll 0 0;
-  position: relative;
-  height: 50vh;
-  /* height: 87%; */
-  /* position: fixed; */
-  /* right: 0; */
-  /* top: 80px; */
-  /* width: 50%; */
-}
-
-.inside #map {
-  background-color: #ccc;
-  height: 100%;
-  width: 100%;
-}
-
-.inside #footer {
-  bottom: 0;
-  position: absolute;
-  width: calc(100% - 50px);
-  /* large screens */
-  /* width: 50%; */
-}
-
 #form-fab {
   background-color: crimson;
   position: fixed;
@@ -45,6 +13,7 @@
   list-style: none;
   background-color: #ddd;
   font-size: 20px;
+  width: 100%;
   margin: 0;
   /* large screens */
   /* font-size: 17px; */
@@ -77,32 +46,4 @@
 #breadcrumb li a:hover {
   color: #01447e;
   text-decoration: underline;
-}
-
-@media screen and (min-width: 500px) {
-  .inside #maincontent {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .inside #restaurant-container,
-  .inside #reviews-container,
-  .inside #map-container {
-    flex: 1 1 auto;
-    max-width: 50%;
-    height: auto !important;
-  }
-
-  .inside #restaurant-container {
-    order: 0;
-  }
-
-  .inside #map-container {
-    order: 1;
-  }
-
-  .inside #reviews-container {
-    order: 2;
-    max-width: 100%;
-  }
 }

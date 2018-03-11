@@ -38,7 +38,7 @@ export const and = (f, g) => function _and() {
 
 /** Point-free array map. Naive implementation. */
 // map :: f -> as -> bs
-export const map = f => arr => arr.map(f);
+export const map = f => arr => (arr || []).map(f);
 
 /** Point-free array filter. Naive implementation. */
 // find :: f -> as -> as
@@ -153,6 +153,14 @@ export const returnOrThrow = message => value => {
  * DOM HELPERS
  */
 
+/**
+ * Get a parameter by name from page URL.
+ */
+export const getParameterByName = (name, urlString) =>
+  // URL constructor obviates need to parse urls ourselves.
+  (new URL(urlString || window.location.href))
+    .searchParams
+    .get(name);
 
 /** Generates a CustomEvent. Reduces boilerplate. */
 // customEvent :: (str, o) -> CustomEvent o

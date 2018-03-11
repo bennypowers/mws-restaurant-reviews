@@ -1,5 +1,5 @@
 import idbKeyval from './idb-keyval.js';
-import { handleAsJson, handleAsText, rejectNon200, returnOrThrow, trace } from './lib.js';
+import { handleAsJson, handleAsText, rejectNon200, returnOrThrow } from './lib.js';
 
 // cacheInIdb :: String -> d -> Promise undefined
 const cacheInIdb = key => value => {
@@ -8,7 +8,7 @@ const cacheInIdb = key => value => {
     ? Promise.all(value.map(setKv))
     : idbKeyval.set(key, value);
   return promise.then(() => value);
-}
+};
 
 
 /** Fetch all restaurants */
@@ -17,14 +17,14 @@ export const fetchRestaurants = () =>
   fetch('/api/restaurants')
     .then(rejectNon200)
     .then(handleAsJson)
-    .then(cacheInIdb('restaurants'))
+    .then(cacheInIdb('restaurants'));
 
 /** Fetch reviews by restaurant id. */
 // fetchReviews :: () -> Promise rs
 export const fetchReviews = restaurant_id =>
   fetch(`/api/reviews/${restaurant_id ? `?restaurant_id=${restaurant_id}` : ''}`)
     .then(rejectNon200)
-    .then(handleAsJson)
+    .then(handleAsJson);
 
 /** Fetch a restaurant by its ID. */
 // fetchRestaurantById :: str -> Promise r

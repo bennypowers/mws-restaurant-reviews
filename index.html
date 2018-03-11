@@ -4,24 +4,23 @@
 <head>
   <link rel="manifest" href="manifest.json"/>
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
-  <link rel="stylesheet" media="(min-width: 500px)" href="/css/width-500.css"/>
-  <link rel="stylesheet" media="(min-width: 630px)" href="/css/width-630.css"/>
-  <link rel="stylesheet" media="(min-width: 960px)" href="/css/width-960.css"/>
-  <link rel="stylesheet" media="(min-width: 1030px)" href="/css/width-1030.css"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="theme-color" content="crimson"/>
   <title>Restaurant Reviews</title>
-  <script defer src="bower_components/webcomponentsjs/webcomponents-loader.js" charset="utf-8"></script>
+  <script src="bower_components/webcomponentsjs/webcomponents-loader.js" charset="utf-8"></script>
+  <script async type="module" src="./js/restaurantReviews.js"></script>
   <link async rel="import" href="bower_components/service-worker/service-worker.html"/>
+  <link async rel="import" href="bower_components/google-map/google-map.html"/>
   <style>
 
   /* ====================== Critical Rendering Path ====================== */
+  html, body {
+    height: 100vh;
+  }
+
   body,
-  td,
-  th,
   p {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 10pt;
+    font: 10pt Arial, Helvetica, sans-serif;
     color: #333;
     line-height: 1.5;
   }
@@ -30,25 +29,23 @@
     background-color: #fdfdfd;
     margin: 0;
     position: relative;
+    display: flex;
+    flex-flow: column;
   }
 
   h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  h2 {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0 0 20px;
   }
 
   #maincontent {
     background-color: #f3f3f3;
-    min-height: 100%;
-    /* padding-top: calc(80px + 51px); */
   }
 
-  /* ====================== Navigation ====================== */
+  #app, #maincontent {
+    flex: 1;
+  }
 
   nav {
     display: flex;
@@ -63,10 +60,6 @@
     min-height: 80px;
     display: flex;
     justify-content: center;
-  }
-
-  nav h1,
-  nav #breadcrumb {
     width: 100%;
     align-items: center;
   }
@@ -78,6 +71,27 @@
     letter-spacing: 10px;
     text-transform: uppercase;
   }
+
+  #footer {
+    background-color: #222;
+    color: #ddd;
+    font-size: 8pt;
+    letter-spacing: 1px;
+    padding: 25px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  #footer a {
+    color: orange;
+  }
+
+  #map {
+    min-height: 400px;
+    width: 100%;
+    background-color: #ccc;
+  }
+
   </style>
 </head>
 
@@ -86,41 +100,29 @@
     <p>To see the restaurant map and read reviews, please <a href="https://www.enable-javascript.com/">enable JavaScript in your browser</a>.</p>
   </noscript>
 
-  <service-worker id="service-worker"></service-worker>
-  <header>
+  <header id="header">
     <nav>
       <h1><a href="/">Restaurant Reviews</a></h1>
     </nav>
   </header>
 
-  <main id="maincontent">
-    <section id="map-container" role="application">
-      <div id="map"></div>
-    </section>
-    <section>
-      <div class="filter-options">
-        <h2>Filter Results</h2>
-
-        <select id="neighborhoods-select" name="neighborhoods" aria-label="Neighbourhoods">
-          <option value="all">All Neighborhoods</option>
-        </select>
-
-        <select id="cuisines-select" name="cuisines" aria-label="Cuisines">
-          <option value="all">All Cuisines</option>
-        </select>
-
-      </div>
-      <ul id="restaurants-list"></ul>
-    </section>
-  </main>
+  <restaurant-reviews id="app">
+    <!-- NOTE: Static app shell provides the perception of performance while js loads in the background -->
+    <main id="maincontent">
+      <section name="restaurants">
+        <section id="map-container" role="application">
+          <div id="map"></div>
+        </section>
+      </section>
+    </main>
+  </restaurant-reviews>
 
   <footer id="footer">
     Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
   </footer>
 
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB83Tm6s1TFhPLKGlbn5zhco7yhDzyjRvM&libraries=places&callback=initMap"></script>
+  <service-worker id="service-worker"></service-worker>
 
-  <script src="/js/index.js"></script>
 </body>
 
 </html>
