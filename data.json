@@ -1,7 +1,7 @@
 {
   "restaurants": [{
       "name": "Mission Chinese Food",
-      "neighborhood": "Manhattan",
+      "neighbourhood": "Manhattan",
       "photograph": "1",
       "address": "171 E Broadway, New York, NY 10002",
       "latlng": {
@@ -25,7 +25,7 @@
     },
     {
       "name": "Emily",
-      "neighborhood": "Brooklyn",
+      "neighbourhood": "Brooklyn",
       "photograph": "2",
       "address": "919 Fulton St, Brooklyn, NY 11238",
       "latlng": {
@@ -49,7 +49,7 @@
     },
     {
       "name": "Kang Ho Dong Baekjeong",
-      "neighborhood": "Manhattan",
+      "neighbourhood": "Manhattan",
       "photograph": "3",
       "address": "1 E 32nd St, New York, NY 10016",
       "latlng": {
@@ -72,7 +72,7 @@
     },
     {
       "name": "Katz's Delicatessen",
-      "neighborhood": "Manhattan",
+      "neighbourhood": "Manhattan",
       "photograph": "4",
       "address": "205 E Houston St, New York, NY 10002",
       "latlng": {
@@ -96,7 +96,7 @@
     },
     {
       "name": "Roberta's Pizza",
-      "neighborhood": "Brooklyn",
+      "neighbourhood": "Brooklyn",
       "photograph": "5",
       "address": "261 Moore St, Brooklyn, NY 11206",
       "latlng": {
@@ -120,7 +120,7 @@
     },
     {
       "name": "Hometown BBQ",
-      "neighborhood": "Brooklyn",
+      "neighbourhood": "Brooklyn",
       "photograph": "6",
       "address": "454 Van Brunt St, Brooklyn, NY 11231",
       "latlng": {
@@ -144,7 +144,7 @@
     },
     {
       "name": "Superiority Burger",
-      "neighborhood": "Manhattan",
+      "neighbourhood": "Manhattan",
       "photograph": "7",
       "address": "430 E 9th St, New York, NY 10009",
       "latlng": {
@@ -168,7 +168,7 @@
     },
     {
       "name": "The Dutch",
-      "neighborhood": "Manhattan",
+      "neighbourhood": "Manhattan",
       "photograph": "8",
       "address": "131 Sullivan St, New York, NY 10012",
       "latlng": {
@@ -192,7 +192,7 @@
     },
     {
       "name": "Mu Ramen",
-      "neighborhood": "Queens",
+      "neighbourhood": "Queens",
       "photograph": "9",
       "address": "1209 Jackson Ave, Queens, NY 11101",
       "latlng": {
@@ -216,7 +216,7 @@
     },
     {
       "name": "Casa Enrique",
-      "neighborhood": "Queens",
+      "neighbourhood": "Queens",
       "address": "5-48 49th Ave, Queens, NY 11101",
       "latlng": {
         "lat": 40.743394,
@@ -299,7 +299,7 @@
       "createdAt": 1504095567183,
       "updatedAt": 1504095567183,
       "rating": 4,
-      "comments": "The tables at this 32nd Street favorite are outfitted with grills for cooking short ribs, brisket, beef tongue, rib eye, and pork jowl. The banchan plates are uniformly good, and Deuki Hongâ€™s menu also includes winning dishes like stir-fried squid noodles, kimchi stew, and seafood pancakes. If itâ€™s available, make sure to order the kimchi and rice â€œlunchbox.â€ Baekjeong is a great place for large groups and birthday parties."
+      "comments": "The tables at this 32nd Street favorite are outfitted with grills for cooking short ribs, brisket, beef tongue, rib eye, and pork jowl. The banchan plates are uniformly good, and Deuki Hong's menu also includes winning dishes like stir-fried squid noodles, kimchi stew, and seafood pancakes. If it's available, make sure to order the kimchi and rice â€œlunchbox.â€ Baekjeong is a great place for large groups and birthday parties."
     },
     {
       "id": 8,
@@ -407,7 +407,7 @@
       "createdAt": 1504095567183,
       "updatedAt": 1504095567183,
       "rating": 4,
-      "comments": "Brooks Headleyâ€™s tiny East Village cafe is so much more than a veggie burger spot â€” it's one of the best bang-for-your-buck restaurants in Lower Manhattan. Headley and his crew turn seasonal vegetables into delectable salads and riffs on American comfort food favorites. The specials menu changes daily, and the rest of the menu is constantly evolving. You can get a lot of food to eat here for under $15 per person."
+      "comments": "Brooks Headley's tiny East Village cafe is so much more than a veggie burger spot â€” it's one of the best bang-for-your-buck restaurants in Lower Manhattan. Headley and his crew turn seasonal vegetables into delectable salads and riffs on American comfort food favorites. The specials menu changes daily, and the rest of the menu is constantly evolving. You can get a lot of food to eat here for under $15 per person."
     },
     {
       "id": 20,
@@ -434,7 +434,7 @@
       "createdAt": 1504095567183,
       "updatedAt": 1504095567183,
       "rating": 4,
-      "comments": "Over the last five years, The Dutch has turned into the quintessential American restaurant that chef Andrew Carmellini and partners Josh Pickard and Luke Ostrom sought to evoke when it first opened. Itâ€™s a great choice when youâ€™re craving a steak, a burger, or oysters, and the menu always includes plentiful seafood options as well as pastas. The Dutch is now an indelible part of the Soho landscape."
+      "comments": "Over the last five years, The Dutch has turned into the quintessential American restaurant that chef Andrew Carmellini and partners Josh Pickard and Luke Ostrom sought to evoke when it first opened. It's a great choice when you're craving a steak, a burger, or oysters, and the menu always includes plentiful seafood options as well as pastas. The Dutch is now an indelible part of the Soho landscape."
     },
     {
       "id": 23,
@@ -461,7 +461,7 @@
       "createdAt": 1504095567183,
       "updatedAt": 1504095567183,
       "rating": 4,
-      "comments": "Joshua Smooklerâ€™s two-year-old ramen shop serves one of the best tonkotsu broths around. Beyond ramen, Mu also offers some high minded plates, like foie gras-stuffed chicken wings, as well as dry-aged Japanese Wagyu beef specials. Mu is just 10 short minutes away from Midtown via the 7-train."
+      "comments": "Joshua Smookler's two-year-old ramen shop serves one of the best tonkotsu broths around. Beyond ramen, Mu also offers some high minded plates, like foie gras-stuffed chicken wings, as well as dry-aged Japanese Wagyu beef specials. Mu is just 10 short minutes away from Midtown via the 7-train."
     },
     {
       "id": 26,
