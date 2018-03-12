@@ -39,6 +39,7 @@ class LazyImage extends LitElement {
       alt: String,
       intersecting: Boolean,
       placeholder: String,
+      rootMargin: String,
       src: String,
       fade: Boolean,
       threshold: Number,

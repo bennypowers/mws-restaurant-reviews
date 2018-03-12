@@ -100,6 +100,7 @@ export const imageUrlForRestaurant = ({photograph}) =>
 const restaurantCardTemplate = restaurant => html`
   <li id="${restaurant.name}" aria-labelledby="${restaurant.name}">
     <lazy-image class="restaurant-image" fade
+        rootMargin="80px"
         placeholder="${placeholderImage}"
         src="${imageUrlForRestaurant(restaurant)}"
         alt="Interior or exterior of ${restaurant.name}"></lazy-image>
@@ -227,6 +228,7 @@ const restaurantTemplate = (component, restaurant) => {
       ${until(restaurant.then(
         restaurant => html`
         <lazy-image id="restaurant-image" fade
+            rootMargin="40px"
             placeholder="${placeholderImage}"
             src="${imageUrlForRestaurant(restaurant)}"
             alt="Interior or exterior of ${[restaurant].map(prop('name'))}"></lazy-image>`
