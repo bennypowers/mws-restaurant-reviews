@@ -54,7 +54,7 @@ export const byCuisineAndNeighbourhood = (cuisine='all', neighbourhood='all') =>
 /** Restaurant page URL. */
 // urlForRestaurant :: str -> str
 const urlForRestaurant = ({id}) =>
-  `./restaurant?id=${id}`;
+  `/restaurant?id=${id}`;
 
 // takes a string like "11:00 am - 5:00 pm" and returns semantic html
 // str -> str
@@ -66,10 +66,13 @@ const formatOpeningToClosing = string =>
 const mapMarker = restaurant =>  html`
   <google-map-marker
       animation="DROP"
+      click-events
       latitude="${restaurant.latlng.lat}"
       longitude="${restaurant.latlng.lng}"
-      label="${restaurant.name}"
-      url="${urlForRestaurant(restaurant)}"></google-map-marker>
+      title="${restaurant.name}"
+      url$="${urlForRestaurant(restaurant)}"
+      on-google-map-marker-click="${event => window.location = event.target.url}"
+      ></google-map-marker>
 `;
 
 const optionTemplate = (selected='all') => option => html`
