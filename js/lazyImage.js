@@ -23,7 +23,7 @@ img {
 
 .fade {
   opacity: 0;
-  transition: opacity 5.5s ease;
+  transition: opacity 0.5s ease;
 }
 
 .intersecting {
