@@ -224,10 +224,13 @@ const restaurantTemplate = (component, restaurant) => {
     <section id="restaurant-container">
       <h1 id="restaurant-name" tabindex="0">${restaurant.then(prop('name'))}</h1>
       <figure id="restaurant-image-container">
+      ${until(restaurant.then(
+        restaurant => html`
         <lazy-image id="restaurant-image" fade
             placeholder="${placeholderImage}"
-            src="${restaurant.then(imageUrlForRestaurant)}"
-            alt="${html`Interior or exterior of ${restaurant.then(prop('name'))}`}"></lazy-image>
+            src="${imageUrlForRestaurant(restaurant)}"
+            alt="Interior or exterior of ${[restaurant].map(prop('name'))}"></lazy-image>`
+          ), '')}
         <figcaption id="restaurant-cuisine">${restaurant.then(prop('cuisine_type'))}</figcaption>
       </figure>
       <div id="restaurant-details-container">

@@ -15,6 +15,15 @@ class SubmitReview extends LitElement {
     this.opened = !this.opened;
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    const link = document.createElement('link');
+          link.setAttribute('rel', 'import');
+          link.setAttribute('href', '/review-fab.html');
+    // FIXME: this is breaking the world. probably should use Polymer 3.
+    // document.head.appendChild(link);
+  }
+
   async submitReview() {
     const form = this.shadowRoot.querySelector('#form');
     const dialog = this.shadowRoot.querySelector('#dialog');
@@ -64,6 +73,7 @@ class SubmitReview extends LitElement {
       top: calc(50% - 150px);
     }
     </style>
+
     <paper-fab id="form-fab" label="+" title="Add Review" on-click="${() => this.toggleOpened()}"></paper-fab>
     <dialog id="dialog" open="${opened}">
       <paper-spinner id="spinner" active="${spinning}"></paper-spinner>
