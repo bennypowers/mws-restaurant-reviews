@@ -66,6 +66,8 @@ class SubmitReview extends LitElement {
 
       resetForm();
 
+      dialog.clone(review);
+
       this.opened = false;
     }
   }
