@@ -88,10 +88,14 @@ section {
 
 #map,
 #map-container,
-google-map {
+good-map {
   min-height: 400px;
   width: 100%;
   background-color: #ccc;
+}
+
+good-map {
+  display: block;
 }
 
 /* ====================== Restaurant Filtering ====================== */

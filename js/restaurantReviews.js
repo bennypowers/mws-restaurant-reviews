@@ -63,17 +63,15 @@ const formatOpeningToClosing = string =>
     .map(trim)
     .join(' - ');
 
-const mapMarker = restaurant =>  html`
-  <google-map-marker
-      animation="DROP"
-      click-events
-      latitude="${restaurant.latlng.lat}"
-      longitude="${restaurant.latlng.lng}"
-      title="${restaurant.name}"
-      url$="${urlForRestaurant(restaurant)}"
-      on-google-map-marker-click="${event => window.location = event.target.url}"
-      ></google-map-marker>
-`;
+const mapMarker = map => restaurant => (
+  new google.maps.Marker({
+        animation: google.maps.Animation.DROP,
+        position: restaurant.latlng,
+        title: restaurant.name,
+        url: urlForRestaurant(restaurant),
+        map,
+  }).addListener('click', event => window.location = event.target.url)
+);
 
 const optionTemplate = (selected='all') => option => html`
   <option value="${option}" selected="${selected === option}">${option}</option>
@@ -125,17 +123,16 @@ const restaurantsTemplate = (component, restaurants, cuisine, neighbourhood) => 
   <main id="maincontent">
     <section name="restaurants">
       <div id="map-container">
-        <google-map id="map"
-            fit-to-markers
+        <good-map id="map"
             api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc"
             latitude="40.722216"
             longitude="-73.987501"
             zoom="12"
-            additional-map-options='{"scrollwheel": false}'>
-          ${restaurants
+            map-options='{"scrollwheel": false}'
+            on-google-map-ready="${event => restaurants
               .then(filter(byCuisineAndNeighbourhood(cuisine, neighbourhood)))
-              .then(map(mapMarker))}
-        </google-map>
+              .then(map(mapMarker(event.detail)))}">
+        </good-map>
       </div>
       <section>
         <div class="filter-options">
@@ -211,15 +208,14 @@ const restaurantTemplate = (component, restaurant) => {
     <section id="map-container">
       ${html`${until(restaurant.then(
         restaurant => html`
-        <google-map id="map"
-            fit-to-markers
+        <good-map id="map"
             latitude="${restaurant.latlng.lat}"
             longitude="${restaurant.latlng.lng}"
             api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc"
             zoom="12"
-            additional-map-options='{"scrollwheel": false}'>
-          ${mapMarker(restaurant)}
-        </google-map>`
+            map-options='{"scrollwheel": false}'
+            on-google-map-ready="${event => mapMarker(event.detail)(restaurant)}">
+        </good-map>`
       ), '')}`}
     </section>
     <section id="restaurant-container">

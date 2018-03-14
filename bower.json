@@ -23,6 +23,6 @@
     "paper-spinner": "PolymerElements/paper-spinner#^2.1.0",
     "paper-fab": "PolymerElements/paper-fab#^2.1.0",
     "iron-form": "PolymerElements/iron-form#^2.2.1",
-    "google-map": "bennypowers/google-map#patch-1"
+    "good-map": "keanulee/good-map#^0.0.1"
   }
 }
