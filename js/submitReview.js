@@ -6,6 +6,22 @@ import '/node_modules/@polymer/paper-slider/paper-slider.js';
 import { postReview } from './dbhelper.js';
 import { customEvent } from './lib.js';
 
+const styles = html`
+<style>
+
+:host {
+  position: fixed;
+  bottom: 1em;
+  right: 1em;
+}
+
+dialog {
+  position: fixed;
+  top: calc(50% - 150px);
+}
+
+</style>`;
+
 class SubmitReview extends LitElement {
   static get properties() {
     return {
@@ -55,20 +71,7 @@ class SubmitReview extends LitElement {
   }
 
   render({opened, restaurantId, spinning}) {
-    return html`
-    <style>
-    :host {
-      display: block;
-      position: fixed;
-      bottom: 1em;
-      right: 1em;
-    }
-    dialog {
-      position: fixed;
-      top: calc(50% - 150px);
-    }
-    </style>
-
+    return html`${styles}
     <paper-fab id="form-fab" label="+" title="Add Review" on-click="${() => this.toggleOpened()}"></paper-fab>
     <dialog id="dialog" open="${opened}">
       <paper-spinner id="spinner" active="${spinning}"></paper-spinner>

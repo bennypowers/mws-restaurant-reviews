@@ -58,7 +58,6 @@ header {
 
 #restaurant-container h1 {
   padding: 0 40px;
-  width: 100%;
   flex: 1 0 auto;
 }
 
