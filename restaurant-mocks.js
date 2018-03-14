@@ -1,14 +1,15 @@
 const { restaurants, reviews } = require('./data.json');
 
-const byFavorite = x => x.is_favorite === true
+const byFavorite = x => x.is_favorite === true;
 const byId = id => x => x.id === Number(id);
 const byRestaurantId = id => x => x.restaurant_id === Number(id);
 
 module.exports = MockBase => class RestaurantMocks extends MockBase {
   mocks(options) {
+    const { apiPrefix } = options;
     return [
       {
-        route: '/api/restaurants',
+        route: `/${apiPrefix}/restaurants`,
         responses: {
           request: { method: 'GET' },
           response(ctx) {
@@ -18,7 +19,7 @@ module.exports = MockBase => class RestaurantMocks extends MockBase {
         },
       },
       {
-        route: '/api/restaurants/:id',
+        route: `/${apiPrefix}/restaurants/:id`,
         responses: [{
             request: { method: 'GET' },
             response(ctx, id) {
@@ -28,7 +29,7 @@ module.exports = MockBase => class RestaurantMocks extends MockBase {
             request: { method: 'PUT' },
             response(ctx, id) {
               const {is_favorite} = ctx.request.query;
-              const restaurant = restaurants.find(byId(id))
+              const restaurant = restaurants.find(byId(id));
               // mutate the record. parse query string as bool
               restaurant.is_favorite = is_favorite == 'false' ? false : true;
 
@@ -37,7 +38,7 @@ module.exports = MockBase => class RestaurantMocks extends MockBase {
           }],
       },
       {
-        route: '/api/reviews',
+        route: `/${apiPrefix}/reviews`,
         responses: [{
             request: { method: 'GET' },
             response(ctx) {
@@ -68,7 +69,7 @@ module.exports = MockBase => class RestaurantMocks extends MockBase {
               // 'write' the review to the 'database'
               reviews.push(review);
 
-              await new Promise((res) => setTimeout(res, Math.random() * 800))
+              await new Promise((res) => setTimeout(res, Math.random() * 800));
 
               // respond with the new review obj
               ctx.body = review;
@@ -76,7 +77,7 @@ module.exports = MockBase => class RestaurantMocks extends MockBase {
           }],
       },
       {
-        route: '/api/reviews/:id',
+        route: `/${apiPrefix}/reviews/:id`,
         responses: [{
             request: { method: 'GET' },
             response(ctx, id) {
@@ -95,8 +96,6 @@ module.exports = MockBase => class RestaurantMocks extends MockBase {
           }, {
             request: { method: 'PUT' },
             response(ctx, id) {
-              const { name, comments, rating } = ctx.request.body;
-
               // get a handle on the oldRecord
               const oldRecord = reviews.find(byId(id));
 
@@ -104,12 +103,12 @@ module.exports = MockBase => class RestaurantMocks extends MockBase {
               const updatedAt = Date.now();
 
               // update the review in the 'database'
-              const review = { ...oldRecord, ...ctx.request.body, updatedAt }
+              const review = { ...oldRecord, ...ctx.request.body, updatedAt };
 
               // mutate the 'database'
               reviews.splice(reviews.indexOf(oldRecord), 1, review);
 
-              ctx.body = review
+              ctx.body = review;
             },
           }]
       }

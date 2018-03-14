@@ -12,6 +12,7 @@ module.exports = {
   spa: 'index.html',
   http2: true,
   port: 443,
+  apiPrefix: 'api',
   compress: true,
   mocks: 'restaurant-mocks.js',
   logFormat: 'dev',
