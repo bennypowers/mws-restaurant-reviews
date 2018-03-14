@@ -70,7 +70,7 @@ const mapMarker = map => restaurant => (
         title: restaurant.name,
         url: urlForRestaurant(restaurant),
         map,
-  }).addListener('click', event => window.location = event.target.url)
+  }).addListener('click', event => window.location = urlForRestaurant(restaurant))
 );
 
 const optionTemplate = (selected='all') => option => html`
