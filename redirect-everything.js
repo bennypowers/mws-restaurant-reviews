@@ -6,7 +6,7 @@ module.exports = MiddlewareBase => class Redirector extends MiddlewareBase {
               type: Number,
               description: 'Port which is used to redirect to https',
             }
-        ]
+        ];
     }
     middleware(options) {
         if (!options.redirectPort) {
@@ -14,18 +14,14 @@ module.exports = MiddlewareBase => class Redirector extends MiddlewareBase {
             options.redirectPort = 4443;
         }
 
-        return (ctx, next) => {
+        return (ctx) => {
             // Check if protocol is http
             if (ctx.protocol === 'http') {
-
-                // Replacing url with https parameter
-                const httpsUrl = ctx.request.href
-                    .replace('http', 'https')
-                    .replace(options.port, options.redirectPort);
-
                 // Enforcing redirect
-                ctx.redirect(httpsUrl);
+                ctx.redirect(ctx.request.href
+                    .replace('http', 'https')
+                    .replace(options.port, options.redirectPort));
             }
-        }
+        };
     }
-}
+};

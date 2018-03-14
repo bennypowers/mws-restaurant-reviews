@@ -17,10 +17,25 @@ module.exports = {
     semi: [2, 'always'],
     'no-loops/no-loops': 2,
   },
-  overrides: {
+  overrides: [{
     files: ['service-worker.js'],
     env: {
       serviceworker: true,
     },
-  },
+  }, {
+    files: [
+      'restaurant-mocks.js',
+      'redirect-everything.js',
+      'lws.*.js'
+    ],
+    env: {
+      node: true,
+    },
+    rules: {
+      'no-console': 0,
+    }
+  }],
+  globals: {
+    google: true,
+  }
 };

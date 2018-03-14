@@ -8,9 +8,9 @@ import { render } from '/node_modules/lit-html/lit-html.js';
 
 import { until } from '/node_modules/lit-html/lib/until.js';
 
-import './lazyImage.js';
-import '/js/submit-review.js';
 import '/node_modules/@power-elements/emoji-rating/emoji-rating.js';
+import '/node_modules/@power-elements/lazy-image/lazy-image.js';
+import '/js/submit-review.js';
 
 import { filter, map } from './lib.js';
 
@@ -71,7 +71,7 @@ const mapMarker = map => restaurant => (
         title: restaurant.name,
         url: urlForRestaurant(restaurant),
         map,
-  }).addListener('click', event => window.location = urlForRestaurant(restaurant))
+  }).addListener('click', () => window.location = urlForRestaurant(restaurant))
 );
 
 const optionTemplate = (selected='all') => option => html`
