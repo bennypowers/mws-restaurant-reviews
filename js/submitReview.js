@@ -1,4 +1,8 @@
 import { LitElement, html } from '/node_modules/@polymer/lit-element/lit-element.js';
+import '/node_modules/@polymer/paper-fab/paper-fab.js';
+import '/node_modules/@polymer/paper-input/paper-input.js';
+import '/node_modules/@polymer/paper-input/paper-textarea.js';
+import '/node_modules/@polymer/paper-slider/paper-slider.js';
 import { postReview } from './dbhelper.js';
 import { customEvent } from './lib.js';
 
@@ -13,15 +17,6 @@ class SubmitReview extends LitElement {
 
   toggleOpened() {
     this.opened = !this.opened;
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    const link = document.createElement('link');
-          link.setAttribute('rel', 'import');
-          link.setAttribute('href', '/review-fab.html');
-    // FIXME: this is breaking the world. probably should use Polymer 3.
-    // document.head.appendChild(link);
   }
 
   async submitReview() {
