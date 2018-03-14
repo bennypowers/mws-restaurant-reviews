@@ -100,7 +100,7 @@
     color: orange;
   }
 
-  #map {
+  #static-map {
     min-height: 400px;
     width: 100%;
     background-color: #ccc;
@@ -123,11 +123,7 @@
   <restaurant-reviews id="app">
     <!-- NOTE: Static app shell provides the perception of performance while js loads in the background -->
     <main id="static-app-shell">
-      <section name="restaurants">
-        <section id="map-container" role="application">
-          <div id="map"></div>
-        </section>
-      </section>
+      <div id="static-map"></div>
     </main>
   </restaurant-reviews>
 
