@@ -129,20 +129,55 @@ good-map {
   padding: 0 10px;
 }
 
-input[type="checkbox"] {
-  visibility: hidden;
+:host {
+  --checkbox-width: 1.5em;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
-  cursor: pointer;
+  width: var(--checkbox-width);
+  height: var(--checkbox-width);
 }
 
-input[type="checkbox"]:before {
-  content: '😐'
+input[type="checkbox"] {
+  display: block;
+  opacity: 0;
+  width: var(--checkbox-width);
+  height: var(--checkbox-width);
+}
+
+input[type="checkbox"] + label {
+  width: var(--checkbox-width);
+  height: var(--checkbox-width);
+  content: '';
+  position: relative;
+}
+
+input[type="checkbox"] + label {
+  position: relative;
+}
+
+input[type="checkbox"],
+input[type="checkbox"] + label::after {
+  display: block;
   position: absolute;
-  visibility: visible;
+  left: 0;
 }
 
-input[type="checkbox"]:checked:before {
-  content: '😍'
+input[type="checkbox"] + label::after {
+  opacity: 1;
+  content: '';
+}
+
+input[type="checkbox"] + label::after {
+  content: '😐';
+}
+
+input[type="checkbox"]:checked + label::after {
+  content: '😍';
 }
 
 

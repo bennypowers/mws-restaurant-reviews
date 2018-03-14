@@ -94,6 +94,8 @@ export const imageUrlForRestaurant = ({photograph}) =>
  * NOTE: we opt not to tab-index restaurant header, since the interactive
  *       control 'view details' will receive focus.
  *       name.tabIndex = 0;
+ * NOTE: It might be a little unorthodox to use both aria-label and the label element,
+ *       but in this case it give us emoji so I'm down.
  */
 const restaurantCardTemplate = restaurant => html`
   <li id="${restaurant.name}" aria-labelledby="${restaurant.name}">
@@ -102,7 +104,15 @@ const restaurantCardTemplate = restaurant => html`
         placeholder="${placeholderImage}"
         src="${imageUrlForRestaurant(restaurant)}"
         alt="Interior or exterior of ${restaurant.name}"></lazy-image>
-    <h1 id="${restaurant.name}">${restaurant.name} <input type="checkbox" value="favourite" checked?="${restaurant.is_favorite}"/></h1>
+    <h1 id="${restaurant.name}">${restaurant.name}</h1>
+    <div class="checkbox">
+      <input id="${nameToId(restaurant.name)}-checkbox"
+          type="checkbox"
+          aria-label="${restaurant.is_favorite ? 'favourite' : 'not favourite'}"
+          value="favourite"
+          checked?="${restaurant.is_favorite}"/>
+      <label for="${nameToId(restaurant.name)}-checkbox"></label>
+    </div>
     <p>${restaurant.neighbourhood}</p>
     <address>${restaurant.address}</address>
     <a href="${urlForRestaurant(restaurant)}">More Details</a>
