@@ -10,6 +10,7 @@ import { until } from '/node_modules/lit-html/lib/until.js';
 
 import './lazyImage.js';
 import '/js/submitReview.js';
+import '/node_modules/@power-elements/emoji-rating/emoji-rating.js';
 
 import { filter, map, trace } from './lib.js';
 
@@ -199,7 +200,10 @@ export const reviewTemplate = ({comments, createdAt, updatedAt, name, rating}) =
       <h1 id="${id}" tab-index="0">${name}</h1>
       <time>${reviewTimeHuman}</time>
     </header>
-    <span>Rating: <meter min="0" max="5" low="2" high="4" optimum="5" value="${rating}"></meter></span>
+    <span>Rating: <emoji-rating
+        min="0" max="5"
+        low="2" high="4"
+        optimum="5" value="${rating}"></emoji-rating></span>
     <p>${comments}</p>
   </article>
   `;
