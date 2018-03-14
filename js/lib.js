@@ -58,8 +58,8 @@ export const uniq = compose(Array.from, x => new Set(x));
  */
 
 /** Returns a property by key, or by array of deep keys. */
-// prop :: (str|arr) -> obj -> a
-export const prop = p => o => Array.isArray(p) ? p.reduce((a, b) => a[b], o) : o[p];
+// prop :: str -> obj -> a
+export const prop = p => o => p.split('.').reduce((a, b) => a[b], o);
 
 /*
  * STRING FUNCTIONS
