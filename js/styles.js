@@ -228,11 +228,6 @@ meter::before {
   flex: 1 0 1em;
 }
 
-restaurant-card {
-  width: 100%;
-  min-height: 400px;
-}
-
 #restaurant-hours td {
   color: #666;
 }

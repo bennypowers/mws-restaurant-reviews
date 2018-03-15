@@ -19,5 +19,3 @@ export const mapMarker = map => restaurant => {
   marker.addListener('click', () => window.location = urlForRestaurant(restaurant));
   return marker;
 };
-
-export const removeMarkers = () => this.markers = [];

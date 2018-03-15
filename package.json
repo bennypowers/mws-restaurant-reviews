@@ -34,10 +34,13 @@
     "eslint-plugin-no-loops": "^0.3.0",
     "htmlhint": "^0.9.13",
     "parallelshell": "^3.0.2",
+    "rollup": "^0.57.0",
+    "rollup-plugin-uglify": "^3.0.0",
     "stylelint": "^8.4.0"
   },
   "scripts": {
-    "postinstall": "bower i --allow-root",
+    "postinstall": "npx bower i --allow-root",
+    "prestart": "npx rollup -c",
     "start": "npx parallelshell \"npx ws -c lws.redirect.config.js\" \"npx ws\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

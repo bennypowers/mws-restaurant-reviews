@@ -8,7 +8,7 @@
   <meta name="theme-color" content="crimson"/>
   <title>Restaurant Reviews</title>
   <script async defer src="/bower_components/good-map/good-map.js"></script>
-  <script async type="module" src="./js/restaurant-reviews.js"></script>
+  <script async type="module" src="./js/restaurant-reviews.min.js"></script>
   <script async type="module" src="/node_modules/@power-elements/service-worker/service-worker.js"></script>
   <style>
 
@@ -30,32 +30,19 @@
     height: 100vh;
   }
 
-  body,
-  p {
-    font: 10pt Arial, Helvetica, sans-serif;
-    color: #333;
-    line-height: 1.5;
-  }
-
   body {
-    background-color: #fdfdfd;
-    margin: 0;
-    position: relative;
+    background: #fdfdfd;
+    color: #333;
     display: flex;
     flex-flow: column;
-  }
-
-  h1,
-  h2 {
-    font-family: Arial, Helvetica, sans-serif;
-    margin: 0 0 20px;
-  }
-
-  #static-app-shell {
-    background-color: #f3f3f3;
+    font: 10pt Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+    margin: 0;
+    position: relative;
   }
 
   #app, #static-app-shell {
+    background-color: #f3f3f3;
     flex: 1;
   }
 
@@ -67,8 +54,9 @@
     flex-wrap: wrap;
   }
 
-  nav h1 {
-    margin: auto;
+  h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0 0 20px;
     min-height: 80px;
     display: flex;
     justify-content: center;
@@ -77,7 +65,7 @@
     text-align: center;
   }
 
-  nav h1 a {
+  h1 a {
     color: #fff;
     font-size: 14pt;
     font-weight: 200;

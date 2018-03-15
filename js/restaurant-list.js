@@ -4,7 +4,7 @@ import { LitElement, html } from '/node_modules/@polymer/lit-element/lit-element
 
 import { and, compose, eq, prop, uniqueByKey } from './lib.js';
 
-import { mapMarker, removeMarkers, urlForRestaurant, imageUrlForRestaurant } from './map-marker.js';
+import { mapMarker, urlForRestaurant, imageUrlForRestaurant } from './map-marker.js';
 
 import styles from './styles.js';
 
