@@ -1,9 +1,9 @@
 import '/node_modules/@power-elements/emoji-rating/emoji-rating.js';
 import '/node_modules/@power-elements/lazy-image/lazy-image.js';
-import '/js/submit-review.js';
-import './restaurant-view.js';
 import './restaurant-list.js';
+import './restaurant-view.js';
 import './review-card.js';
+import './submit-review.js';
 
 import { LitElement, html } from '/node_modules/@polymer/lit-element/lit-element.js';
 
@@ -60,17 +60,19 @@ export default class RestaurantReviews extends LitElement {
 
   constructor() {
     super();
-    installRouter(async location => {
-      if (location.pathname === '/') {
-        this.restaurantId = '';
-        renderHeader();
-      } else {
-        const restaurant = await fetchRestaurantById(getParameterByName('id', location));
-        this.restaurantId = getParameterByName('id', location);
-        this.restaurant = restaurant;
-        renderHeader(restaurant);
-      }
-    });
+    installRouter(this.router);
+  }
+
+  async router(location) {
+    if (location.pathname === '/') {
+      this.restaurantId = '';
+      renderHeader();
+    } else {
+      const restaurant = await fetchRestaurantById(getParameterByName('id', location));
+      this.restaurantId = getParameterByName('id', location);
+      this.restaurant = restaurant;
+      renderHeader(restaurant);
+    }
   }
 
   async onReviewSubmitted(event) {

@@ -6,6 +6,11 @@ workbox.skipWaiting();
 workbox.clientsClaim();
 
 workbox.routing.registerRoute(
+  /.*(?:googleapis|gstatic)\.com.*$/,
+  workbox.strategies.staleWhileRevalidate({cacheName: 'googleapi-cache'}),
+);
+
+workbox.routing.registerRoute(
   /.*\.(?:html|js|css)/,
   workbox.strategies.staleWhileRevalidate({cacheName: 'static-cache'})
 );
