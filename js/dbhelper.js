@@ -21,14 +21,14 @@ export const fetchRestaurants = () =>
 
 /** Fetch reviews by restaurant id. */
 // fetchReviews :: () -> Promise rs
-export const fetchReviews = restaurant_id =>
-  fetch(`/api/reviews/${restaurant_id ? `?restaurant_id=${restaurant_id}` : ''}`)
+export const fetchReviews = id => !id ? Promise.resolve(null) : 
+  fetch(`/api/reviews/${id ? `?restaurant_id=${id}` : ''}`)
     .then(rejectNon200)
     .then(handleAsJson);
 
 /** Fetch a restaurant by its ID. */
 // fetchRestaurantById :: str -> Promise r
-export const fetchRestaurantById = (id) =>
+export const fetchRestaurantById = (id) => !id ? Promise.resolve(null) :
   fetch(`/api/restaurants/${id}`)
     .then(rejectNon200)
     .then(handleAsJson)
