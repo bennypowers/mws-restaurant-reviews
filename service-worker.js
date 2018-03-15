@@ -1,5 +1,7 @@
 const STATIC_ASSETS = 'static-assets-v6';
 
+const noop = () => null;
+
 // str -> promise(bool)
 const deleteCache = x => caches.delete(x);
 
@@ -16,7 +18,7 @@ const clearOldCaches = () => {
       .filter(not(STATIC_ASSETS))
       .map(trace('caches to delete'))
       .map(deleteCache));
-  }).catch(() => null);
+  }).catch(noop);
 };
 
 // _ -> promise([response])
@@ -24,25 +26,24 @@ const precache = async () => {
   const cache = await caches.open(STATIC_ASSETS);
   return cache.addAll([
     // App assets
-    '/index.html',
-    '/restaurant.html',
-    '/css/styles.css',
-    '/data/restaurants.json',
+    '/css/restaurant.css',
+    'js/restaurant-card.js',
+    'js/restaurant-list.js',
+    'js/restaurant-reviews.js',
+    'js/restaurant-styles.js',
+    'js/restaurant-view.js',
+    'js/review-card.js',
+    'js/submit-review.js',
     // Vendor assets - local
-    'bower_components/lazy-imports/lazy-imports-mixin.html',
-    'bower_components/polymer/lib/mixins/element-mixin.html',
-    'bower_components/polymer/lib/utils/html-tag.html',
-    'bower_components/polymer/lib/utils/import-href.html',
-    'bower_components/polymer/polymer-element.html',
-    'bower_components/service-worker/service-worker.html',
-    'bower_components/webcomponentsjs/webcomponents-loader.js',
-  ]);
+    'bower_components/good-map/good-map.js',
+    'node_modules/@polymer/lit-element/lit-element.js',
+  ]).catch(noop);
 };
 
 // request -> promise(void)
 const updateCache = async request => {
   const cache = await caches.open(STATIC_ASSETS);
-  const response = await fetch(request).catch(() => null);
+  const response = await fetch(request).catch(noop);
   return cache.put(request, response);
 };
 
@@ -50,20 +51,20 @@ const updateCache = async request => {
 const fromCacheOrFetch = async request => {
   const cache = await caches.open(STATIC_ASSETS);
   const match = await cache.match(request);
-  return match || fetch(request).catch(() => null);
+  return match || fetch(request).catch(noop);
 };
 
 self.addEventListener('install', event => {
-  event.waitUntil(precache().catch(() => null));
+  event.waitUntil(precache());
 });
 
 self.addEventListener('activate', event => {
-  event.waitUntil(clearOldCaches().catch(() => null));
+  event.waitUntil(clearOldCaches().catch(noop));
 });
 
 self.addEventListener('fetch', event => {
-  event.respondWith(fromCacheOrFetch(event.request).catch(() => null));
-  event.waitUntil(updateCache(event.request).catch(() => null));
+  event.respondWith(fromCacheOrFetch(event.request).catch(noop));
+  event.waitUntil(updateCache(event.request).catch(noop));
 });
 
 self.addEventListener('message', event => {
