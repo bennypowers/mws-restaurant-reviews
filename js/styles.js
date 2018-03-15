@@ -130,57 +130,8 @@ good-map {
 }
 
 :host {
-  --checkbox-width: 1.5em;
+  --emoji-checkbox-width: 1.5em;
 }
-
-.checkbox {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  width: var(--checkbox-width);
-  height: var(--checkbox-width);
-}
-
-input[type="checkbox"] {
-  display: block;
-  opacity: 0;
-  width: var(--checkbox-width);
-  height: var(--checkbox-width);
-}
-
-input[type="checkbox"] + label {
-  width: var(--checkbox-width);
-  height: var(--checkbox-width);
-  content: '';
-  position: relative;
-}
-
-input[type="checkbox"] + label {
-  position: relative;
-}
-
-input[type="checkbox"],
-input[type="checkbox"] + label::after {
-  display: block;
-  position: absolute;
-  left: 0;
-}
-
-input[type="checkbox"] + label::after {
-  opacity: 1;
-  content: '';
-}
-
-input[type="checkbox"] + label::after {
-  content: '😐';
-}
-
-input[type="checkbox"]:checked + label::after {
-  content: '😍';
-}
-
-
 
 /* ====================== Restaurant Listing ====================== */
 
@@ -193,14 +144,7 @@ input[type="checkbox"]:checked + label::after {
 }
 
 #restaurants-list li {
-  background-color: #fff;
-  border: 2px solid #ccc;
-  font-family: Arial, sans-serif;
   margin: 15px;
-  min-height: 380px;
-  padding: 0 30px 25px;
-  text-align: left;
-  width: calc(100% - 60px - 30px);
 }
 
 #restaurants-list li.no-restaurants {
@@ -212,41 +156,10 @@ input[type="checkbox"]:checked + label::after {
   width: auto;
 }
 
-#restaurants-list .restaurant-image {
-  background-color: #ccc;
-  display: block;
-  left: -30px;
-  margin: 0;
-  max-width: calc(100% + 60px);
-  min-width: calc(100% + 60px);
-  position: relative;
-}
-
-#restaurants-list li h1 {
-  color: crimson;
-  font: 14px 200 Arial, sans-serif;
-  letter-spacing: 0;
-  line-height: 1.3;
-  margin: 20px 0 10px;
-  text-transform: uppercase;
-}
 
 #restaurants-list p {
   font-size: 11pt;
   margin: 0;
-}
-
-#restaurants-list li a {
-  background-color: crimson;
-  border-bottom: 3px solid #eee;
-  color: #fff;
-  display: inline-block;
-  font-size: 10pt;
-  margin: 15px 0 0;
-  padding: 8px 30px 10px;
-  text-align: center;
-  text-decoration: none;
-  text-transform: uppercase;
 }
 
 #restaurant-name {
@@ -315,52 +228,9 @@ meter::before {
   flex: 1 0 1em;
 }
 
-#reviews-list article {
-  background-color: #fff;
-  border-radius: 20px 0;
-  border: 2px solid #f3f3f3;
-  display: block;
-  list-style-type: none;
-  margin: 0 0 30px;
-  overflow: hidden;
-  padding: 0 20px 20px;
-  position: relative;
-}
-
-#reviews-list article header {
-  align-items: center;
-  background: #444;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  left: -20px;
-  margin-bottom: 20px;
-  padding: 10px 20px;
-  position: relative;
+restaurant-card {
   width: 100%;
-  z-index: 0;
-}
-
-#reviews-list article h1 {
-  font-size: 18px;
-  margin: 0;
-}
-
-#reviews-list article time {
-  color: #eee;
-  margin: 0;
-}
-
-#reviews-list article span {
-  align-items: center;
-  background-color: crimson;
-  border-radius: 4px;
-  color: white;
-  display: inline-flex;
-  font-weight: bold;
-  margin-bottom: 20px;
-  padding: 8px;
-  text-transform: uppercase;
+  min-height: 400px;
 }
 
 #restaurant-hours td {

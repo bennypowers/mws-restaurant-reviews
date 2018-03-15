@@ -187,3 +187,10 @@ export const append = parent => child => parent.append(child);
 /** Point-free DOM remove. */
 // remove :: DOM -> DOM -> ()
 export const remove = element => element.remove();
+
+
+/**
+ * Random
+ */
+
+export const placeholderImage = 'data:image/svg;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%0D%0A%20%20%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%0D%0A%20%20%20%20%3Cpath%20fill%3D%22%23000%22%20fill-rule%3D%22nonzero%22%20d%3D%22M11%2C9%20L9%2C9%20L9%2C2%20L7%2C2%20L7%2C9%20L5%2C9%20L5%2C2%20L3%2C2%20L3%2C9%20C3%2C11.12%204.66%2C12.84%206.75%2C12.97%20L6.75%2C22%20L9.25%2C22%20L9.25%2C12.97%20C11.34%2C12.84%2013%2C11.12%2013%2C9%20L13%2C2%20L11%2C2%20L11%2C9%20Z%20M16%2C6%20L16%2C14%20L18.5%2C14%20L18.5%2C22%20L21%2C22%20L21%2C2%20C18.24%2C2%2016%2C4.24%2016%2C6%20Z%22%2F%3E%0D%0A%20%20%20%20%3Cpolygon%20points%3D%220%200%2024%200%2024%2024%200%2024%22%2F%3E%0D%0A%20%20%3C%2Fg%3E%0D%0A%3C%2Fsvg%3E';
