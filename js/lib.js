@@ -39,7 +39,7 @@ export const and = (f, g) => function _and() {
 /** Makes array methods point-free. */
 // safeArrayMethod :: m -> f -> as -> b
 export const safeArrayMethod = name => f => as =>
-  (as[name] && typeof as[name] === 'function' ? as : [])[name](f);
+  (as && as[name] && typeof as[name] === 'function' ? as : [])[name](f);
 
 /** Point-free array map. Naive implementation. */
 // map :: f -> as -> bs
@@ -71,7 +71,7 @@ export const uniq = compose(Array.from, x => new Set(x));
  export const prop = propertyName => o =>
    propertyName
      .split('.')
-     .reduce((a, b) => a[b], o);
+     .reduce((a, b) => a[b], o || {});
 
 /*
  * STRING FUNCTIONS
