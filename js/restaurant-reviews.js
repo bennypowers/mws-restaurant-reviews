@@ -60,19 +60,17 @@ export default class RestaurantReviews extends LitElement {
 
   constructor() {
     super();
-    installRouter(this.router);
-  }
-
-  async router(location) {
-    if (location.pathname === '/') {
-      this.restaurantId = '';
-      renderHeader();
-    } else {
-      const restaurant = await fetchRestaurantById(getParameterByName('id', location));
-      this.restaurantId = getParameterByName('id', location);
-      this.restaurant = restaurant;
-      renderHeader(restaurant);
-    }
+    installRouter(async location => {
+      if (location.pathname === '/') {
+        this.restaurantId = '';
+        renderHeader();
+      } else {
+        const restaurant = await fetchRestaurantById(getParameterByName('id', location));
+        this.restaurantId = getParameterByName('id', location);
+        this.restaurant = restaurant;
+        renderHeader(restaurant);
+      }
+    });
   }
 
   async onReviewSubmitted(event) {
