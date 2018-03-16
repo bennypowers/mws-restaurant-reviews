@@ -35,14 +35,15 @@ const headerTemplate = restaurant => html`
 const renderHeader = restaurant =>
   render(headerTemplate(restaurant), document.getElementById('header'));
 
-export const reviewCard = ({comments, createdAt, updatedAt, name, rating}) => html`
-<review-card
-    comments="${comments}"
-    createdAt="${createdAt}"
-    updatedAt="${updatedAt}"
-    name="${name}"
-    rating="${rating}"
-></review-card>`;
+// TODO: general card element
+const reviewCard = ({comments, createdAt, updatedAt, name, rating}) => html`
+  <review-card
+      comments="${comments}"
+      createdAt="${createdAt}"
+      updatedAt="${updatedAt}"
+      name="${name}"
+      rating="${rating}"
+  ></review-card>`;
 
 const reviewsList = reviews =>
     !Array.isArray(reviews) ? html`There was a problem showing the reviews. Please try again.`
@@ -73,17 +74,18 @@ export default class RestaurantReviews extends LitElement {
     });
   }
 
-  async onReviewSubmitted(event) {
+  onReviewSubmitted(event) {
+    // TODO: unbreak my heart
     // "optimistic UI"
-    this.reviews = [...this.reviews, event.detail];
+    // this.reviews = Promise.resolve([...Promise.resolve(this.reviews), event.detail]);
     // real data from the server
-    this.reviews = await fetchReviews(this.restaurantId);
+    // this.reviews = fetchReviews(this.restaurantId).then(reviewsList);
   }
 
   render({restaurantId = ''}) {
     const restaurantView = (restaurant = {}) => html`
-      <restaurant-view restaurant="${restaurant}">
-        ${fetchReviews(restaurantId).then(reviewsList)}
+      <restaurant-view restaurant="${restaurant}" on-review-submitted="${this.onReviewSubmitted}">
+        ${restaurantId ? fetchReviews(restaurantId).then(reviewsList) : Promise.resolve([])}
       </restaurant-view>
     `;
 

@@ -1,5 +1,6 @@
 import { LitElement, html } from '/node_modules/@polymer/lit-element/lit-element.js';
-import '/node_modules/@polymer/paper-fab/paper-fab.js';
+import '/node_modules/@power-elements/power-fab/power-fab.js';
+import '/node_modules/@polymer/iron-form/iron-form.js';
 import '/node_modules/@polymer/paper-input/paper-input.js';
 import '/node_modules/@polymer/paper-input/paper-textarea.js';
 import '/node_modules/@polymer/paper-slider/paper-slider.js';
@@ -32,7 +33,8 @@ class SubmitReview extends LitElement {
   }
 
   toggleOpened() {
-    this.opened = !this.opened;
+    const dialog = this.shadowRoot.querySelector('dialog');
+    dialog.open ? dialog.close() : dialog.showModal();
   }
 
   async submitReview() {
@@ -66,7 +68,7 @@ class SubmitReview extends LitElement {
 
       resetForm();
 
-      dialog.clone(review);
+      dialog.close(review);
 
       this.opened = false;
     }
@@ -74,7 +76,7 @@ class SubmitReview extends LitElement {
 
   render({opened, restaurantId, spinning}) {
     return html`${styles}
-    <paper-fab id="form-fab" label="+" title="Add Review" on-click="${() => this.toggleOpened()}"></paper-fab>
+    <power-fab id="form-fab" label="+" title="Add Review" on-active-changed="${event => this.toggleOpened(event)}"></power-fab>
     <dialog id="dialog" open="${opened}">
       <paper-spinner id="spinner" active="${spinning}"></paper-spinner>
       <iron-form id="iron-form">
