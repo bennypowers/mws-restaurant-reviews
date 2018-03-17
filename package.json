@@ -24,7 +24,8 @@
     "lws-compress": "^0.2.1",
     "lws-http2": "^0.2.2",
     "node": "^9.8.0",
-    "npm": "^5.7.1"
+    "npm": "^5.7.1",
+    "workbox-cli": "^3.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.2",
@@ -41,7 +42,7 @@
   },
   "scripts": {
     "postinstall": "npx bower i --allow-root",
-    "prestart": "npx rollup -c",
+    "prestart": "npx rollup -c && npx workbox injectManifest workbox-config.js",
     "start": "npx parallelshell \"npx ws -c lws.redirect.config.js\" \"npx ws\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
