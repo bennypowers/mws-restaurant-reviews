@@ -40,6 +40,7 @@ header {
 #restaurant-container {
   display: grid;
   max-width: 100%;
+  overflow: hidden;
 }
 
 #restaurant-container,
@@ -65,36 +66,6 @@ header {
 #restaurant-image-container {
   padding: 0 40px;
   margin: 0;
-}
-
-meter {
-  min-width: 6.5em;
-  visibility: hidden;
-}
-
-meter:after {
-  position: absolute;
-  visibility: visible;
-}
-
-meter[value="1"]:after {
-  content: '⭐☆☆☆☆';
-}
-
-meter[value="2"]:after {
-  content: '⭐⭐☆☆☆';
-}
-
-meter[value="3"]:after {
-  content: '⭐⭐⭐☆☆';
-}
-
-meter[value="4"]:after {
-  content: '⭐⭐⭐⭐☆';
-}
-
-meter[value="5"]:after {
-  content: '⭐⭐⭐⭐⭐';
 }
 
 @media screen and (min-width: 500px) {

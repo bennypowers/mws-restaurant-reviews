@@ -45,13 +45,14 @@ class RestaurantCard extends LitElement {
   render({address, favourite, image, name, neighbourhood, id, url}) {
     const idFromName = nameToId(name);
 
-    this.setAttribute('aria-labelledyBy', idFromName);
+    this.setAttribute('aria-labelledby', idFromName);
 
     return html`
       ${styles}
       <style>
       :host {
         display: block;
+        overflow: hidden;
         background-color: #fff;
         border: 2px solid #ccc;
         font-family: Arial, sans-serif;
@@ -72,10 +73,13 @@ class RestaurantCard extends LitElement {
 
       h1 {
         display: flex;
+        max-width: 100%;
+        overflow: hidden;
         align-items: center;
         justify-content: space-between;
         color: crimson;
-        font: 14px 200 Arial, sans-serif;
+        font: 20px Arial, sans-serif;
+        font-weight: 200;
         letter-spacing: 0;
         line-height: 1.3;
         margin: 20px 0 10px;

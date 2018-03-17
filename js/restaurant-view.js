@@ -56,6 +56,7 @@ class RestaurantView extends LitElement {
     ${restaurantStyles}
     <style>
     h1 {
+      max-width: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;

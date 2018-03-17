@@ -164,7 +164,8 @@ good-map {
 
 #restaurant-name {
   color: crimson;
-  font-family: 20pt 200 Arial, sans-serif;
+  font: 20px Arial, sans-serif;
+  font-weight: 200;
   letter-spacing: 0;
   line-height: 1.1;
   margin: 15px 0 30px;
