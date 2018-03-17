@@ -5,16 +5,10 @@ function getDB() {
   if (!db) {
     db = new Promise((resolve, reject) => {
       const openreq = indexedDB.open('keyval-store', 1);
-
-      openreq.onerror = () =>
-        reject(openreq.error);
-
+      openreq.onerror = () => reject(openreq.error);
       // First time setup: create an empty object store
-      openreq.onupgradeneeded = () =>
-        openreq.result.createObjectStore('keyval');
-
-      openreq.onsuccess = () =>
-        resolve(openreq.result);
+      openreq.onupgradeneeded = () => openreq.result.createObjectStore('keyval');
+      openreq.onsuccess = () => resolve(openreq.result);
     });
   }
   return db;
@@ -33,10 +27,7 @@ async function withStore(type, callback) {
 export default class idbKeyval {
 
   static get(key) {
-    var req;
-    return withStore('readonly', function(store) {
-      req = store.get(key);
-    }).then(() => req.result);
+    return withStore('readonly', store => store.get(key)).then(req => req.result);
   }
 
   static set(key, value) {
@@ -51,16 +42,17 @@ export default class idbKeyval {
     return withStore('readwrite', store => store.clear());
   }
 
-  static keys() {
-    var keys = [];
-    return withStore('readonly', function(store) {
+  static async keys() {
+    let keys = [];
+    await withStore('readonly', store => {
       // This would be store.getAllKeys(), but it isn't supported by Edge or Safari.
       // And openKeyCursor isn't supported by Safari.
-      (store.openKeyCursor || store.openCursor).call(store).onsuccess = function() {
+      (store.openKeyCursor || store.openCursor).call(store).onsuccess = () => {
         if (!this.result) return;
         keys.push(this.result.key);
         this.result.continue();
       };
-    }).then(() => keys);
+    });
+    return keys;
   }
 }
