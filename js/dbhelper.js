@@ -21,7 +21,7 @@ export const fetchRestaurants = () =>
 
 /** Fetch reviews by restaurant id. */
 // fetchReviews :: () -> Promise rs
-export const fetchReviews = id => !id ? Promise.resolve(null) : 
+export const fetchReviews = id => !id ? Promise.resolve(null) :
   fetch(`/api/reviews/${id ? `?restaurant_id=${id}` : ''}`)
     .then(rejectNon200)
     .then(handleAsJson);
@@ -36,7 +36,7 @@ export const fetchRestaurantById = (id) => !id ? Promise.resolve(null) :
 
 export const putFavorite = ({ restaurant_id, is_favorite }) => {
   const method = 'PUT';
-  return fetch(`/api/restaurant/${restaurant_id}?is_favorite=${!!is_favorite}`, { method })
+  return fetch(`/api/restaurants/${restaurant_id}?is_favorite=${!!is_favorite}`, { method })
     .then(rejectNon200)
     .then(handleAsJson)
     .then(returnOrThrow(`Couldn't update favorite status for restaurant ${restaurant_id}:`));
