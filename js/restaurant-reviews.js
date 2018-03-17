@@ -36,8 +36,8 @@ const renderHeader = restaurant =>
   render(headerTemplate(restaurant), document.getElementById('header'));
 
 // TODO: general card element
-const reviewCard = ({comments, createdAt, updatedAt, name, rating}) => html`
-  <review-card
+const reviewCard = ({comments, createdAt, id, updatedAt, name, rating}) => html`
+  <review-card id="${id}"
       comments="${comments}"
       createdAt="${createdAt}"
       updatedAt="${updatedAt}"

@@ -4,6 +4,10 @@ import { compose, prop, placeholderImage, trim } from './lib.js';
 
 import { mapMarker, imageUrlForRestaurant } from './map-marker.js';
 
+import { putFavorite } from './dbhelper.js';
+
+import '/node_modules/@power-elements/emoji-checkbox/emoji-checkbox.js';
+
 import './review-card.js';
 
 import styles from './styles.js';
@@ -38,6 +42,11 @@ class RestaurantView extends LitElement {
     };
   }
 
+  onCheckedChanged(event) {
+    event.detail.value !== this.favourite &&
+    putFavorite({restaurant_id: this.restaurant.id, is_favorite: event.detail.value});
+  }
+
   render({restaurant}) {
     const { address, cuisine_type, id, latlng, name } = restaurant || {};
     const { lat, lng } = latlng || {};
@@ -45,6 +54,13 @@ class RestaurantView extends LitElement {
     return html`
     ${styles}
     ${restaurantStyles}
+    <style>
+    h1 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    </style>
     <main id="maincontent">
       <section id="map-container">
         <good-map id="map"
@@ -58,7 +74,16 @@ class RestaurantView extends LitElement {
       </section>
 
       <section id="restaurant-container">
-        <h1 id="restaurant-name" tabindex="0">${name}</h1>
+        <h1 id="restaurant-name" tabindex="0">
+          ${name}
+          <emoji-checkbox
+              full="😎"
+              empty="💩"
+              on-checked-changed="${event => this.onCheckedChanged(event)}"
+              title="${restaurant.is_favorite ? 'Favourite!' : 'Not Favourite'}"
+              checked?="${restaurant.is_favorite}"
+              label="favourite"></emoji-checkbox>
+        </h1>
 
         <figure id="restaurant-image-container">
           <lazy-image id="restaurant-image"

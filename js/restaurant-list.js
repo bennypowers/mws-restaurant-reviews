@@ -10,7 +10,7 @@ import styles from './styles.js';
 
 const restaurantCard = restaurant => html`
 <li>
-  <restaurant-card
+  <restaurant-card id="${restaurant.id}"
       name="${restaurant.name}"
       address="${restaurant.address}"
       favourite="${restaurant.is_favorite}"

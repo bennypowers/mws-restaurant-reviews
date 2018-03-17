@@ -1,8 +1,10 @@
 import { LitElement, html } from '/node_modules/@polymer/lit-element/lit-element.js';
 
+import '/node_modules/@power-elements/emoji-checkbox/emoji-checkbox.js';
+
 import { nameToId, placeholderImage } from './lib.js';
 
-import '/node_modules/@power-elements/emoji-checkbox/emoji-checkbox.js';
+import { putFavorite } from './dbhelper.js';
 
 import styles from './styles.js';
 
@@ -11,12 +13,18 @@ class RestaurantCard extends LitElement {
   static get properties() {
     return {
       address: String,
+      id: String,
       favourite: Boolean,
       image: String,
       name: String,
       neighbourhood: String,
       url: String,
     };
+  }
+
+  onCheckedChanged(event) {
+    event.detail.value !== this.favourite &&
+    putFavorite({restaurant_id: this.id, is_favorite: event.detail.value});
   }
 
   /**
@@ -34,9 +42,11 @@ class RestaurantCard extends LitElement {
    * NOTE: It might be a little unorthodox to use both aria-label and the label element,
    *       but in this case it give us emoji so I'm down.
    */
-  render({address, favourite, image, name, neighbourhood, url}) {
-    const id = nameToId(name);
-    this.setAttribute('aria-labelledyBy', id);
+  render({address, favourite, image, name, neighbourhood, id, url}) {
+    const idFromName = nameToId(name);
+
+    this.setAttribute('aria-labelledyBy', idFromName);
+
     return html`
       ${styles}
       <style>
@@ -48,7 +58,6 @@ class RestaurantCard extends LitElement {
         min-height: 380px;
         text-align: left;
         padding: 0 30px 25px;
-        width: calc(100% - 60px - 30px);
       }
 
       .restaurant-image {
@@ -62,6 +71,9 @@ class RestaurantCard extends LitElement {
       }
 
       h1 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         color: crimson;
         font: 14px 200 Arial, sans-serif;
         letter-spacing: 0;
@@ -89,12 +101,16 @@ class RestaurantCard extends LitElement {
           placeholder="${placeholderImage}"
           src="${image}"
           alt="Interior or exterior of ${name}"></lazy-image>
-      <h1 id="${name}">${name}</h1>
-      <emoji-checkbox
-          full="😎"
-          empty="💩"
-          checked?="${favourite}"
-          label="favourite"></emoji-checkbox>
+      <h1 id="${idFromName}">
+        ${name}
+        <emoji-checkbox
+            full="😎"
+            empty="💩"
+            on-checked-changed="${event => this.onCheckedChanged(event)}"
+            title="${favourite ? 'Favourite!' : 'Not Favourite'}"
+            checked?="${favourite}"
+            label="favourite"></emoji-checkbox>
+      </h1>
       <p>${neighbourhood}</p>
       <address>${address}</address>
       <a href="${url}">More Details</a>
