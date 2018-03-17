@@ -12,7 +12,7 @@
     "@polymer/paper-slider": "^3.0.0-pre.11",
     "@polymer/paper-spinner": "^3.0.0-pre.11",
     "@polymer/polymer": "^3.0.0-pre.11",
-    "@power-elements/emoji-checkbox": "^1.0.2",
+    "@power-elements/emoji-checkbox": "^1.1.0",
     "@power-elements/emoji-rating": "^1.0.2",
     "@power-elements/lazy-image": "^1.0.2",
     "@power-elements/power-fab": "^1.0.1",
