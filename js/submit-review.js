@@ -7,21 +7,10 @@ import '/node_modules/@polymer/paper-slider/paper-slider.js';
 import { postReview } from './dbhelper.js';
 import { customEvent } from './lib.js';
 
-const styles = html`
-<style>
+import styles from './styles.js';
 
-:host {
-  position: fixed;
-  bottom: 1em;
-  right: 1em;
-}
 
-dialog {
-  position: fixed;
-  top: calc(50% - 150px);
-}
 
-</style>`;
 
 class SubmitReview extends LitElement {
   static get properties() {
@@ -61,16 +50,37 @@ class SubmitReview extends LitElement {
 
       form.style.opacity = 0;
       this.spinning = true;
+    <style>
 
       const review = await postReview({comments, name, rating, restaurant_id});
+    :host {
+      position: fixed;
+      bottom: 1em;
+      right: 1em;
+    }
 
       this.dispatchEvent(customEvent('review-submitted', review));
+    dialog {
+      position: fixed;
+      top: calc(50% - 150px);
+    }
 
       resetForm();
+    #form.loading {
+      opacity: 0;
+    }
 
       dialog.close(review);
+    #spinner {
+      position: absolute;
+      left: calc(50% - 14px);
+      top: calc(50% - 14px);
+    }
 
       this.opened = false;
+    #form {
+      opacity: 1;
+      transition: opacity 0.5s ease;
     }
   }
 
@@ -79,6 +89,8 @@ class SubmitReview extends LitElement {
     <power-fab id="form-fab" label="+" title="Add Review" on-active-changed="${event => this.toggleOpened(event)}"></power-fab>
     <dialog id="dialog" open="${opened}">
       <paper-spinner id="spinner" active="${spinning}"></paper-spinner>
+
+    </style>
       <iron-form id="iron-form">
         <form id="form" method="dialog">
           <input id="restaurant-id" hidden type="text" name="restaurant_id" value="${restaurantId}" />

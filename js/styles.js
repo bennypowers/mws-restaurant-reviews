@@ -21,20 +21,6 @@ const styles = html`<style>
   align-items: center;
 }
 
-#form-dialog {
-  position: relative;
-}
-
-#form {
-  transition: opacity 0.5s ease;
-}
-
-#spinner {
-  position: absolute;
-  left: calc(50% - 14px);
-  top: calc(50% - 14px);
-}
-
 ul,
 li {
   font-family: Arial, Helvetica, sans-serif;
