@@ -4,6 +4,7 @@ import './restaurant-list.js';
 import './restaurant-view.js';
 import './review-card.js';
 import './submit-review.js';
+import OnlineMixin from './online-mixin.js';
 
 import { LitElement, html } from '/node_modules/@polymer/lit-element/lit-element.js';
 
@@ -15,20 +16,20 @@ import { installRouter } from './router.js';
 
 import { fetchRestaurants, fetchRestaurantById, fetchReviews } from './dbhelper.js';
 
-import { getParameterByName } from './lib.js';
+import { appendTemplateResult, getParameterByName, trace } from './lib.js';
 
-const breadcrumbTemplate = ({name}) => html`
+const breadcrumbTemplate = ({ name }) => html`
   <ul id="breadcrumb" aria-label="Breadcrumb">
     <li><a href="/">Home</a></li>
-    <li aria-current="page">${name}</li>
+    <li aria-current="page">${ name }</li>
   </ul>
 `;
 
 const headerTemplate = restaurant => html`
-  <link rel="stylesheet" href="${restaurant ? '/css/restaurant.css' : ''}">
+  <link rel="stylesheet" href="${ restaurant ? '/css/restaurant.css' : '' }">
   <nav>
     <h1><a href="/">Restaurant Reviews</a></h1>
-    ${restaurant ? breadcrumbTemplate(restaurant) : ''}
+    ${ restaurant ? breadcrumbTemplate(restaurant) : '' }
   </nav>
 `;
 
@@ -36,13 +37,13 @@ const renderHeader = restaurant =>
   render(headerTemplate(restaurant), document.getElementById('header'));
 
 // TODO: general card element
-const reviewCard = ({comments, createdAt, id, updatedAt, name, rating}) => html`
-  <review-card id="${id}"
-      comments="${comments}"
-      createdAt="${createdAt}"
-      updatedAt="${updatedAt}"
-      name="${name}"
-      rating="${rating}"
+const reviewCard = ({comments, createdAt, id, updatedAt, name, rating}) =>
+  html`<review-card id="${ id }"
+      comments="${ comments }"
+      createdAt="${ createdAt }"
+      updatedAt="${ updatedAt }"
+      name="${ name }"
+      rating="${ rating }"
   ></review-card>`;
 
 const reviewsList = reviews =>
@@ -50,12 +51,19 @@ const reviewsList = reviews =>
   : !reviews.length ? html`<p>No Reviews Yet!</p>`
   : reviews.map(reviewCard);
 
+// "optimistic UI"
+const onReviewSubmitted = component => event =>
+  appendTemplateResult(
+    component.shadowRoot.getElementById('restaurant'),
+    reviewCard(event.detail)
+  );
 
-export default class RestaurantReviews extends LitElement {
+export default class RestaurantReviews extends OnlineMixin(LitElement) {
 
   static get properties() {
     return {
       restaurantId: String,
+      online: Boolean,
     };
   }
 
@@ -74,18 +82,15 @@ export default class RestaurantReviews extends LitElement {
     });
   }
 
-  onReviewSubmitted(event) {
-    // TODO: unbreak my heart
-    // "optimistic UI"
-    // this.reviews = Promise.resolve([...Promise.resolve(this.reviews), event.detail]);
-    // real data from the server
-    // this.reviews = fetchReviews(this.restaurantId).then(reviewsList);
-  }
-
-  render({restaurantId = ''}) {
+  render({ online, restaurantId = '' }) {
     const restaurantView = (restaurant = {}) => html`
-      <restaurant-view restaurant="${restaurant}" on-review-submitted="${this.onReviewSubmitted}">
-        ${restaurantId ? fetchReviews(restaurantId).then(reviewsList) : Promise.resolve([])}
+      <restaurant-view id="restaurant"
+          restaurant="${ restaurant }"
+          on-review-submitted="${ onReviewSubmitted(this) }">
+        ${ !restaurantId ? Promise.resolve([]) :
+          fetchReviews(restaurantId)
+            .then(reviewsList)
+            .catch(fetch('fetchReviews')) }
       </restaurant-view>
     `;
 
@@ -93,13 +98,19 @@ export default class RestaurantReviews extends LitElement {
       <restaurant-list restaurants="${restaurants}"></restaurant-list>
     `;
 
-    const restaurant = fetchRestaurantById(restaurantId).then(restaurantView);
-    const restaurants = fetchRestaurants().then(restaurantList);
+    const restaurant = fetchRestaurantById(restaurantId)
+      .then(restaurantView)
+      .catch(trace('fetchRestaurantById'));
 
-    return restaurantId
-      ? html`${until(restaurant, restaurantView())}`
-      : html`${until(restaurants, restaurantList([]))}`;
-  }
+    const restaurants = fetchRestaurants()
+      .then(restaurantList)
+      .catch(trace('fetchRestaurants'));
+
+    return html`${ restaurantId
+      ? until(restaurant, restaurantView())
+      : until(restaurants, restaurantList([]))
+    }`
+   }
 }
 
 customElements.define('restaurant-reviews', RestaurantReviews);

@@ -7,6 +7,7 @@ import { mapMarker, imageUrlForRestaurant } from './map-marker.js';
 import { putFavorite } from './dbhelper.js';
 
 import '/node_modules/@power-elements/emoji-checkbox/emoji-checkbox.js';
+import '/node_modules/@power-elements/power-fab/power-fab.js';
 
 import './review-card.js';
 
@@ -45,8 +46,8 @@ class RestaurantView extends LitElement {
     putFavorite({restaurant_id: this.restaurant.id, is_favorite: event.detail.value});
   }
 
-  render({restaurant}) {
-    const { address, cuisine_type, id, latlng, name } = restaurant || {};
+  render({ restaurant }) {
+    const { address, cuisine_type, id, is_favorite, latlng, name } = restaurant || {};
     const { lat, lng } = latlng || {};
 
     return html`
@@ -210,8 +211,8 @@ class RestaurantView extends LitElement {
               full="😎"
               empty="💩"
               on-checked-changed="${event => this.onCheckedChanged(event)}"
-              title="${restaurant.is_favorite ? 'Favourite!' : 'Not Favourite'}"
-              checked?="${restaurant.is_favorite}"
+              title="${is_favorite ? 'Favourite!' : 'Not Favourite'}"
+              checked?="${is_favorite}"
               label="favourite"></emoji-checkbox>
         </h1>
 
@@ -238,9 +239,13 @@ class RestaurantView extends LitElement {
 
       <section id="reviews-container" tabindex="0" aria-label="Reviews">
         <h2>Reviews</h2>
-        <slot></slot>
         <div id="reviews-list"><slot></slot></div>
       </section>
+
+      <power-fab id="form-fab"
+          label="+"
+          title="Add Review"
+          on-active-changed="${ event => this.shadowRoot.querySelector('submit-review').toggleOpened(event) }"></power-fab>
 
       <submit-review id="review-fab"
           restaurantId="${id}"

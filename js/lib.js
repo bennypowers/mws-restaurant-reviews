@@ -188,6 +188,18 @@ export const append = parent => child => parent.append(child);
 // remove :: DOM -> DOM -> ()
 export const remove = element => element.remove();
 
+/** Appends a lit-html TemplateResult to a target element. */
+// HACK: Since we can't directly append a TemplateResult to an element,
+//       we render it to a temporary div, then append it to our container.
+export const appendTemplateResult = (target, templateResult) => {
+  let temp = document.createElement('div');
+  render(templateResult, temp)
+  const returnValue = target.append(temp.firstElementChild);
+  // Give GC a leg up, Just in case;
+  temp.innerHTML = '';
+  temp = null;
+  return returnValue;
+};
 
 /**
  * Random
