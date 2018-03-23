@@ -16,6 +16,6 @@
     "tests"
   ],
   "dependencies": {
-    "good-map": "keanulee/good-map#^0.0.1"
+    "good-map": "bennypowers/good-map#patch-1"
   }
 }

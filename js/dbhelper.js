@@ -1,6 +1,12 @@
 import idbKeyval from './idb-keyval.js';
 import { handleAsJson, handleAsText, rejectNon200, returnOrThrow } from './lib.js';
 
+// TODO: All these functions should cache in idb. in case of PUT/POST/DELETE,
+//       they should cache on a unique string (keyed to time?) as pending requests,
+//       then when the request succeeds, remove themselves from the cache. In this way,
+//       we'll implement background sync.
+
+
 // cacheInIdb :: String -> d -> Promise undefined
 const cacheInIdb = key => value => {
   const setKv = i => idbKeyval.set(`${key}/${i.id}`, i);

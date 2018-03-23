@@ -98,6 +98,8 @@ export default class RestaurantReviews extends OnlineMixin(LitElement) {
       <restaurant-list restaurants="${restaurants}"></restaurant-list>
     `;
 
+    // TODO: waiting for components to load before fetching is delaying paint.
+    
     const restaurant = fetchRestaurantById(restaurantId)
       .then(restaurantView)
       .catch(trace('fetchRestaurantById'));

@@ -39,3 +39,7 @@ Lighthouse targets for each category exceed:
 ✔️ Progressive Web App: >90
 📝 Performance: >90
 ✔️ Accessibility: >90
+
+# Stretch Goals
+
+* Add City selector with Jerusalem data
