@@ -9,7 +9,7 @@ import { customEvent, trace } from './lib.js';
 
 import styles from './styles.js';
 
-const nullifyValue = l => l.value = null
+const nullifyValue = l => l.value = null;
 
 const resetForm = component => review => (
   [component.nameInput, component.commentsInput]
@@ -40,7 +40,7 @@ class SubmitReview extends OnlineMixin(LitElement) {
 
   connectedCallback() {
     super.connectedCallback();
-    this.dialog = this.shadowRoot.querySelector('dialog')
+    this.dialog = this.shadowRoot.querySelector('dialog');
     this.ironForm = this.shadowRoot.querySelector('#iron-form');
     this.nameInput = this.shadowRoot.querySelector('#name-input');
     this.ratingInput = this.shadowRoot.querySelector('#rating-input');

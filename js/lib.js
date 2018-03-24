@@ -1,3 +1,4 @@
+import { render } from '/node_modules/lit-html/lit-html.js';
 // NOTE: In real life, I would use an FP library like Crocks or Ramda.
 
 /*
@@ -193,7 +194,7 @@ export const remove = element => element.remove();
 //       we render it to a temporary div, then append it to our container.
 export const appendTemplateResult = (target, templateResult) => {
   let temp = document.createElement('div');
-  render(templateResult, temp)
+  render(templateResult, temp);
   const returnValue = target.append(temp.firstElementChild);
   // Give GC a leg up, Just in case;
   temp.innerHTML = '';

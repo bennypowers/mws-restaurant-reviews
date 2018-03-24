@@ -3,14 +3,14 @@ export const OnlineMixin = superclass => class Mixin extends superclass {
     return {
       online: Boolean,
     };
-  };
+  }
 
   constructor() {
     super();
-    window.addEventListener('online', event => this.online = true);
-    window.addEventListener('offline', event => this.online = false);
+    window.addEventListener('online', () => this.online = true);
+    window.addEventListener('offline', () => this.online = false);
     this.online = navigator.onLine;
   }
-}
+};
 
 export default OnlineMixin;

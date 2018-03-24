@@ -22,11 +22,6 @@ class RestaurantCard extends LitElement {
     };
   }
 
-  onCheckedChanged(event) {
-    event.detail.value !== this.favourite &&
-    putFavorite({restaurant_id: this.id, is_favorite: event.detail.value});
-  }
-
   /**
    * NOTE: For the alt tag, different reviewers have expressed different
    *       preferences with regards to the proper text. In an effort to please
@@ -42,7 +37,7 @@ class RestaurantCard extends LitElement {
    * NOTE: It might be a little unorthodox to use both aria-label and the label element,
    *       but in this case it give us emoji so I'm down.
    */
-  render({address, favourite, image, name, neighbourhood, id, url}) {
+  render({ address, favourite, image, name, neighbourhood, id, url }) {
     const idFromName = nameToId(name);
 
     this.setAttribute('aria-labelledby', idFromName);
@@ -110,7 +105,11 @@ class RestaurantCard extends LitElement {
         <emoji-checkbox
             full="😎"
             empty="💩"
-            on-checked-changed="${event => this.onCheckedChanged(event)}"
+            on-checked-changed="${ event =>
+              putFavorite({
+                restaurant_id: id,
+                is_favorite: event.detail.value
+              }) }"
             title="${favourite ? 'Favourite!' : 'Not Favourite'}"
             checked?="${favourite}"
             label="favourite"></emoji-checkbox>
