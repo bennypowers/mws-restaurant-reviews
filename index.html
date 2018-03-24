@@ -92,16 +92,13 @@
     min-height: 400px;
     width: 100%;
     background-color: #ccc;
+    padding: 8px;
   }
 
   </style>
 </head>
 
 <body>
-  <noscript>
-    <p>To see the restaurant map and read reviews, please <a href="https://www.enable-javascript.com/">enable JavaScript in your browser</a>.</p>
-  </noscript>
-
   <header id="header">
     <nav>
       <h1><a href="/">Restaurant Reviews</a></h1>
@@ -111,7 +108,11 @@
   <restaurant-reviews id="app">
     <!-- NOTE: Static app shell provides the perception of performance while js loads in the background -->
     <main id="static-app-shell">
-      <div id="static-map"></div>
+      <div id="static-map">
+        <noscript>
+          <p>To see the restaurant map and read reviews, please <a href="https://www.enable-javascript.com/">enable JavaScript in your browser</a>.</p>
+        </noscript>
+      </div>
     </main>
   </restaurant-reviews>
 
