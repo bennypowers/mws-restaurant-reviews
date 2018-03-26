@@ -18,7 +18,7 @@ module.exports = {
     'no-loops/no-loops': 2,
   },
   overrides: [{
-    files: ['service-worker.js'],
+    files: ['service-worker.src.js'],
     env: {
       serviceworker: true,
     },

@@ -1,4 +1,4 @@
-import { html } from '/node_modules/lit-html/lit-html.js';
+import { html } from '../node_modules/lit-html/lit-html.js';
 
 /**
  * NOTE: Ordinarily we'd prefer to write css in css files, but since we're using
@@ -104,7 +104,7 @@ good-map {
   width: 100%;
 }
 
-.filter-options select {
+select {
   background-color: white;
   border: 1px solid #fff;
   flex: 1 1 auto;

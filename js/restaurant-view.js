@@ -1,4 +1,4 @@
-import { LitElement, html } from '/node_modules/@polymer/lit-element/lit-element.js';
+import { LitElement, html } from '../node_modules/@polymer/lit-element/lit-element.js';
 
 import { compose, prop, placeholderImage, trim } from './lib.js';
 
@@ -6,8 +6,8 @@ import { mapMarker, imageUrlForRestaurant } from './map-marker.js';
 
 import { putFavorite } from './dbhelper.js';
 
-import '/node_modules/@power-elements/emoji-checkbox/emoji-checkbox.js';
-import '/node_modules/@power-elements/power-fab/power-fab.js';
+import '../node_modules/@power-elements/emoji-checkbox/emoji-checkbox.js';
+import '../node_modules/@power-elements/power-fab/power-fab.js';
 
 import './review-card.js';
 
@@ -39,11 +39,6 @@ class RestaurantView extends LitElement {
     return {
       restaurant: Object,
     };
-  }
-
-  onCheckedChanged(event) {
-    event.detail.value !== this.favourite &&
-    putFavorite({restaurant_id: this.restaurant.id, is_favorite: event.detail.value});
   }
 
   render({ restaurant }) {
@@ -200,7 +195,10 @@ class RestaurantView extends LitElement {
             api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc"
             zoom="12"
             map-options='{"scrollwheel": false}'
-            on-google-map-ready="${event => mapMarker(event.detail)(restaurant)}">
+            on-google-map-ready="${
+              event =>
+                mapMarker(event.detail)(restaurant)
+            }">
         </good-map>
       </section>
 
@@ -210,7 +208,15 @@ class RestaurantView extends LitElement {
           <emoji-checkbox
               full="😎"
               empty="💩"
-              on-checked-changed="${event => this.onCheckedChanged(event)}"
+              on-checked-changed="${
+                event =>
+                  restaurant &&
+                  event.detail.value !== restaurant.favourite &&
+                  putFavorite({
+                    restaurant_id: id,
+                    is_favorite: event.detail.value
+                  })
+                }"
               title="${is_favorite ? 'Favourite!' : 'Not Favourite'}"
               checked?="${is_favorite}"
               label="favourite"></emoji-checkbox>

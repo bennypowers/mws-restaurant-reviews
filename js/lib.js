@@ -1,4 +1,4 @@
-import { render } from '/node_modules/lit-html/lit-html.js';
+import { render } from '../node_modules/lit-html/lit-html.js';
 // NOTE: In real life, I would use an FP library like Crocks or Ramda.
 
 /*

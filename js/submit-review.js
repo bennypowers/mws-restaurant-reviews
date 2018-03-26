@@ -1,8 +1,8 @@
-import { LitElement, html } from '/node_modules/@polymer/lit-element/lit-element.js';
-import '/node_modules/@polymer/iron-form/iron-form.js';
-import '/node_modules/@polymer/paper-input/paper-input.js';
-import '/node_modules/@polymer/paper-input/paper-textarea.js';
-import '/node_modules/@polymer/paper-slider/paper-slider.js';
+import { LitElement, html } from '../node_modules/@polymer/lit-element/lit-element.js';
+import '../node_modules/@polymer/iron-form/iron-form.js';
+import '../node_modules/@polymer/paper-input/paper-input.js';
+import '../node_modules/@polymer/paper-input/paper-textarea.js';
+import '../node_modules/@polymer/paper-slider/paper-slider.js';
 import OnlineMixin from './online-mixin.js';
 import { postReview } from './dbhelper.js';
 import { customEvent, trace } from './lib.js';
