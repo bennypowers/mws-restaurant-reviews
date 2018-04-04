@@ -22,4 +22,11 @@ workbox.routing.registerRoute(
   workbox.strategies.cacheFirst({cacheName: 'data-cache'})
 );
 
+workbox.precaching.precacheAndRoute([
+  '/img/1.jpg',
+  '/img/2.jpg',
+  '/img/3.jpg',
+  '/img/4.jpg',
+], {cachename: 'img-cache'});
+
 workbox.precaching.precacheAndRoute([]);
