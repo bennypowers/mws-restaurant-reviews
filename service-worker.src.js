@@ -13,6 +13,11 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
+  /.*\.(?:js|html|css)/,
+  workbox.strategies.cacheFirst({cacheName: workbox.core.cacheNames.precache})
+);
+
+workbox.routing.registerRoute(
   /.*\.(?:png|jpe?g|svg|gif)/,
   workbox.strategies.cacheFirst({cacheName: 'img-cache'})
 );
@@ -21,12 +26,5 @@ workbox.routing.registerRoute(
   /\/api\/.*/,
   workbox.strategies.cacheFirst({cacheName: 'data-cache'})
 );
-
-workbox.precaching.precacheAndRoute([
-  '/img/1.jpg',
-  '/img/2.jpg',
-  '/img/3.jpg',
-  '/img/4.jpg',
-], {cachename: 'img-cache'});
 
 workbox.precaching.precacheAndRoute([]);
