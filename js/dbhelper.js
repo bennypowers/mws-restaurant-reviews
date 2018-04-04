@@ -1,5 +1,5 @@
 import idbKeyval from './idb-keyval.js';
-import { handleAsJson, handleAsText, rejectNon200, returnOrThrow } from './lib.js';
+import { asArray, constant, handleAsJson, handleAsText, rejectNon200, returnOrThrow } from './lib.js';
 
 // TODO: All these functions should cache in idb. in case of PUT/POST/DELETE,
 //       they should cache on a unique string (keyed to time?) as pending requests,
@@ -7,15 +7,14 @@ import { handleAsJson, handleAsText, rejectNon200, returnOrThrow } from './lib.j
 //       we'll implement background sync.
 
 
-// cacheInIdb :: String -> d -> Promise undefined
-const cacheInIdb = key => value => {
-  const setKv = i => idbKeyval.set(`${key}/${i.id}`, i);
-  const promise = Array.isArray(value)
-    ? Promise.all(value.map(setKv))
-    : idbKeyval.set(key, value);
-  return promise.then(() => value);
-};
+// setKv :: key -> value -> Promise undefined
+const setKv = key => value =>
+  idbKeyval.set( value.id ? `${key}/${value.id}` : `${key}`, value );
 
+// cacheInIdb :: String -> d -> Promise value
+const cacheInIdb = key => value =>
+  Promise.all( asArray(value).map( setKv(key) ) )
+    .then( constant(value) );
 
 /** Fetch all restaurants */
 // fetchRestaurants :: () -> Promise rs
@@ -30,7 +29,8 @@ export const fetchRestaurants = () =>
 export const fetchReviews = id => !id ? Promise.resolve(null) :
   fetch(`/api/reviews/${id ? `?restaurant_id=${id}` : ''}`)
     .then(rejectNon200)
-    .then(handleAsJson);
+    .then(handleAsJson)
+    .then(cacheInIdb('reviews'));
 
 /** Fetch a restaurant by its ID. */
 // fetchRestaurantById :: str -> Promise r
@@ -38,6 +38,7 @@ export const fetchRestaurantById = (id) => !id ? Promise.resolve(null) :
   fetch(`/api/restaurants/${id}`)
     .then(rejectNon200)
     .then(handleAsJson)
+    .then(cacheInIdb('restaurants'))
     .then(returnOrThrow(`Restaurant id ${id} does not exist`));
 
 export const putFavorite = ({ restaurant_id, is_favorite }) => {
