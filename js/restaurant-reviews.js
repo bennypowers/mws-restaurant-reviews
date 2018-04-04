@@ -147,7 +147,7 @@ class RestaurantReviews extends OnlineMixin(LitElement) {
         ${ !restaurantId ? Promise.resolve([]) :
           fetchReviews(restaurantId)
             .then(reviewsList)
-            .catch(fetch('fetchReviews')) }
+            .catch(trace('fetchReviews')) }
       </restaurant-view>
     `;
 
