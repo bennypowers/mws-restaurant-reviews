@@ -1,8 +1,16 @@
 const { restaurants, reviews } = require('./data.json');
 
+const identity = x => x;
 const byFavorite = x => x.is_favorite === true;
 const byId = id => x => x.id === Number(id);
 const byRestaurantId = id => x => x.restaurant_id === Number(id);
+
+// A tiny optimization to decrease the weight of JSON sent to critical path.
+const restaurantsForFrontPage = restaurants.map(restaurant => {
+  // eslint-disable-next-line no-unused-vars
+  const {createdAt, updatedAt, operating_hours, ...rest} = restaurant;
+  return rest;
+});
 
 module.exports = MockBase => class RestaurantMocks extends MockBase {
   mocks(options) {
@@ -14,7 +22,7 @@ module.exports = MockBase => class RestaurantMocks extends MockBase {
           request: { method: 'GET' },
           response(ctx) {
             const {is_favorite} = ctx.request.query;
-            ctx.body = restaurants.filter(is_favorite ? byFavorite : x => x);
+            ctx.body = restaurantsForFrontPage.filter(is_favorite ? byFavorite : identity);
           },
         },
       },
@@ -69,7 +77,8 @@ module.exports = MockBase => class RestaurantMocks extends MockBase {
               // 'write' the review to the 'database'
               reviews.push(review);
 
-              await new Promise((res) => setTimeout(res, Math.random() * 800));
+              // simulate network
+              await new Promise(r => setTimeout(r, Math.random() * 800));
 
               // respond with the new review obj
               ctx.body = review;
