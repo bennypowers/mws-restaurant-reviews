@@ -8,13 +8,13 @@
 
 # Offline Use
 
-📝 The client application works offline.
+✔️ The client application works offline.
 
 ✔️ JSON responses are cached using the IndexedDB API.
 
 ✔️ Any data previously accessed while connected is reachable while offline.
 
-📝 User is able to add a review to a restaurant while offline and the review is sent to the server when connectivity is re-established.
+✔️ User is able to add a review to a restaurant while offline and the review is sent to the server when connectivity is re-established.
 
 # Responsive Design and Accessibility
 
@@ -22,7 +22,7 @@
 
 # Accessibility
 
-✔️ The application retains accessibility features from the previous projecs.
+✔️ The application retains accessibility features from the previous projects.
 
 ✔️ Images have alternate text,
 

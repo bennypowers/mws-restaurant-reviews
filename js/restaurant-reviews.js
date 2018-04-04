@@ -8,7 +8,7 @@ import OnlineMixin from './online-mixin.js';
 
 import { LitElement, html } from '../node_modules/@polymer/lit-element/lit-element.js';
 
-import { render, directive } from '../node_modules/lit-html/lit-html.js';
+import { render } from '../node_modules/lit-html/lit-html.js';
 
 import { until } from '../node_modules/lit-html/lib/until.js';
 
@@ -16,7 +16,7 @@ import { installRouter } from './router.js';
 
 import { urlForRestaurant, imageUrlForRestaurant } from './map-marker.js';
 
-import { fetchRestaurants, fetchRestaurantById, fetchReviews } from './dbhelper.js';
+import { attemptCatchUp, fetchRestaurants, fetchRestaurantById, fetchReviews } from './dbhelper.js';
 const restaurantsP = fetchRestaurants();
 
 import {
@@ -132,6 +132,11 @@ class RestaurantReviews extends OnlineMixin(LitElement) {
         renderHeader(restaurant);
       }
     });
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    attemptCatchUp();
   }
 
   render({ online, cuisine = 'all', neighbourhood = 'all', restaurantId = '' }) {

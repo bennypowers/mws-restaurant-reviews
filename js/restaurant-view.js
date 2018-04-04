@@ -211,6 +211,7 @@ class RestaurantView extends LitElement {
               on-checked-changed="${
                 event =>
                   restaurant &&
+                  restaurant.favourite != null &&
                   event.detail.value !== restaurant.favourite &&
                   putFavorite({
                     restaurant_id: id,
