@@ -8,7 +8,7 @@ import OnlineMixin from './online-mixin.js';
 
 import { LitElement, html } from '../node_modules/@polymer/lit-element/lit-element.js';
 
-import { render } from '../node_modules/lit-html/lit-html.js';
+import { render, directive } from '../node_modules/lit-html/lit-html.js';
 
 import { until } from '../node_modules/lit-html/lib/until.js';
 
@@ -85,14 +85,6 @@ const restaurantCard = restaurant => html`<li>
       neighbourhood="${restaurant.neighbourhood}"></restaurant-card>
 </li>`;
 
-const restaurantCards = restaurants =>
-    // case: bad input: display an error
-    !Array.isArray(restaurants) ? html`There was a problem showing the restaurants. Please try again.`
-    // case: no restaurants: tell the use that the filters exclude all options
-  : !restaurants.length ? html`<li class="no-restaurants">No restaurants matching those filters</li>`
-    // case: restaurants: return a list of restaurantCardTemplate
-  : restaurants.map(restaurantCard);
-
 // uniqueNeighbourhoods :: o -> ks
 export const uniqueNeighbourhoods = uniqueByKey('neighbourhood');
 
@@ -111,6 +103,10 @@ export const byCuisineAndNeighbourhood = (cuisine='all', neighbourhood='all') =>
     : x => x
   );
 };
+
+const noRestaurants = html`<li class="no-restaurants">No restaurants matching those filters</li>`;
+
+const errorRestaurants = html`There was a problem showing the restaurants. Please try again.`;
 
 class RestaurantReviews extends OnlineMixin(LitElement) {
 
@@ -151,7 +147,10 @@ class RestaurantReviews extends OnlineMixin(LitElement) {
       </restaurant-view>
     `;
 
-    const restaurantList = restaurants => html`${styles}
+    const restaurantList = restaurants => {
+      const filtered = restaurants.filter(byCuisineAndNeighbourhood(cuisine, neighbourhood));
+
+      return html`${styles}
       <restaurant-list restaurants="${ restaurants }">
         <div slot="filters" class="filter-options">
           <select id="neighbourhoods-select"
@@ -170,9 +169,18 @@ class RestaurantReviews extends OnlineMixin(LitElement) {
             ${ uniqueCuisines(restaurants).map(optionTemplate(cuisine)) }
           </select>
         </div>
-        ${ restaurantCards(restaurants.filter(byCuisineAndNeighbourhood(cuisine, neighbourhood))) }
+        ${
+              // case: bad input: display an error
+              !Array.isArray(restaurants) ? errorRestaurants
+              // case: no restaurants: tell the use that the filters exclude all options
+            : !filtered.length ? noRestaurants
+              // case: restaurants: return a list of restaurantCardTemplate
+            : filtered.map(restaurantCard)
+         }
       </restaurant-list>
-    `;
+      `;
+    };
+
     /* TODO: waiting for components to load before fetching is delaying paint.
              We should initiate fetch immediately on page load, and pass that
              data down to components
