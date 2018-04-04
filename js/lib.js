@@ -2,6 +2,18 @@ import { render } from '../node_modules/lit-html/lit-html.js';
 // NOTE: In real life, I would use an FP library like Crocks or Ramda.
 
 /*
+ * MATH
+ */
+
+export const add = x => y => x + y;
+
+export const divideBy = y => x => x / y;
+
+export const prod = x => y => x * y;
+
+export const subtractFrom = y => x => x - y;
+
+/*
  * PREDICATES
  */
 
@@ -33,6 +45,14 @@ export const and = (f, g) => function _and() {
   return f.apply(this, arguments) && g.apply(this, arguments);
 };
 
+/** The identity function. */
+// identity :: x -> x
+export const identity = x => x;
+
+/** The constanct function. */
+// constant :: x -> ( () -> x )
+export const constant = x => () => x;
+
 /*
  * ARRAY FUNCTIONS
  */
@@ -61,6 +81,15 @@ export const filter = safeArrayMethod('filter');
 /** Removes duplicates from an array. Naive implementation. */
 // uniq :: as -> as
 export const uniq = compose(Array.from, x => new Set(x));
+
+/** ensures that a value is always packed in an Array */
+export const asArray = x =>
+  Array.isArray(x) ? x : [x];
+
+export const range = length =>
+  Array
+    .from({length})
+    .map((_, i) => i);
 
 /*
  * POJO FUNCTIONS
@@ -177,9 +206,12 @@ export const getParameterByName = (name, urlString) =>
 
 /** Generates a CustomEvent. Reduces boilerplate. */
 // customEvent :: (str, o) -> CustomEvent o
-export const customEvent = (type, detail) => new CustomEvent(type, {
-  bubbles: true, composed: true, detail
-});
+export const customEvent = (type, detail) =>
+  new CustomEvent(type, {
+    bubbles: true,
+    composed: true,
+    detail,
+  });
 
 /** Point-free DOM append. */
 // append :: DOM -> DOM -> ()
