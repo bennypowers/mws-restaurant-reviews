@@ -1,8 +1,4 @@
 import { LitElement, html } from '../node_modules/@polymer/lit-element/lit-element.js';
-import '../node_modules/@polymer/iron-form/iron-form.js';
-import '../node_modules/@polymer/paper-input/paper-input.js';
-import '../node_modules/@polymer/paper-input/paper-textarea.js';
-import '../node_modules/@polymer/paper-slider/paper-slider.js';
 import OnlineMixin from './online-mixin.js';
 import { postReview } from './dbhelper.js';
 import { customEvent, trace } from './lib.js';
@@ -50,9 +46,16 @@ class SubmitReview extends OnlineMixin(LitElement) {
   }
 
   toggleOpened(reason) {
-    return this.dialog.open
-      ? this.dialog.close(reason)
-      : this.dialog.showModal();
+    Promise.all([
+      import('../node_modules/@polymer/iron-form/iron-form.js'),
+      import('../node_modules/@polymer/paper-input/paper-input.js'),
+      import('../node_modules/@polymer/paper-input/paper-textarea.js'),
+      import('../node_modules/@polymer/paper-slider/paper-slider.js'),
+    ]).then(() =>
+      this.dialog.open
+        ? this.dialog.close(reason)
+        : this.dialog.showModal()
+    );
   }
 
   submitReview() {
