@@ -44,7 +44,9 @@
   },
   "scripts": {
     "postinstall": "npx bower i --allow-root",
-    "prestart": "npx rollup -c && npx workbox injectManifest workbox-config.js",
+    "build": "npx rollup -c --experimentalDynamicImport",
+    "serviceworker": "npx workbox injectManifest workbox-config.js",
+    "prestart": "npm run build && npm run serviceworker",
     "start": "npx parallelshell \"npx ws -c lws.redirect.config.js\" \"npx ws\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

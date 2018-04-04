@@ -1,8 +1,8 @@
-// import uglify from 'rollup-plugin-uglify';
+import uglify from 'rollup-plugin-uglify';
 
 export default {
   plugins: [
-    // uglify(),
+    uglify(),
   ],
   input: 'js/restaurant-reviews.js',
   output: {
