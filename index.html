@@ -9,8 +9,7 @@
   <meta name="description" content="NYC area restaurant info and reviews."/>
   <title>Restaurant Reviews</title>
   <script async defer src="/bower_components/good-map/good-map.js"></script>
-  <script async type="module" src="./js/restaurant-reviews.min.js"></script>
-  <!-- <script async type="module" src="/node_modules/@power-elements/service-worker/service-worker.js"></script> -->
+  <script async type="module" src="./js/restaurant-reviews.js"></script>
   <style>
 
   /*
@@ -100,6 +99,9 @@
 </head>
 
 <body>
+
+  <service-worker id="service-worker"></service-worker>
+
   <header id="header">
     <nav>
       <h1><a href="/">Restaurant Reviews</a></h1>
@@ -121,8 +123,7 @@
     Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
   </footer>
 
-  <service-worker id="service-worker"></service-worker>
-
+  <script async defer type="module" src="/node_modules/@power-elements/service-worker/service-worker.js"></script>
 </body>
 
 </html>
