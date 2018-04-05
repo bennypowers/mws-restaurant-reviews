@@ -1,76 +1,80 @@
 import './restaurant-card.js';
 
-import { LitElement, html } from '../node_modules/@polymer/lit-element/lit-element.js';
+import { addMarkers } from './map-marker.js';
+import { byCuisineAndNeighbourhood, uniqueCuisines, uniqueNeighbourhoods } from './restaurant-filters.js';
+import { fetchRestaurants } from './db/fetchRestaurants.js';
+import { html, render } from '../node_modules/lit-html/lib/lit-extended.js';
+import { urlForRestaurant, imageUrlForRestaurant } from './map-marker.js';
 
-import { mapMarker } from './map-marker.js';
+const app = document.getElementById('app');
 
-import styles from './styles.js';
+const onSelect = async () => {
+  // fetchRestaurants is cached in idb so it's cheap to await it on render.
+  const allRestaurants = await fetchRestaurants();
+  const neighbourhoods = uniqueNeighbourhoods(allRestaurants);
+  const neighbourhood = document.getElementById('neighbourhoods-select').value;
+  const cuisines = uniqueCuisines(allRestaurants);
+  const cuisine = document.getElementById('cuisines-select').value;
+  const online = navigator.onLine;
+  const { map } = document.getElementById('map');
+  const { markers } = window;
 
-class RestaurantList extends LitElement {
+  const restaurants = allRestaurants
+    .filter(byCuisineAndNeighbourhood(cuisine, neighbourhood));
 
-  static get properties() {
-    return {
-      restaurants: Array,
-      neighbourhood: String,
-    };
-  }
+  addMarkers({map, restaurants, markers});
+  return render(restaurantList({ online, restaurants, cuisine, cuisines, neighbourhoods, neighbourhood }), app);
+};
 
-  addMarkers({map, restaurants = [], markers = []}) {
-    if (!window.google) return;
-    markers.forEach(m => m.setMap(null));
-    this.markers = restaurants.map(mapMarker(map));
-  }
+const noRestaurants = html`<li class="no-restaurants">No restaurants matching those filters</li>`;
 
-  render({ restaurants = [] }) {
+const errorRestaurants = html`There was a problem showing the restaurants. Please try again.`;
 
-    const { map } = this.shadowRoot.querySelector('good-map') || {};
-    const { markers } = this;
-    this.addMarkers({map, restaurants, markers});
+const restaurantCard = restaurant => html`<li>
+  <restaurant-card id="${restaurant.id}"
+      name="${restaurant.name}"
+      address="${restaurant.address}"
+      favourite="${restaurant.is_favorite}"
+      image="${ imageUrlForRestaurant(restaurant) }"
+      url="${ urlForRestaurant(restaurant) }"
+      neighbourhood="${restaurant.neighbourhood}"></restaurant-card>
+</li>`;
 
-    return html`
-      ${styles}
-      <main id="maincontent">
-        <section name="restaurants">
-          <div id="map-container">
-            <good-map id="map"
-                api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc"
-                latitude="40.722216"
-                longitude="-73.987501"
-                zoom="12"
-                map-options='{"scrollwheel": false}'
-                on-google-map-ready="${
-                  event =>
-                    this.addMarkers({
-                      map: event.detail,
-                      restaurants,
-                      markers,
-                }) }">
-            </good-map>
-          </div>
-          <section>
-            <div class="filter-options">
-              <h2>Filter Results</h2>
+const optionTemplate = (selected='all') => option =>
+  html`<option value="${option}" selected="${selected === option}">${option}</option>`;
 
-              <slot name="filters">
-                <select aria-label="Neighbourhoods">
-                  <option value="all">All Neighbourhoods</option>
-                </select>
+const restaurantItems = restaurants =>
+    // case: bad input: display an error
+    !Array.isArray(restaurants) ? errorRestaurants
+    // case: no restaurants: tell the use that the filters exclude all options
+  : !restaurants.length ? noRestaurants
+    // case: restaurants: return a list of restaurantCardTemplate
+  : restaurants.map(restaurantCard);
 
-                <select aria-label="Cuisines">
-                  <option value="all">All Cuisines</option>
-                </select>
-              </slot>
+export const restaurantList = ({ online, restaurants, cuisine, cuisines, neighbourhoods, neighbourhood }) => {
 
-            </div>
+  return html`
+    <div class="filter-options">
+      <h2>Filter Results</h2>
 
-            <ul id="restaurants-list">
-              <slot></slot>
-            </ul>
+      <select id="neighbourhoods-select"
+          name="neighbourhoods"
+          aria-label="Neighbourhoods"
+          on-change="${ onSelect }">
+        <option value="all">All Neighbourhoods</option>
+        ${ neighbourhoods.map(optionTemplate(neighbourhood)) }
+      </select>
 
-          </section>
-        </section>
-      </main>`;
-    }
-  }
-
-customElements.define('restaurant-list', RestaurantList);
+      <select id="cuisines-select"
+          name="cuisines"
+          aria-label="Cuisines"
+          on-change="${ onSelect }">
+        <option value="all">All Cuisines</option>
+        ${ cuisines.map(optionTemplate(cuisine)) }
+      </select>
+    </div>
+    <ul id="restaurants-list">
+      ${ restaurantItems(restaurants) }
+    </ul>
+  `;
+};

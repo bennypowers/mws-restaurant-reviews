@@ -16,7 +16,7 @@
     "@power-elements/emoji-rating": "^1.0.2",
     "@power-elements/lazy-image": "^1.0.2",
     "@power-elements/power-fab": "^1.0.1",
-    "@power-elements/service-worker": "^1.3.1",
+    "@power-elements/service-worker": "^1.4.1",
     "date-fns": "^2.0.0-alpha.7",
     "express": "^4.16.2",
     "lit-html": "^0.9.0",

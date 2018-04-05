@@ -1,4 +1,4 @@
 node_modules
 bower_components
-js/**/*.min.js
+*.min.js
 service-worker.js

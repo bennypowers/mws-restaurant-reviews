@@ -1,9 +1,7 @@
 import { LitElement, html } from '../node_modules/@polymer/lit-element/lit-element.js';
 import OnlineMixin from './online-mixin.js';
-import { postReview } from './dbhelper.js';
+import { postReview } from './db/postReview.js';
 import { customEvent, trace } from './lib.js';
-
-import styles from './styles.js';
 
 const nullifyValue = l => l.value = null;
 
@@ -76,7 +74,7 @@ class SubmitReview extends OnlineMixin(LitElement) {
   }
 
   render({ online, opened, restaurantId, spinning }) {
-    return html`${styles}
+    return html`
     <style>
 
     :host {
