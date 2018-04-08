@@ -8,9 +8,13 @@ const _fetchRestaurants = () =>
     .then(handleAsJson)
     .then( cacheInIdb('restaurants') );
 
+const returnResultsOrFetch = results =>
+    results.length ? results
+  : _fetchRestaurants();
+
 /** Fetch all restaurants */
 // fetchRestaurants :: () -> Promise rs
 export const fetchRestaurants = () =>
   Promise.all( getCachedResponses('restaurants') )
     .then(filter(identity))
-    .then(x => x.length ? x : _fetchRestaurants());
+    .then(returnResultsOrFetch);

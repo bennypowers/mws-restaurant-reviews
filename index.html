@@ -8,14 +8,98 @@
   <meta name="theme-color" content="crimson"/>
   <title>Restaurant Reviews</title>
   <script async type="module" src="./js/main.js"></script>
-  <!-- <script async type="module" src="/main.min.js"></script> -->
+  <script async type="module" src="./js/router.js"></script>
+  <script async type="module" src="./js/db/fetchRestaurants.js"></script>
+  <script async type="module" src="./js/lib.js"></script>
+  <script async type="module" src="./js/db/cacheRequest.js"></script>
+  <script async type="module" src="./js/idb-keyval.js"></script>
+  <script async type="module" src="/node_modules/@polymer/lit-element/lit-element.js"></script>
+  <script async type="module" src="/node_modules/@power-elements/service-worker/service-worker.js"></script>
+  <script async type="module" src="/node_modules/lit-html/lit-html.js"></script>
+  <script async type="module" src="/node_modules/lit-html/lib/lit-extended.js"></script>
+  <script async defer src="/bower_components/good-map/good-map.js"></script>
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="shortcut icon" href="/img/favicon.ico">
+  <style>
+  html, body {
+    height: 100vh;
+  }
+
+  body {
+    background: #fdfdfd;
+    color: #333;
+    display: flex;
+    flex-flow: column;
+    font: 10pt Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+    margin: 0;
+    position: relative;
+  }
+
+  #app-shell {
+    background-color: #f3f3f3;
+    flex: 1;
+  }
+
+  nav {
+    display: flex;
+    width: 100%;
+    min-height: 80px;
+    background-color: #252831;
+    flex-wrap: wrap;
+  }
+
+  h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0 0 20px;
+    min-height: 80px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  h1 a {
+    color: #fff;
+    font-size: 14pt;
+    font-weight: 200;
+    letter-spacing: 10px;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  #footer {
+    background-color: #222;
+    color: #ddd;
+    font-size: 8pt;
+    letter-spacing: 1px;
+    padding: 25px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  #footer a {
+    color: orange;
+  }
+
+  #map-container {
+    min-height: 400px;
+    width: 100%;
+    background-color: transparent;
+    background-image: url('https://maps.googleapis.com/maps/api/staticmap?center=40.722216,+-73.987501&zoom=12&scale=2&size=400x400&maptype=roadmap&format=png&visual_refresh=true');
+    background-size: cover;
+  }
+
+  noscript {
+    padding: 8px;
+  }
+  </style>
 </head>
 
 <body>
 
-  <service-worker id="service-worker"></service-worker>
+  <service-worker id="service-worker" auto-reload></service-worker>
 
   <header id="header">
     <nav>
@@ -26,10 +110,10 @@
 
   <main id="app-shell">
     <div id="map-container">
-      <img id="static-map"
+      <!-- <img id="static-map"
           alt="Google Map of New York City"
           width="400"
-          src="https://maps.googleapis.com/maps/api/staticmap?center=40.722216,+-73.987501&zoom=12&scale=2&size=400x400&maptype=roadmap&format=png&visual_refresh=true">
+          src="https://maps.googleapis.com/maps/api/staticmap?center=40.722216,+-73.987501&zoom=12&scale=2&size=400x400&maptype=roadmap&format=png&visual_refresh=true"> -->
       <div id="good-map"></div>
     </div>
 
@@ -43,7 +127,5 @@
   <footer id="footer">
     Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
   </footer>
-
-</body>
 
 </html>

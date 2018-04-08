@@ -1,6 +1,3 @@
-import '../node_modules/@power-elements/emoji-checkbox/emoji-checkbox.js';
-import '../node_modules/@power-elements/lazy-image/lazy-image.js';
-
 import { LitElement, html } from '../node_modules/@polymer/lit-element/lit-element.js';
 import { nameToId, placeholderImage } from './lib.js';
 import { putFavorite } from './db/putFavorite.js';
@@ -103,7 +100,6 @@ class RestaurantCard extends LitElement {
             full="😎"
             empty="💩"
             on-checked-changed="${ event =>
-              event.detail.value != null &&
               event.detail.value !== favourite &&
               putFavorite({
                 restaurant_id: id,

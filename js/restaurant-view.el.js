@@ -190,7 +190,7 @@ class RestaurantView extends LitElement {
             longitude="${lng}"
             api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc"
             zoom="12"
-            map-options='{"scrollwheel": false}'
+            map-options='{"scrollwheel": false, "backgroundColor": "transparent"}'
             on-google-map-ready="${
               event =>
                 mapMarker(event.detail)(restaurant)

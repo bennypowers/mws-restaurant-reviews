@@ -1,9 +1,12 @@
+import { restaurantView } from './restaurant-view.js';
 import { fetchRestaurantById } from './db/fetchRestaurantById.js';
 import { html, render } from '../node_modules/lit-html/lib/lit-extended.js';
 import { addMarkers } from './map-marker.js';
 import { getParameterByName } from './lib.js';
 
 const restaurantId = getParameterByName('id', location);
+
+const restaurant = fetchRestaurantById(restaurantId);
 
 const breadcrumbTemplate = ({ name }) => html`
   <ul aria-label="Breadcrumb">
@@ -13,13 +16,7 @@ const breadcrumbTemplate = ({ name }) => html`
 `;
 
 const routeRestaurant = async ({ app }) => {
-  // Concurrent requests
-  const [restaurantView, restaurant] = await Promise.all([
-    import('./restaurant-view.js'),
-    fetchRestaurantById(restaurantId),
-  ]);
-
-  const restaurants = [restaurant];
+  const restaurants = [await restaurant];
   const { markers } = window;
   const { map } = document.getElementById('map') || {};
   const { name } = restaurant;

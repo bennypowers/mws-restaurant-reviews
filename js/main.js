@@ -6,22 +6,40 @@ const app = document.getElementById('app');
 const listSpecifier = './route-list.js';
 const restSpecifier = './route-restaurant.js';
 
+const list = [
+  './restaurant-card.js',
+  './restaurant-filters.js',
+  './restaurant-list.js',
+  './map-marker.js',
+];
+
+const rest = [
+  
+];
+
+const imports = ({ list, rest });
+
+const importSpecifier = specifier => import(specifier);
+
 const runDefault = ({ app }) =>
   module => module.default({ app });
 
-const router = async location =>
-  import(location.pathname === '/' ? listSpecifier : restSpecifier)
+const router = async location => {
+  const shouldImport = location.pathname === '/' ? 'list' : 'rest';
+  Promise.all(imports[shouldImport].map(importSpecifier));
+  return import(shouldImport === 'list' ? listSpecifier : restSpecifier)
     .then(runDefault({ app }));
-
-const upgradeServiceWorker = () =>
-  import('/node_modules/@power-elements/service-worker/service-worker.js');
-
-const upgradeGoodMap = () =>
-  import('/bower_components/good-map/good-map.js');
+};
 
 installRouter(router);
 
 attemptCatchUp();
 
-requestIdleCallback(upgradeServiceWorker);
-requestIdleCallback(upgradeGoodMap);
+const upgradeElements = () => Promise.all([
+  import('/node_modules/@power-elements/emoji-checkbox/emoji-checkbox.js'),
+  import('/node_modules/@power-elements/lazy-image/lazy-image.js'),
+  import('/node_modules/@power-elements/service-worker/service-worker.js'),
+  // import("/bower_components/good-map/good-map.js"),
+]);
+
+requestIdleCallback(upgradeElements);
