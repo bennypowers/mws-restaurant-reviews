@@ -14,7 +14,7 @@ const list = [
 ];
 
 const rest = [
-  
+
 ];
 
 const imports = ({ list, rest });
@@ -39,7 +39,7 @@ const upgradeElements = () => Promise.all([
   import('/node_modules/@power-elements/emoji-checkbox/emoji-checkbox.js'),
   import('/node_modules/@power-elements/lazy-image/lazy-image.js'),
   import('/node_modules/@power-elements/service-worker/service-worker.js'),
-  // import("/bower_components/good-map/good-map.js"),
+  import('/bower_components/good-map/good-map.js'),
 ]);
 
 requestIdleCallback(upgradeElements);
