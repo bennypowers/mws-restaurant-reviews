@@ -7,19 +7,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="theme-color" content="crimson"/>
   <title>Restaurant Reviews</title>
-  <script async type="module" src="./js/main.js"></script>
-  <script async type="module" src="./js/router.js"></script>
-  <script async type="module" src="./js/db/fetchRestaurants.js"></script>
-  <script async type="module" src="./js/lib.js"></script>
-  <script async type="module" src="./js/db/cacheRequest.js"></script>
-  <script async type="module" src="./js/idb-keyval.js"></script>
-  <script async type="module" src="/node_modules/@polymer/lit-element/lit-element.js"></script>
-  <script async type="module" src="/node_modules/@power-elements/service-worker/service-worker.js"></script>
-  <script async type="module" src="/node_modules/lit-html/lit-html.js"></script>
-  <script async type="module" src="/node_modules/lit-html/lib/lit-extended.js"></script>
-  <script async defer src="/bower_components/good-map/good-map.js"></script>
+
+  <!-- Critical Resources -->
+  <link rel="preload" as="fetch" href="/api/restaurants">
+  <link rel="modulepreload" href="/js/lib.js">
+  <link rel="modulepreload" href="/js/router.js">
+  <link rel="modulepreload" href="/js/db/fetchRestaurants.js">
+  <link rel="modulepreload" href="/js/db/cacheRequest.js">
+  <link rel="modulepreload" href="/js/idb-keyval.js">
+  <link rel="modulepreload" href="/js/map-marker.js">
+  <link rel="modulepreload" href="/node_modules/lit-html/lit-html.js">
+  <link rel="modulepreload" href="/node_modules/lit-html/lib/lit-extended.js">
+  <link rel="modulepreload" href="/node_modules/@polymer/lit-element/lit-element.js">
+  <link rel="modulepreload" href="/node_modules/@power-elements/service-worker/service-worker.js">
+  <link rel="modulepreload" href="/node_modules/@power-elements/emoji-rating/emoji-rating.js">
+  <link rel="modulepreload" href="/node_modules/@power-elements/emoji-checkbox/emoji-checkbox.js">
+  <link rel="modulepreload" href="/node_modules/@power-elements/lazy-image/lazy-image.js">
+  <link rel="preload" as="script" href="/bower_components/good-map/good-map.js">
+  <link rel="preload" as="image" href="https://maps.googleapis.com/maps/api/staticmap?center=40.722216,+-73.987501&zoom=12&scale=2&size=400x400&maptype=roadmap&format=png&visual_refresh=true">
+  <link rel="preload" as="script" href="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc&callback=__initGoodMap">
+
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="shortcut icon" href="/img/favicon.ico">
+  <script async type="module" src="./js/main.js"></script>
+
   <style>
   html, body {
     height: 100vh;
