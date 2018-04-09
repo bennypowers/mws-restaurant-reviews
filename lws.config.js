@@ -8,6 +8,7 @@ module.exports = {
     'lws-static',
     'lws-cors',
     'lws-spa',
+    './push-middleware.js',
   ],
   spa: 'index.html',
   http2: true,
