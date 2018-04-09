@@ -1,6 +1,6 @@
 const path = require('path');
 const url = require('url');
-const fs = require('fs');
+const fs = require('mz/fs');
 
 const isFile = stat => stat.isFile();
 const readFile = file => () => fs.readFile(file);
@@ -9,7 +9,7 @@ const parseToString = file =>
   JSON.parse(file.toString());
 
 const pushUrl = ctx => key =>
-  url.resolve(`${ctx.protocol}://${ctx.host}`, key);
+  url.resolve(`${ctx.protocol || 'https'}://${ctx.host || 'localhost'}`, key);
 
 const link = (data, contents) => (key, i) =>
   `<${contents[i]}>; rel=preload; as=${data[key].type}`;
@@ -37,22 +37,21 @@ module.exports = MiddlewareBase => class PushMiddleware extends MiddlewareBase {
   }
 
   middleware({ singleHeader, pushManifest = 'push_manifest.json' }) {
-    return (ctx, next) => next().then(() => {
+    return async (ctx, next) => {
+      await next();
 
-        if (!ctx.response.is('html')) return;
-        if ('nopush' in ctx.query) return;
+      if (!ctx.response.is('html')) return;
+      if ('nopush' in ctx.query) return;
 
-        const manifest = path.resolve(path.dirname(ctx.body.path), pushManifest);
-        return fs.stat(manifest)
-          .then(trace('man'))
-          .then(isFile)
-          .then(trace('isFile'))
-          .then(readFile(manifest))
-          .then(parseToString)
-          .then(trace('parseToString'))
-          .then(prepareH2Push)
-          .then(push(ctx, { singleHeader }));
-      }
-    );
+      const manifest = path.resolve(__dirname, pushManifest);
+
+      return fs.stat(manifest)
+        .then(isFile)
+        .then(readFile(manifest))
+        .then(parseToString)
+        .then(prepareH2Push(ctx))
+        .then(trace('prepare'))
+        .then(push(ctx, { singleHeader }));
+    };
   }
 };

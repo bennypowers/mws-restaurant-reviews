@@ -1,5 +1,6 @@
 module.exports = {
   stack: [
+    // './push-middleware.js',
     'lws-body-parser',
     'lws-request-monitor',
     'lws-log',
@@ -8,7 +9,6 @@ module.exports = {
     'lws-static',
     'lws-cors',
     'lws-spa',
-    './push-middleware.js',
   ],
   spa: 'index.html',
   http2: true,
