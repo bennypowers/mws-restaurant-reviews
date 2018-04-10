@@ -2,7 +2,7 @@ import { LitElement, html } from '../node_modules/@polymer/lit-element/lit-eleme
 
 import { compose, prop, placeholderImage, trim } from './lib.js';
 
-import { mapMarker, imageUrlForRestaurant } from './map-marker.js';
+import { imageUrlForRestaurant } from './map-marker.js';
 
 import { putFavorite } from './db/putFavorite.js';
 
@@ -18,16 +18,16 @@ const formatOpeningToClosing = string =>
     .map(trim)
     .join(' - ');
 
-const hoursTemplate = hours =>
-  Object.entries(hours || {})
-    .map(hoursRowTemplate);
-
 const hoursRowTemplate = ([dayString, hoursString]) => html`
   <tr>
     <td><time>${dayString}</time></td>
     <td>${hoursString.split(', ').map(formatOpeningToClosing).join(', ')}</td>
   </tr>
 `;
+
+const hoursTemplate = hours =>
+  Object.entries(hours || {})
+    .map(hoursRowTemplate);
 
 const hours = compose(hoursTemplate, prop('operating_hours'));
 
@@ -40,8 +40,7 @@ class RestaurantView extends LitElement {
   }
 
   render({ restaurant }) {
-    const { address, cuisine_type, id, is_favorite, latlng, name } = restaurant || {};
-    const { lat, lng } = latlng || {};
+    const { address, cuisine_type, id, is_favorite, name } = restaurant || {};
 
     return html`
     <style>
@@ -183,62 +182,47 @@ class RestaurantView extends LitElement {
     }
     </style>
 
-    <main id="maincontent">
-      <section id="map-container">
-        <good-map id="map"
-            latitude="${lat}"
-            longitude="${lng}"
-            api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc"
-            zoom="12"
-            map-options='{"scrollwheel": false, "backgroundColor": "transparent"}'
-            on-google-map-ready="${
+    <section id="restaurant-container">
+      <h1 id="restaurant-name" tabindex="0">
+        ${name}
+        <emoji-checkbox
+            full="😎"
+            empty="💩"
+            on-checked-changed="${
               event =>
-                mapMarker(event.detail)(restaurant)
-            }">
-        </good-map>
-      </section>
+                restaurant &&
+                restaurant.is_favorite != null &&
+                event.detail.value != null &&
+                event.detail.value !== restaurant.is_favorite &&
+                putFavorite({
+                  restaurant_id: id,
+                  is_favorite: event.detail.value
+                })
+              }"
+            title="${is_favorite ? 'Favourite!' : 'Not Favourite'}"
+            checked?="${is_favorite}"
+            label="favourite"></emoji-checkbox>
+      </h1>
 
-      <section id="restaurant-container">
-        <h1 id="restaurant-name" tabindex="0">
-          ${name}
-          <emoji-checkbox
-              full="😎"
-              empty="💩"
-              on-checked-changed="${
-                event =>
-                  restaurant &&
-                  restaurant.favourite != null &&
-                  event.detail.value !== restaurant.favourite &&
-                  putFavorite({
-                    restaurant_id: id,
-                    is_favorite: event.detail.value
-                  })
-                }"
-              title="${is_favorite ? 'Favourite!' : 'Not Favourite'}"
-              checked?="${is_favorite}"
-              label="favourite"></emoji-checkbox>
-        </h1>
+      <figure id="restaurant-image-container">
+        <lazy-image id="restaurant-image"
+            src="${imageUrlForRestaurant(restaurant)}"
+            alt="Interior or exterior of ${name}"
+            placeholder="${placeholderImage}"
+            rootMargin="40px"
+            fade></lazy-image>
+        <figcaption id="restaurant-cuisine">${cuisine_type}</figcaption>
+      </figure>
 
-        <figure id="restaurant-image-container">
-          <lazy-image id="restaurant-image"
-              src="${imageUrlForRestaurant(restaurant)}"
-              alt="Interior or exterior of ${name}"
-              placeholder="${placeholderImage}"
-              rootMargin="40px"
-              fade></lazy-image>
-          <figcaption id="restaurant-cuisine">${cuisine_type}</figcaption>
-        </figure>
-
-        <div id="restaurant-details-container">
-          <address id="restaurant-address"
-              tabindex="0"
-              aria-label="Address">${address}</address>
-          <table id="restaurant-hours"
-              tabindex="0"
-              aria-label="Hours">${hours(restaurant)}</table>
-        </div>
-
-      </section>
+      <div id="restaurant-details-container">
+        <address id="restaurant-address"
+            tabindex="0"
+            aria-label="Address">${address}</address>
+        <table id="restaurant-hours"
+            tabindex="0"
+            aria-label="Hours">${hours(restaurant)}</table>
+      </div>
+    </section>
 
       <section id="reviews-container" tabindex="0" aria-label="Reviews">
         <h2>Reviews</h2>
@@ -254,7 +238,7 @@ class RestaurantView extends LitElement {
           restaurantId="${id}"
           on-review-submitted="${this.onReviewSubmitted}"></submit-review>
 
-    </main>`;
+    `;
   }
 }
 

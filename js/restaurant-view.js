@@ -23,7 +23,7 @@ const reviewsList = reviews =>
 // "optimistic UI"
 const onReviewSubmitted = component => event =>
   appendTemplateResult(
-    component.shadowRoot.getElementById('restaurant'),
+    document.getElementById('restaurant'),
     reviewCard(event.detail)
   );
 
