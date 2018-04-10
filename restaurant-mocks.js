@@ -22,7 +22,8 @@ module.exports = MockBase => class RestaurantMocks extends MockBase {
           request: { method: 'GET' },
           response(ctx) {
             const {is_favorite} = ctx.request.query;
-            ctx.body = restaurantsForFrontPage.filter(is_favorite ? byFavorite : identity);
+            // ctx.body = restaurantsForFrontPage.filter(is_favorite ? byFavorite : identity);
+            ctx.body = restaurants;
           },
         },
       },
