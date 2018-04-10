@@ -1,4 +1,4 @@
-import { cacheRequest } from './cacheRequest.js';
+import { cacheInIdb, cacheRequest } from './cacheRequest.js';
 
 import { handleAsJson, rejectNon200, returnOrThrow } from '../lib.js';
 
@@ -12,5 +12,6 @@ export const postReview = review => {
     : fetch(url, request)
       .then(rejectNon200)
       .then(handleAsJson)
-      .then(returnOrThrow(`Couldn't post review for restaurant ${review.restaurant_id}:`));
+      .then(returnOrThrow(`Couldn't post review for restaurant ${review.restaurant_id}:`))
+      .then(cacheInIdb('reviews'));
 };
