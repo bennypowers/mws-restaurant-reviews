@@ -6,7 +6,7 @@ import { getParameterByName } from './lib.js';
 
 const restaurantId = getParameterByName('id', location);
 
-const restaurant = fetchRestaurantById(restaurantId);
+const restaurantPromise = fetchRestaurantById(restaurantId);
 
 const breadcrumbTemplate = ({ name }) => html`
   <ul aria-label="Breadcrumb">
@@ -16,7 +16,8 @@ const breadcrumbTemplate = ({ name }) => html`
 `;
 
 const routeRestaurant = async ({ app }) => {
-  const restaurants = [await restaurant];
+  const restaurant = await restaurantPromise;
+  const restaurants = [restaurant];
   const { markers } = window;
   const { map } = document.getElementById('map') || {};
   const { name } = restaurant;
@@ -25,7 +26,7 @@ const routeRestaurant = async ({ app }) => {
   addMarkers({ map, restaurants, markers });
 
   render(breadcrumbTemplate({ name }), document.getElementById('breadcrumb'));
-  render(restaurantView({ online, restaurantId }), app);
+  render(restaurantView({ online, restaurant, restaurantId }), app);
 };
 
 export default routeRestaurant;
