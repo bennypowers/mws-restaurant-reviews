@@ -1,8 +1,8 @@
-import { restaurantView } from './restaurant-view.js';
+import { restaurantDetails, reviewsListTemplate } from './restaurant-view.js';
 import { fetchRestaurantById } from './db/fetchRestaurantById.js';
 import { html, render } from '../node_modules/lit-html/lib/lit-extended.js';
 import { addMarkers } from './map-marker.js';
-import { getParameterByName } from './lib.js';
+import { appendTemplateResult, getParameterByName } from './lib.js';
 
 const mapContainer = document.getElementById('good-map');
 const restaurantId = getParameterByName('id', location);
@@ -45,9 +45,11 @@ const routeRestaurant = async ({ app }) => {
   const { markers } = window;
   const { name } = restaurant;
   const online = navigator.onLine;
+  const appShell = document.getElementById('app-shell');
 
   render(breadcrumbTemplate({ name }), document.getElementById('breadcrumb'));
-  render(restaurantView({ online, restaurant, restaurantId }), app);
+  appendTemplateResult(restaurantDetails({ online, restaurant, restaurantId }), appShell, {prepend: true});
+  render(reviewsListTemplate({ online, restaurant, restaurantId }), app);
   render(goodMapRestaurant({ markers, restaurant }), mapContainer);
 };
 

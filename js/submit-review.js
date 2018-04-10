@@ -1,5 +1,4 @@
 import { LitElement, html } from '../node_modules/@polymer/lit-element/lit-element.js';
-import OnlineMixin from './online-mixin.js';
 import { postReview } from './db/postReview.js';
 import { customEvent, trace } from './lib.js';
 
@@ -23,7 +22,7 @@ const closeDialog = component => reason => (
   reason
 );
 
-class SubmitReview extends OnlineMixin(LitElement) {
+class SubmitReview extends LitElement {
   static get properties() {
     return {
       restaurantId: String,
@@ -73,7 +72,7 @@ class SubmitReview extends OnlineMixin(LitElement) {
     );
   }
 
-  render({ online, opened, restaurantId, spinning }) {
+  render({ opened, restaurantId, spinning }) {
     return html`
     <style>
 
@@ -112,7 +111,7 @@ class SubmitReview extends OnlineMixin(LitElement) {
 
     </style>
     <dialog id="dialog" open="${ opened }">
-      <div id="offline-warning" hidden?="${ online }">
+      <div id="offline-warning" hidden?="${ navigator.onLine }">
         <span>You appear to be offline.</span>
         <span>Your review will be posted when you come back online.</span>
       </div>

@@ -10,31 +10,30 @@
 
   <!-- Critical Resources -->
   <link rel="preload" as="fetch" href="/api/restaurants">
+  <link rel="preload" as="script" href="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc&callback=__initGoodMap">
   <link rel="modulepreload" href="/js/lib.js">
   <link rel="modulepreload" href="/js/router.js">
   <link rel="modulepreload" href="/js/db/fetchRestaurants.js">
+  <link rel="modulepreload" href="/js/db/putFavorite.js">
   <link rel="modulepreload" href="/js/db/cacheRequest.js">
   <link rel="modulepreload" href="/js/idb-keyval.js">
   <link rel="modulepreload" href="/js/map-marker.js">
   <link rel="modulepreload" href="/node_modules/lit-html/lit-html.js">
   <link rel="modulepreload" href="/node_modules/lit-html/lib/lit-extended.js">
+  <link rel="modulepreload" href="/node_modules/@polymer/polymer/lib/mixins/element-mixin.js">
+  <link rel="modulepreload" href="/node_modules/@polymer/polymer/lib/utils/html-tag.js">
+  <link rel="modulepreload" href="/node_modules/@polymer/polymer/lib/utils/boot.js">
+  <link rel="modulepreload" href="/node_modules/@polymer/polymer/lib/utils/mixin.js">
+  <link rel="modulepreload" href="/node_modules/@polymer/polymer/lib/mixins/properties-changed.js">
   <link rel="modulepreload" href="/node_modules/@polymer/lit-element/lit-element.js">
-  <link rel="modulepreload" href="/node_modules/@power-elements/service-worker/service-worker.js">
-  <link rel="modulepreload" href="/node_modules/@power-elements/emoji-rating/emoji-rating.js">
-  <link rel="modulepreload" href="/node_modules/@power-elements/emoji-checkbox/emoji-checkbox.js">
-  <link rel="modulepreload" href="/node_modules/@power-elements/lazy-image/lazy-image.js">
-  <link rel="preload" as="script" href="/bower_components/good-map/good-map.js">
-  <link rel="preload" as="image" href="https://maps.googleapis.com/maps/api/staticmap?center=40.722216,+-73.987501&zoom=12&scale=2&size=400x400&maptype=roadmap&format=png&visual_refresh=true">
-  <link rel="preload" as="script" href="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc&callback=__initGoodMap">
 
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="stylesheet" href="/css/restaurant.css">
   <link rel="shortcut icon" href="/img/favicon.ico">
-  <script async type="module" src="./js/main.js"></script>
-
+  <script async type="module" src="/js/main.js"></script>
   <style>
   html, body {
-    height: 100vh;
+    min-height: 100vh;
   }
 
   body {
@@ -122,10 +121,6 @@
 
   <main id="app-shell">
     <div id="map-container">
-      <!-- <img id="static-map"
-          alt="Google Map of New York City"
-          width="400"
-          src="https://maps.googleapis.com/maps/api/staticmap?center=40.722216,+-73.987501&zoom=12&scale=2&size=400x400&maptype=roadmap&format=png&visual_refresh=true"> -->
       <div id="good-map"></div>
     </div>
 

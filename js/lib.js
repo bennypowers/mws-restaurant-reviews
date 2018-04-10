@@ -224,10 +224,11 @@ export const remove = element => element.remove();
 /** Appends a lit-html TemplateResult to a target element. */
 // HACK: Since we can't directly append a TemplateResult to an element,
 //       we render it to a temporary div, then append it to our container.
-export const appendTemplateResult = (target, templateResult) => {
+export const appendTemplateResult = (templateResult, target, options = {}) => {
+  const methodName = options.prepend ? 'prepend' : 'append';
   let temp = document.createElement('div');
   render(templateResult, temp);
-  const returnValue = target.append(temp.firstElementChild);
+  const returnValue = target[methodName](temp.firstElementChild);
   // Give GC a leg up, Just in case;
   temp.innerHTML = '';
   temp = null;

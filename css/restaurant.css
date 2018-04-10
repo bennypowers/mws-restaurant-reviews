@@ -13,20 +13,13 @@
   list-style: none;
   background-color: #ddd;
   font-size: 20px;
-  width: 100%;
+  width: calc(100% - 80px);
   margin: 0;
-  /* large screens */
-  /* font-size: 17px; */
-  /* width: calc(50% - 80px); */
 }
-
-/* Display list items side by side */
 
 #breadcrumb li {
   display: inline;
 }
-
-/* Add a slash symbol (/) before/behind each list item */
 
 #breadcrumb li + li::before {
   padding: 8px;
@@ -34,14 +27,10 @@
   content: "/\00a0";
 }
 
-/* Add a color to all links inside the list */
-
 #breadcrumb li a {
   color: #0062b5;
   text-decoration: none;
 }
-
-/* Add a color on mouse-over */
 
 #breadcrumb li a:hover {
   color: #01447e;
@@ -69,9 +58,57 @@
   color: #666;
 }
 
+#app-shell.restaurant {
+  display: flex;
+  flex-direction: column;
+}
+
+.restaurant #restaurant-container {
+  order: 1;
+}
+
+.restaurant #map-container {
+  order: 0;
+}
+
+.restaurant #app {
+  order: 2;
+}
+
 @media (min-width: 630px) {
   #reviews-list {
     grid-template-columns: 49% 49%;
     grid-column-gap: 2%;
+  }
+
+  #app-shell.restaurant {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .restaurant #map-container,
+  .restaurant #restaurant-container {
+    max-width: 50%;
+  }
+
+  .restaurant #map-container {
+    order: 1;
+  }
+
+  .restaurant #restaurant-container {
+    order: 0;
+  }
+
+  .restaurant #app {
+    order: 2;
+  }
+
+  .restaurant #good-map {
+    height: 100%;
+  }
+
+  .restaurant #good-map good-map {
+    min-height: initial;
+    height: 100%;
   }
 }

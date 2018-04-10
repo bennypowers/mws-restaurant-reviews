@@ -26,6 +26,8 @@ const goodMapList = ({ markers, restaurants }) => html`
 </good-map>`;
 
 const routeList = async ({ app }) => {
+  const restaurantContainer = document.getElementById('restaurant-container');
+  if (restaurantContainer) restaurantContainer.remove();
   // Concurrent Requests.
   const restaurants = await fetchRestaurants();
 
