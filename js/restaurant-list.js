@@ -15,7 +15,6 @@ const onSelect = async () => {
   const neighbourhood = document.getElementById('neighbourhoods-select').value;
   const cuisines = uniqueCuisines(allRestaurants);
   const cuisine = document.getElementById('cuisines-select').value;
-  const online = navigator.onLine;
   const { map } = document.getElementById('map');
   const { markers } = window;
 
@@ -23,7 +22,7 @@ const onSelect = async () => {
     .filter(byCuisineAndNeighbourhood(cuisine, neighbourhood));
 
   addMarkers({map, restaurants, markers});
-  return render(restaurantList({ online, restaurants, cuisine, cuisines, neighbourhoods, neighbourhood }), app);
+  return render(restaurantList({ restaurants, cuisine, cuisines, neighbourhoods, neighbourhood }), app);
 };
 
 const noRestaurants = html`<li class="no-restaurants">No restaurants matching those filters</li>`;
@@ -51,7 +50,7 @@ const restaurantItems = restaurants =>
     // case: restaurants: return a list of restaurantCardTemplate
   : restaurants.map(restaurantCard);
 
-export const restaurantList = ({ online, restaurants, cuisine, cuisines, neighbourhoods, neighbourhood }) => {
+export const restaurantList = ({ restaurants, cuisine, cuisines, neighbourhoods, neighbourhood }) => {
 
   return html`
     <div class="filter-options">

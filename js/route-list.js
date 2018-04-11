@@ -31,15 +31,13 @@ const routeList = async ({ app }) => {
   // Concurrent Requests.
   const restaurants = await fetchRestaurants();
 
-  const online = navigator.onLine;
-
   const cuisines = uniqueCuisines(restaurants);
   const neighbourhoods = uniqueNeighbourhoods(restaurants);
 
   const cuisine = cuisineSelect.value || 'all';
   const neighbourhood = neighbourhoodSelect.value || 'all';
 
-  render(restaurantList({ online, cuisine, cuisines, neighbourhood, neighbourhoods, restaurants }), app);
+  render(restaurantList({ cuisine, cuisines, neighbourhood, neighbourhoods, restaurants }), app);
   render(goodMapList({ restaurants }), mapContainer);
 };
 

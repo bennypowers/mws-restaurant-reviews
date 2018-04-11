@@ -44,12 +44,11 @@ const routeRestaurant = async ({ app }) => {
   const restaurant = await restaurantPromise;
   const { markers } = window;
   const { name } = restaurant;
-  const online = navigator.onLine;
   const appShell = document.getElementById('app-shell');
 
   render(breadcrumbTemplate({ name }), document.getElementById('breadcrumb'));
-  render(reviewsListTemplate({ online, restaurant, restaurantId }), app);
   renderAppend(restaurantDetails({ restaurant, restaurantId }), appShell, {prepend: true});
+  render(reviewsListTemplate({ restaurant, restaurantId }), app);
   render(goodMapRestaurant({ markers, restaurant }), mapContainer);
 };
 
