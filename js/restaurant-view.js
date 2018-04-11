@@ -1,6 +1,6 @@
 import { fetchReviews } from './db/fetchReviews.js';
 import { putFavorite } from './db/putFavorite.js';
-import { appendTemplateResult, placeholderImage, trim, trace } from './lib.js';
+import { renderAppend, placeholderImage, trim, trace } from './lib.js';
 import { html } from '../node_modules/lit-html/lib/lit-extended.js';
 
 import { imageUrlForRestaurant } from './map-marker.js';
@@ -32,7 +32,7 @@ const reviewsList = reviews =>
 
 // "optimistic UI"
 const onReviewSubmitted = event =>
-  appendTemplateResult(reviewCard(event.detail), document.getElementById('restaurant'));
+  renderAppend(reviewCard(event.detail), document.getElementById('restaurant'));
 
 // takes a string like "11:00 am - 5:00 pm" and returns semantic html
 // str -> str
