@@ -1,19 +1,12 @@
 import { fetchRestaurants } from './db/fetchRestaurants.js';
 import { html, render } from '../node_modules/lit-html/lib/lit-extended.js';
-import { addMarkers } from './map-marker.js';
+import { onGoogleMapReady } from './map-marker.js';
 import { uniqueCuisines, uniqueNeighbourhoods } from './restaurant-filters.js';
 import { restaurantList } from './restaurant-list.js';
 
 const cuisineSelect = document.getElementById('cuisines-select') || {};
 const neighbourhoodSelect = document.getElementById('neighbourhoods-select') || {};
 const mapContainer = document.getElementById('good-map');
-
-const swapMaps = () => mapContainer.style.opacity = 1;
-
-const onGoogleMapReady = ({ markers, restaurants }) => event => (
-  requestIdleCallback(swapMaps),
-  addMarkers({ map: event.detail, restaurants, markers })
-);
 
 const goodMapList = ({ markers, restaurants }) => html`
 <good-map id="map"

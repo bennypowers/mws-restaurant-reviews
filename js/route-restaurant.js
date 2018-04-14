@@ -1,21 +1,12 @@
 import { restaurantDetails, reviewsListTemplate } from './restaurant-view.js';
 import { fetchRestaurantById } from './db/fetchRestaurantById.js';
 import { html, render } from '../node_modules/lit-html/lib/lit-extended.js';
-import { addMarkers } from './map-marker.js';
+import { mapContainer, onGoogleMapReady } from './map-marker.js';
 import { renderAppend, getParameterByName } from './lib.js';
 
-const mapContainer = document.getElementById('good-map');
 const restaurantId = getParameterByName('id', location);
 
 const restaurantPromise = fetchRestaurantById(restaurantId);
-
-// duplicate code
-const swapMaps = () => mapContainer.style.opacity = 1;
-
-const onGoogleMapReady = ({ markers, restaurants }) => event => (
-  requestIdleCallback(swapMaps),
-  addMarkers({ map: event.detail, restaurants, markers })
-);
 
 const breadcrumbTemplate = ({ name }) => html`
   <ul aria-label="Breadcrumb">
