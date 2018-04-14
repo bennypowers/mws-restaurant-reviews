@@ -21,8 +21,11 @@ const onSelect = async () => {
   const restaurants = allRestaurants
     .filter(byCuisineAndNeighbourhood(cuisine, neighbourhood));
 
+  const template = restaurantList({ restaurants, cuisine, cuisines, neighbourhoods, neighbourhood });
+
   addMarkers({map, restaurants, markers});
-  return render(restaurantList({ restaurants, cuisine, cuisines, neighbourhoods, neighbourhood }), app);
+
+  return render(template, app);
 };
 
 const noRestaurants = html`<li class="no-restaurants">No restaurants matching those filters</li>`;
