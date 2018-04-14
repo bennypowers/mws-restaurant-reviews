@@ -67,16 +67,6 @@ const onActiveChanged = event =>
 
 export const restaurantDetails = ({ restaurant = {} }) => html`
 <section id="restaurant-container">
-  <h1 id="restaurant-name" tabindex="0">
-    ${restaurant.name}
-    <emoji-checkbox
-        full="😎"
-        empty="💩"
-        on-checked-changed="${ onCheckedChanged(restaurant) }"
-        title="${restaurant.is_favorite ? 'Favourite!' : 'Not Favourite'}"
-        checked?="${restaurant.is_favorite}"
-        label="favourite"></emoji-checkbox>
-  </h1>
 
   <figure id="restaurant-image-container">
     <lazy-image id="restaurant-image"
@@ -85,7 +75,17 @@ export const restaurantDetails = ({ restaurant = {} }) => html`
         placeholder="${placeholderImage}"
         rootMargin="40px"
         fade></lazy-image>
-    <figcaption id="restaurant-cuisine">${restaurant.cuisine_type}</figcaption>
+    <figcaption id="restaurant-cuisine">
+      <h2 id="restaurant-name" tabindex="0">${restaurant.name}</h2>
+      <h3>${restaurant.cuisine_type}</h3>
+      <emoji-checkbox id="favourite-checkbox"
+          label="favourite"
+          title="${restaurant.is_favorite ? 'Favourite!' : 'Not Favourite'}"
+          full="😎" empty="💩"
+          checked?="${restaurant.is_favorite}"
+          on-checked-changed="${ onCheckedChanged(restaurant) }"
+      ></emoji-checkbox>
+    </figcaption>
   </figure>
 
   <div id="restaurant-details-container">

@@ -65,6 +65,8 @@
 
 .restaurant #restaurant-container {
   order: 1;
+  display: flex;
+  flex-flow: column;
 }
 
 .restaurant #map-container {
@@ -73,6 +75,30 @@
 
 .restaurant #app {
   order: 2;
+}
+
+.restaurant #restaurant-image-container {
+  order: 0;
+  margin: 0;
+  width: 100%;
+  position: relative;
+}
+
+.restaurant #restaurant-name {
+  order: 1;
+}
+
+.restaurant #restaurant-details-container {
+  order: 2;
+}
+
+.restaurant #restaurant-cuisine {
+  position: absolute;
+  display: flex;
+  bottom: 0;
+  width: 100%;
+  padding: 1em;
+  background: hsla(0, 100%, 100%, 0.5);
 }
 
 @media (min-width: 630px) {
