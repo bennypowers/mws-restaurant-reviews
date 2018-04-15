@@ -2,7 +2,7 @@ import { fetchReviews } from './db/fetchReviews.js';
 import { putFavorite } from './db/putFavorite.js';
 import { renderAppend, placeholderImage, trim, trace } from './lib.js';
 import { html } from '../node_modules/lit-html/lib/lit-extended.js';
-
+import getDay from '../node_modules/date-fns/esm/getDay/index.js';
 import { imageUrlForRestaurant } from './map-marker.js';
 
 import './review-card.js';
@@ -41,12 +41,29 @@ const formatOpeningToClosing = string =>
     .map(trim)
     .join(' - ');
 
-const hoursRowTemplate = ([dayString, hoursString]) => html`
-  <tr>
-    <td><time>${dayString}</time></td>
+const days = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
+
+const isToday = dayString => {
+  const today = days[getDay(Date.now())];
+  return (dayString.toLowerCase() == today.toLowerCase());
+};
+
+const hoursRowTemplate = ([dayString, hoursString]) => {
+  const today = isToday(dayString);
+  return html`
+  <tr class$="${today ? 'today' : ''}">
+    <td><time>${today ? 'Today' : dayString}</time></td>
     <td>${hoursString.split(', ').map(formatOpeningToClosing).join(', ')}</td>
-  </tr>
-`;
+  </tr>`;
+};
 
 const hoursTemplate = hours =>
   Object.entries(hours || {})
