@@ -130,6 +130,9 @@ export const reviewsListTemplate = ({ restaurantId, restaurant = {} }) => {
 };
 
 export const restaurantDetails = ({ restaurant = {} }) => html`
+<div id="map-container">
+  <div id="good-map"></div>
+</div>
 <section id="restaurant-container">${mapImageTemplate(restaurant)}</section>
 <section id="restaurant-details-container">${hoursAddressTemplate(restaurant)}</section>
 <section id="reviews-container" tabindex="0" aria-label="Reviews">${reviewsListTemplate({ restaurantId: restaurant.id, restaurant })}</section>

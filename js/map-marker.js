@@ -26,12 +26,13 @@ const nullifyMap = marker => marker.setMap(null);
 export const addMarkers = ({ map, restaurants = [], markers = [] }) =>
   window.google ? (
     markers.forEach(nullifyMap),
-    restaurants.map( mapMarker(map) )
+    window.markers = restaurants.map( mapMarker(map) )
   ) : null;
 
-export const mapContainer = document.getElementById('good-map');
-
-const swapMaps = () => mapContainer.style.opacity = 1;
+const swapMaps = () => {
+  const map = document.getElementById('good-map');
+  map.style.opacity = 1;
+};
 
 export const onGoogleMapReady = ({ markers, restaurants }) => ({ detail: map }) => (
   requestIdleCallback(swapMaps),

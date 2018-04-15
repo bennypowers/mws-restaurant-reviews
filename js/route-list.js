@@ -2,11 +2,10 @@ import { fetchRestaurants } from './db/fetchRestaurants.js';
 import { html, render } from '../node_modules/lit-html/lib/lit-extended.js';
 import { onGoogleMapReady } from './map-marker.js';
 import { uniqueCuisines, uniqueNeighbourhoods } from './restaurant-filters.js';
-import { restaurantList } from './restaurant-list.js';
+import { restaurantList } from './view-list.js';
 
 const cuisineSelect = document.getElementById('cuisines-select') || {};
 const neighbourhoodSelect = document.getElementById('neighbourhoods-select') || {};
-const mapContainer = document.getElementById('good-map');
 
 const goodMapList = ({ markers, restaurants }) => html`
 <good-map id="map"
@@ -31,7 +30,7 @@ const routeList = async ({ app }) => {
   const neighbourhood = neighbourhoodSelect.value || 'all';
 
   render(restaurantList({ cuisine, cuisines, neighbourhood, neighbourhoods, restaurants }), app);
-  render(goodMapList({ restaurants }), mapContainer);
+  render(goodMapList({ restaurants }), document.getElementById('good-map'));
 };
 
 export default routeList;

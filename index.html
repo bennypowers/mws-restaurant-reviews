@@ -10,11 +10,14 @@
 
   <!-- Critical Resources -->
   <link rel="preload" as="fetch" href="/api/restaurants">
+  <link rel="preload" as="image" href="https://maps.googleapis.com/maps/api/staticmap?center=40.722216,+-73.987501&zoom=12&scale=2&size=400x400&maptype=roadmap&format=png&visual_refresh=true">
   <link rel="preload" as="script" href="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc&callback=__initGoodMap">
   <link rel="modulepreload" href="/js/lib.js">
   <link rel="modulepreload" href="/js/router.js">
   <link rel="modulepreload" href="/js/route-restaurant.js">
-  <link rel="modulepreload" href="/js/restaurant-view.js">
+  <link rel="modulepreload" href="/js/route-list.js">
+  <link rel="modulepreload" href="/js/view-restaurant.js">
+  <link rel="modulepreload" href="/js/view-list.js">
   <link rel="modulepreload" href="/js/db/fetchRestaurants.js">
   <link rel="modulepreload" href="/js/db/putFavorite.js">
   <link rel="modulepreload" href="/js/db/cacheRequest.js">
@@ -121,20 +124,18 @@
     <div id="breadcrumb"></div>
   </header>
 
-  <main id="app-shell">
+  <main id="app">
     <div id="map-container">
       <div id="good-map"></div>
     </div>
-
-    <div id="app">
-      <noscript>
-        <p>To see the restaurant map and read reviews, please <a href="https://www.enable-javascript.com/">enable JavaScript in your browser</a>.</p>
-      </noscript>
-    </div>
+    <noscript>
+      <p>To see the restaurant map and read reviews, please <a href="https://www.enable-javascript.com/">enable JavaScript in your browser</a>.</p>
+    </noscript>
   </main>
 
   <footer id="footer">
     Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
   </footer>
 
+</body>
 </html>

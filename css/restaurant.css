@@ -63,10 +63,11 @@ html {
   color: #666;
 }
 
-#app-shell.restaurant {
+#app.restaurant {
   display: flex;
-  flex-direction: column;
+  flex-flow: row wrap;
 }
+
 
 .today {
   font-weight: bold;
@@ -104,8 +105,11 @@ html {
 }
 
 .restaurant #restaurant-details-container {
+  padding: 1em;
   order: 2;
+  justify-content: space-around;
   display: flex;
+  flex-flow: column nowrap;
   width: 100%;
 }
 
@@ -131,14 +135,17 @@ html {
     grid-column-gap: 2%;
   }
 
-  #app-shell.restaurant {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
   .restaurant #map-container,
   .restaurant #restaurant-container {
+    width: 50%;
     max-width: 50%;
+  }
+
+  .restaurant #restaurant-details-container {
+    order: 2;
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
   }
 
   .restaurant #map-container {

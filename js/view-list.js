@@ -56,6 +56,10 @@ const restaurantItems = restaurants =>
 export const restaurantList = ({ restaurants, cuisine, cuisines, neighbourhoods, neighbourhood }) => {
 
   return html`
+    <div id="map-container">
+      <div id="good-map"></div>
+    </div>
+
     <div class="filter-options">
       <h2>Filter Results</h2>
 

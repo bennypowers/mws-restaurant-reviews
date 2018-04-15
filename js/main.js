@@ -2,7 +2,6 @@ import { attemptCatchUp } from './db/cacheRequest.js';
 import { installRouter } from './router.js';
 
 const app = document.getElementById('app');
-const appShell = document.getElementById('app-shell');
 
 const listSpecifier = './route-list.js';
 const restSpecifier = './route-restaurant.js';
@@ -10,7 +9,7 @@ const restSpecifier = './route-restaurant.js';
 const list = [
   './restaurant-card.js',
   './restaurant-filters.js',
-  './restaurant-list.js',
+  './view-list.js',
   './map-marker.js',
 ];
 
@@ -26,12 +25,12 @@ const runDefault = ({ app }) =>
   module => module.default({ app });
 
 const router = async location => {
-  const shouldImport = location.pathname === '/' ? 'list' : 'rest';
-  if (shouldImport === 'rest') appShell.classList.add('restaurant');
-  else appShell.classList.remove('restaurant');
+  const page = location.pathname === '/' ? 'list' : 'rest';
+  if (page === 'rest') app.classList.add('restaurant');
+  else app.classList.remove('restaurant');
   // Parallelize loading to speed up critical path render
-  Promise.all(imports[shouldImport].map(importSpecifier));
-  return import(shouldImport === 'list' ? listSpecifier : restSpecifier)
+  Promise.all(imports[page].map(importSpecifier));
+  return import(page === 'list' ? listSpecifier : restSpecifier)
     .then(runDefault({ app }));
 };
 

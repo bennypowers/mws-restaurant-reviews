@@ -71,7 +71,7 @@ good-map {
   height: 400px;
   z-index: 2;
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 #static-map {
