@@ -92,6 +92,13 @@ html {
   margin: 0;
   width: 100%;
   position: relative;
+  height: 100%;
+}
+
+.restaurant #restaurant-image {
+  height: 100%;
+  --lazy-image-img-height: 100%;
+  --lazy-image-img-object-fit: cover;
 }
 
 .restaurant #restaurant-name {

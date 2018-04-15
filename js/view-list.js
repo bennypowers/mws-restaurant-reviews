@@ -79,6 +79,7 @@ export const restaurantList = ({ restaurants, cuisine, cuisines, neighbourhoods,
         ${ cuisines.map(optionTemplate(cuisine)) }
       </select>
     </div>
+
     <ul id="restaurants-list">
       ${ restaurantItems(restaurants) }
     </ul>
