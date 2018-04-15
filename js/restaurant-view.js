@@ -15,7 +15,6 @@ const upgradeElements = () => {
   ]);
 };
 
-// TODO: general card element
 const reviewCard = ({comments, createdAt, id, updatedAt, name, rating}) =>
   html`<review-card id="${ id }"
       comments="${ comments }"
@@ -82,59 +81,58 @@ const onActiveChanged = event =>
   document.querySelector('submit-review')
     .toggleOpened(event);
 
-export const restaurantDetails = ({ restaurant = {} }) => html`
-<section id="restaurant-container">
+export const hoursAddressTemplate = ({ address, operating_hours }) => html`
+  <address id="restaurant-address"
+      tabindex="0"
+      aria-label="Address">${address}</address>
+  <table id="restaurant-hours"
+      tabindex="0"
+      aria-label="Hours">${hoursTemplate(operating_hours)}</table> `;
 
-  <figure id="restaurant-image-container">
-    <lazy-image id="restaurant-image"
-        src="${imageUrlForRestaurant(restaurant)}"
-        alt="Interior or exterior of ${name}"
-        placeholder="${placeholderImage}"
-        rootMargin="40px"
-        fade></lazy-image>
-    <figcaption id="restaurant-cuisine">
-      <h2 id="restaurant-name" tabindex="0">${restaurant.name}</h2>
-      <h3>${restaurant.cuisine_type}</h3>
-      <emoji-checkbox id="favourite-checkbox"
-          label="favourite"
-          title="${restaurant.is_favorite ? 'Favourite!' : 'Not Favourite'}"
-          full="😎" empty="💩"
-          checked?="${restaurant.is_favorite}"
-          on-checked-changed="${ onCheckedChanged(restaurant) }"
-      ></emoji-checkbox>
-    </figcaption>
-  </figure>
+export const mapImageTemplate = restaurant => html`
+<figure id="restaurant-image-container">
+  <lazy-image id="restaurant-image"
+      src="${imageUrlForRestaurant(restaurant)}"
+      alt="Interior or exterior of ${name}"
+      placeholder="${placeholderImage}"
+      rootMargin="40px"
+      fade></lazy-image>
+  <figcaption id="restaurant-info">
+    <h2 id="restaurant-name" tabindex="0">${restaurant.name}</h2>
+    <h3 id="restaurant-cuisine">${restaurant.cuisine_type}</h3>
+    <emoji-checkbox id="favourite-checkbox"
+        label="favourite"
+        title="${restaurant.is_favorite ? 'Favourite!' : 'Not Favourite'}"
+        full="😎" empty="💩"
+        checked?="${restaurant.is_favorite}"
+        on-checked-changed="${ onCheckedChanged(restaurant) }"
+    ></emoji-checkbox>
+  </figcaption>
+</figure>`;
 
-  <div id="restaurant-details-container">
-    <address id="restaurant-address"
-        tabindex="0"
-        aria-label="Address">${restaurant.address}</address>
-    <table id="restaurant-hours"
-        tabindex="0"
-        aria-label="Hours">${hoursTemplate(restaurant.operating_hours)}</table>
-  </div>
-</section>
-`;
+export const reviewsListTemplate = ({ restaurantId, restaurant = {} }) => {
+  const reviews = fetchReviews(restaurantId)
+    .then(reviewsList)
+    .catch(trace('fetchReviews'));
 
-export const reviewsListTemplate = ({ restaurantId, restaurant = {} }) => html`
-<section id="reviews-container" tabindex="0" aria-label="Reviews">
+  return html`
   <h2>Reviews</h2>
-  <div id="reviews-list">${
-    fetchReviews(restaurantId)
-      .then(reviewsList)
-      .catch(trace('fetchReviews'))
-  }
-  </div>
-</section>
+  <div id="reviews-list">${ reviews }</div>
 
-<power-fab id="form-fab"
-    label="+"
-    title="Add Review"
-    on-active-changed="${ onActiveChanged }"></power-fab>
+  <power-fab id="form-fab"
+      label="+"
+      title="Add Review"
+      on-active-changed="${ onActiveChanged }"></power-fab>
 
-<submit-review id="review-fab"
-    restaurantId="${restaurant.id}"
-    on-review-submitted="${ onReviewSubmitted }"></submit-review>
+  <submit-review id="review-fab"
+      restaurantId="${restaurant.id}"
+      on-review-submitted="${ onReviewSubmitted }"></submit-review>`;
+};
+
+export const restaurantDetails = ({ restaurant = {} }) => html`
+<section id="restaurant-container">${mapImageTemplate(restaurant)}</section>
+<section id="restaurant-details-container">${hoursAddressTemplate(restaurant)}</section>
+<section id="reviews-container" tabindex="0" aria-label="Reviews">${reviewsListTemplate({ restaurantId: restaurant.id, restaurant })}</section>
 `;
 
 requestIdleCallback(upgradeElements);

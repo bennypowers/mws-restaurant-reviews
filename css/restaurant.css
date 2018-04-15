@@ -1,5 +1,9 @@
 /* ====================== Restaurant Details ====================== */
 
+html {
+  --emoji-checkbox-width: 1.5em;
+}
+
 #form-fab {
   background-color: crimson;
   position: fixed;
@@ -39,6 +43,7 @@
 
 #reviews-container {
   padding: 30px 40px 80px;
+  order: 3;
 }
 
 #reviews-container h2 {
@@ -89,18 +94,33 @@
 }
 
 .restaurant #restaurant-name {
-  order: 1;
+  order: 0;
+}
+
+.restaurant #restaurant-info > * {
+  color: black;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .restaurant #restaurant-details-container {
   order: 2;
+  display: flex;
+  width: 100%;
 }
 
 .restaurant #restaurant-cuisine {
+  margin-left: auto;
+  margin-right: 1em;
+}
+
+.restaurant #restaurant-info {
   position: absolute;
+  align-items: center;
+  justify-content: space-between;
   display: flex;
   bottom: 0;
-  width: 100%;
+  width: calc(100% - 2em);
   padding: 1em;
   background: hsla(0, 100%, 100%, 0.5);
 }

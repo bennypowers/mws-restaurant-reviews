@@ -39,7 +39,6 @@ const routeRestaurant = async ({ app }) => {
 
   render(breadcrumbTemplate({ name }), document.getElementById('breadcrumb'));
   renderAppend(restaurantDetails({ restaurant, restaurantId }), appShell, {prepend: true});
-  render(reviewsListTemplate({ restaurant, restaurantId }), app);
   render(goodMapRestaurant({ markers, restaurant }), mapContainer);
 };
 
