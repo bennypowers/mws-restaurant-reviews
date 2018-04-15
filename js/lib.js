@@ -1,107 +1,39 @@
-import { render } from '../node_modules/lit-html/lib/lit-extended.js';
 // NOTE: In real life, I would use an FP library like Crocks or Ramda.
 
 /*
  * MATH
  */
 
-export const add = x => y => x + y;
-
-export const divideBy = y => x => x / y;
-
-export const prod = x => y => x * y;
-
-export const subtractFrom = y => x => x - y;
+export { add, prod, divideBy, subtractFrom } from '../node_modules/@power-elements/power-functions/math.js';
 
 /*
  * PREDICATES
  */
 
-/** Loose equality. */
-// eq :: a -> b -> bool
-export const eq = a => b => a == b;
-
-/** Strict equality. */
-// eqeq :: a -> b -> bool
-export const eqeq = a => b => a === b;
-
-/** Returns unique values for a key in a list of objects. */
-// uniqueByKey :: s -> obj -> bool
-export const uniqueByKey = key => compose(uniq, map(prop(key)));
+export { eq, eqeq, uniqueByKey } from '../node_modules/@power-elements/power-functions/predicates.js';
 
 /*
  * COMBINATORS
  */
 
-/** Compose functions right-to-left */
-// compose :: fs -> g
-export const compose = (...fns) =>
-  fns.reduce((f, g) => (...args) => f(g(...args)));
-
-/** True when both predicates are true. Naive implementation cribbed from Ramda. */
-// and :: (f, g) -> bool
-export const and = (f, g) => function _and() {
-  // the much-maligned `arguments` object gives us a leg up here.
-  return f.apply(this, arguments) && g.apply(this, arguments);
-};
-
-/** The identity function. */
-// identity :: x -> x
-export const identity = x => x;
-
-/** The constanct function. */
-// constant :: x -> ( () -> x )
-export const constant = x => () => x;
+export { and, compose, constant, identity } from '../node_modules/@power-elements/power-functions/combinators.js';
 
 /*
  * ARRAY FUNCTIONS
  */
 
-/** Makes array methods point-free. */
-// safeArrayMethod :: m -> f -> as -> b
-export const safeArrayMethod = name => f => as =>
-  (as && as[name] && typeof as[name] === 'function' ? as : [])[name](f);
-
-/** Point-free array map. Naive implementation. */
-// map :: f -> as -> bs
-export const map = safeArrayMethod('map');
-
-/** Point-free array some. Naive implementation. */
-// some :: f -> as -> as
-export const some = safeArrayMethod('some');
-
-/** Point-free array find. Naive implementation. */
-// find :: f -> as -> a
-export const find = safeArrayMethod('find');
-
-/** Point-free array filter. Naive implementation. */
-// find :: f -> as -> as
-export const filter = safeArrayMethod('filter');
-
-/** Removes duplicates from an array. Naive implementation. */
-// uniq :: as -> as
-export const uniq = compose(Array.from, x => new Set(x));
+export { map, find, filter, some, uniq } from '../node_modules/@power-elements/power-functions/array.js';
 
 /** ensures that a value is always packed in an Array */
 export const asArray = x =>
   Array.isArray(x) ? x : [x];
-
-export const range = length =>
-  Array
-    .from({length})
-    .map((_, i) => i);
 
 /*
  * POJO FUNCTIONS
  * Functions for dealing with Plain Old JavaScript Objects
  */
 
- /** Returns a property by key, or by dot-separated deep keys. */
- // prop :: str -> obj -> a
- export const prop = propertyName => o =>
-   propertyName
-     .split('.')
-     .reduce((a, b) => a[b], o || {});
+export { deepProp as prop } from '../node_modules/@power-elements/power-functions/object.js';
 
 /*
  * STRING FUNCTIONS
@@ -134,24 +66,10 @@ export const nameToId = name =>
       .replace(/\W+/g, '');
 
 /*
- * LOGGING FUNCTIONS
+ * LOGGING
  */
 
-/**
- * Logs a message with a tag to the console
- * @param  {string} tag
- * @return {Function} function that logs and then returns an message.
- */
-export const trace = tag => message =>
-  (console.log(tag, message), message); // eslint-disable-line no-console
-
-/**
- * Logs an error with a tag to the console
- * @param  {string} tag
- * @return {Function} function that logs and then returns an error.
- */
-export const traceError = tag => message =>
-  (console.error(tag, message), message); // eslint-disable-line no-console
+export { trace, traceError } from '../node_modules/@power-elements/power-functions/core/trace.js';
 
 /*
  * PROMISE HELPERS
@@ -167,19 +85,7 @@ export const rejectNon200 = response =>
     ? Promise.reject(new Error(response.statusText || `Request failed. Returned status of ${response.status}`))
     : Promise.resolve(response);
 
-/**
- * Parses a response as JSON
- * @param  {Response} response
- * @return {any}      JSON-parsed response
- */
-export const handleAsJson = response => response.json();
-
-/**
- * Parses a response as Text
- * @param  {Response} response
- * @return {any}      Text response
- */
-export const handleAsText = response => response.text();
+export { handleAsJson, handleAsText } from '../node_modules/@power-elements/power-functions/promise.js';
 
 /**
  * Helper function used to reject promise chains if final values are falsy.
@@ -220,20 +126,6 @@ export const append = parent => child => parent.append(child);
 /** Point-free DOM remove. */
 // remove :: DOM -> DOM -> ()
 export const remove = element => element.remove();
-
-/** Appends a lit-html TemplateResult to a target element. */
-// HACK: Since we can't directly append a TemplateResult to an element,
-//       we render it to a temporary div, then append it to our container.
-export const renderAppend = (templateResult, target, options = {}) => {
-  const methodName = options.prepend ? 'prepend' : 'append';
-  let temp = document.createElement('div');
-  render(templateResult, temp);
-  const returnValue = target[methodName](...temp.children);
-  // Give GC a leg up, Just in case;
-  temp.innerHTML = '';
-  temp = null;
-  return returnValue;
-};
 
 /**
  * Random
