@@ -228,7 +228,7 @@ export const renderAppend = (templateResult, target, options = {}) => {
   const methodName = options.prepend ? 'prepend' : 'append';
   let temp = document.createElement('div');
   render(templateResult, temp);
-  const returnValue = target[methodName](temp.firstElementChild);
+  const returnValue = target[methodName](...temp.children);
   // Give GC a leg up, Just in case;
   temp.innerHTML = '';
   temp = null;
