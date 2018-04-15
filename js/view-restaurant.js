@@ -5,8 +5,6 @@ import { html } from '../node_modules/lit-html/lib/lit-extended.js';
 import getDay from '../node_modules/date-fns/esm/getDay/index.js';
 import { imageUrlForRestaurant } from './map-marker.js';
 
-import './review-card.js';
-
 const upgradeElements = () => {
   Promise.all([
     import('./submit-review.js'),

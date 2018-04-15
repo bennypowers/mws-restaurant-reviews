@@ -14,7 +14,7 @@ const list = [
 ];
 
 const rest = [
-
+  './review-card.js',
 ];
 
 const imports = ({ list, rest });
