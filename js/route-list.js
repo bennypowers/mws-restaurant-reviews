@@ -1,4 +1,4 @@
-import { fetchRestaurants } from './db/fetchRestaurants.js';
+import { fetchRestaurants, syncRestaurantsFromNetwork } from './db/fetchRestaurants.js';
 import { html, render } from '../node_modules/lit-html/lib/lit-extended.js';
 import { onGoogleMapReady } from './map-marker.js';
 import { uniqueCuisines, uniqueNeighbourhoods } from './restaurant-filters.js';
@@ -17,11 +17,9 @@ const goodMapList = ({ markers, restaurants }) => html`
     on-google-map-ready="${ onGoogleMapReady({ markers, restaurants }) }">
 </good-map>`;
 
-const routeList = async ({ app }) => {
+const doRender = ({ app }) => restaurants => {
   const restaurantContainer = document.getElementById('restaurant-container');
   if (restaurantContainer) restaurantContainer.remove();
-  // Concurrent Requests.
-  const restaurants = await fetchRestaurants();
 
   const cuisines = uniqueCuisines(restaurants);
   const neighbourhoods = uniqueNeighbourhoods(restaurants);
@@ -32,5 +30,10 @@ const routeList = async ({ app }) => {
   render(restaurantList({ cuisine, cuisines, neighbourhood, neighbourhoods, restaurants }), app);
   render(goodMapList({ restaurants }), document.getElementById('good-map'));
 };
+
+const routeList = ({ app }) => fetchRestaurants()
+  .then(doRender({ app }))
+  .then(syncRestaurantsFromNetwork)
+  .then(doRender({ app }));
 
 export default routeList;
