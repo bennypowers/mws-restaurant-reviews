@@ -1,4 +1,4 @@
-import idbKeyval from '../idb-keyval.js';
+import { get, set } from '../../node_modules/idb-keyval/dist/idb-keyval.mjs';
 
 import {
   asArray,
@@ -38,7 +38,7 @@ export const storeId = key => value => {
 /** set an id-keyed value in idb. */
 // setKeyValInIdb :: key -> value -> Promise undefined
 export const setKeyValInIdb = key => value =>
-  idbKeyval.set( value.id ? `${key}/${value.id}` : `${key}`, value );
+  set( value.id ? `${key}/${value.id}` : `${key}`, value );
 
 /** Stores an id in localStorage then caches the response in idb. */
 // storeAndCache :: str -> response -> Promise undefined
@@ -50,7 +50,7 @@ export const storeAndCache = key => compose(
 /** get an id-keyed value from idb. */
 // getKeyValFromIdb :: key -> value -> Promise a
 export const getKeyValFromIdb = key => compose(
-  idbKeyval.get,
+  get,
   x => `${key}/${x}`,
 );
 
@@ -63,14 +63,12 @@ export const cacheInIdb = key => value =>
   ).then( constant(value) );
 const appendRequest = (key, value) => (pendingRequests = []) => {
   const newPending = [...pendingRequests, value];
-  return idbKeyval
-    .set(key, newPending)
+  return set(key, newPending)
     .then(constant(value.request.body));
 };
 
 export const cacheRequest = (key, value) => {
-  return idbKeyval
-    .get(key)
+  return get(key)
     .then(appendRequest(key, value));
 };
 
@@ -87,11 +85,11 @@ const notTheResponse = response => request => {
 
 const updateCachedRequestList = (name, response) => requests => {
   const updatedList = requests.filter( notTheResponse(response) );
-  return idbKeyval.set(name, updatedList);
+  return set(name, updatedList);
 };
 
 const handleOfflineSyncSuccess = name => response => {
-  idbKeyval.get(name)
+  get(name)
     .then( updateCachedRequestList(name, response) );
 };
 
@@ -106,7 +104,7 @@ const catchUpRequests = name => (requests = []) =>
   requests.forEach( catchUp(name) );
 
 const syncRequests = name =>
-  idbKeyval.get(name)
+  get(name)
     .then( catchUpRequests(name) );
 
 export const attemptCatchUp = () => {

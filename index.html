@@ -9,34 +9,37 @@
   <title>Restaurant Reviews</title>
 
   <!-- Critical Resources -->
-  <link rel="preload" as="fetch" href="/api/restaurants">
+  <link rel="prefetch" href="/api/restaurants">
+  <link rel="prefetch" href="/bower_components/good-map/good-map.js">
   <link rel="preload" as="image" href="https://maps.googleapis.com/maps/api/staticmap?center=40.722216,+-73.987501&zoom=12&scale=2&size=400x400&maptype=roadmap&format=png&visual_refresh=true">
   <link rel="preload" as="script" href="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc&callback=__initGoodMap">
-  <link rel="modulepreload" href="/js/lib.js">
-  <link rel="modulepreload" href="/js/router.js">
-  <link rel="modulepreload" href="/js/route-restaurant.js">
-  <link rel="modulepreload" href="/js/route-list.js">
-  <link rel="modulepreload" href="/js/view-restaurant.js">
-  <link rel="modulepreload" href="/js/view-list.js">
+
+  <link rel="modulepreload" href="/js/db/cacheRequest.js">
   <link rel="modulepreload" href="/js/db/fetchRestaurants.js">
   <link rel="modulepreload" href="/js/db/putFavorite.js">
-  <link rel="modulepreload" href="/js/db/cacheRequest.js">
-  <link rel="modulepreload" href="/js/idb-keyval.js">
+  <link rel="modulepreload" href="/js/lib.js">
   <link rel="modulepreload" href="/js/map-marker.js">
-  <link rel="modulepreload" href="/node_modules/lit-html/lit-html.js">
-  <link rel="modulepreload" href="/node_modules/lit-html/lib/lit-extended.js">
-  <link rel="modulepreload" href="/node_modules/@polymer/polymer/lib/mixins/element-mixin.js">
-  <link rel="modulepreload" href="/node_modules/@polymer/polymer/lib/utils/html-tag.js">
-  <link rel="modulepreload" href="/node_modules/@polymer/polymer/lib/utils/boot.js">
-  <link rel="modulepreload" href="/node_modules/@polymer/polymer/lib/utils/mixin.js">
-  <link rel="modulepreload" href="/node_modules/@polymer/polymer/lib/mixins/properties-changed.js">
+  <link rel="modulepreload" href="/js/route-list.js">
+  <link rel="modulepreload" href="/js/route-restaurant.js">
+  <link rel="modulepreload" href="/js/router.js">
+  <link rel="modulepreload" href="/js/view-list.js">
+  <link rel="modulepreload" href="/js/view-restaurant.js">
+
   <link rel="modulepreload" href="/node_modules/@polymer/lit-element/lit-element.js">
-  <link rel="modulepreload" href="/node_modules/@power-elements/power-functions/math.js">
-  <link rel="modulepreload" href="/node_modules/@power-elements/power-functions/combinators.js">
+  <link rel="modulepreload" href="/node_modules/@polymer/polymer/lib/mixins/element-mixin.js">
+  <link rel="modulepreload" href="/node_modules/@polymer/polymer/lib/mixins/properties-changed.js">
+  <link rel="modulepreload" href="/node_modules/@polymer/polymer/lib/utils/boot.js">
+  <link rel="modulepreload" href="/node_modules/@polymer/polymer/lib/utils/html-tag.js">
+  <link rel="modulepreload" href="/node_modules/@polymer/polymer/lib/utils/mixin.js">
   <link rel="modulepreload" href="/node_modules/@power-elements/power-functions/array.js">
+  <link rel="modulepreload" href="/node_modules/@power-elements/power-functions/combinators.js">
+  <link rel="modulepreload" href="/node_modules/@power-elements/power-functions/core/trace.js">
+  <link rel="modulepreload" href="/node_modules/@power-elements/power-functions/math.js">
   <link rel="modulepreload" href="/node_modules/@power-elements/power-functions/object.js">
   <link rel="modulepreload" href="/node_modules/@power-elements/power-functions/promise.js">
-  <link rel="modulepreload" href="/node_modules/@power-elements/power-functions/core/trace.js">
+  <link rel="modulepreload" href="/node_modules/idb-keyval/dist/idb-keyval.mjs">
+  <link rel="modulepreload" href="/node_modules/lit-html/lib/lit-extended.js">
+  <link rel="modulepreload" href="/node_modules/lit-html/lit-html.js">
 
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="stylesheet" href="/css/restaurant.css">
