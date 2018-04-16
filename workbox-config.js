@@ -7,7 +7,6 @@ module.exports = {
     "node_modules/**/bower_components/**/*"
   ],
   "globPatterns": [
-    "js/*",
     "css/*",
     "index.html",
     "manifest.json"
