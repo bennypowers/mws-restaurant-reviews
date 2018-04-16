@@ -1,5 +1,3 @@
-import './restaurant-card.js';
-
 import { addMarkers } from './map-marker.js';
 import { byCuisineAndNeighbourhood, uniqueCuisines, uniqueNeighbourhoods } from './restaurant-filters.js';
 import { fetchRestaurants } from './db/fetchRestaurants.js';
