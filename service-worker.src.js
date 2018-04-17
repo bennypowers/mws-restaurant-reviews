@@ -1,6 +1,9 @@
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.0.0/workbox-sw.js');
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.1.0/workbox-sw.js');
 
-/* global  workbox */
+/* global workbox */
+
+// Force production builds
+workbox.setConfig({ debug: false });
 
 workbox.skipWaiting();
 workbox.clientsClaim();
