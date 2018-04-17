@@ -26,18 +26,18 @@
 
 ✔️ Images have alternate text,
 
-📝 The application uses appropriate focus management for navigation
+✔️ The application uses appropriate focus management for navigation
 
-📝 And semantic elements and ARIA attributes are used correctly.
+✔️ And semantic elements and ARIA attributes are used correctly.
 
-📝 Roles are correctly defined for all elements of the review form.
+✔️ Roles are correctly defined for all elements of the review form.
 
 # Performance
 
 Lighthouse targets for each category exceed:
 
 ✔️ Progressive Web App: >90
-📝 Performance: >90
+✔️ Performance: >90
 ✔️ Accessibility: >90
 
 # Stretch Goals
