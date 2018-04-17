@@ -99,3 +99,5 @@ export const placeholderImage = 'data:image/svg;charset=utf-8,%3Csvg%20xmlns%3D%
 
 export const byCreatedAtDesc = (a, b) =>
     - (a.createdAt - b.createdAt);
+
+export const $ = selector => document.querySelector(selector);

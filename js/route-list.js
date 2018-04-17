@@ -3,10 +3,7 @@ import { html, render } from '../node_modules/lit-html/lib/lit-extended.js';
 import { onGoogleMapReady } from './map-marker.js';
 import { uniqueCuisines, uniqueNeighbourhoods } from './restaurant-filters.js';
 import { restaurantList } from './view-list.js';
-
-const app = document.getElementById('app');
-const cuisineSelect = document.getElementById('cuisines-select') || {};
-const neighbourhoodSelect = document.getElementById('neighbourhoods-select') || {};
+import { $ } from './lib.js';
 
 const goodMapList = ({ markers, restaurants }) => html`
 <good-map id="map"
@@ -25,11 +22,11 @@ const updateUi = restaurants => {
   const cuisines = uniqueCuisines(restaurants);
   const neighbourhoods = uniqueNeighbourhoods(restaurants);
 
-  const cuisine = cuisineSelect.value || 'all';
-  const neighbourhood = neighbourhoodSelect.value || 'all';
+  const cuisine = ($('cuisines-select') || {}).value || 'all';
+  const neighbourhood = ($('neighbourhoods-select') || {}).value || 'all';
 
   render(html`<ul hidden></ul>`, document.getElementById('breadcrumb'));
-  render(restaurantList({ cuisine, cuisines, neighbourhood, neighbourhoods, restaurants }), app);
+  render(restaurantList({ cuisine, cuisines, neighbourhood, neighbourhoods, restaurants }), $('#app'));
   render(goodMapList({ restaurants }), document.getElementById('good-map'));
 };
 
