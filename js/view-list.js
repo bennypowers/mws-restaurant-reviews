@@ -7,6 +7,7 @@ import { urlForRestaurant, imageUrlForRestaurant } from './map-marker.js';
 const app = document.getElementById('app');
 
 const onSelect = async () => {
+  // TODO: Much of this work is duplicated in route-list.js
   // fetchRestaurants is cached in idb so it's cheap to await it on render.
   const allRestaurants = await fetchRestaurants();
   const neighbourhoods = uniqueNeighbourhoods(allRestaurants);

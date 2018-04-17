@@ -1,6 +1,5 @@
-import idbKeyval from '../idb-keyval.js';
+import { get } from '../../node_modules/idb-keyval/dist/idb-keyval.mjs';
 import { cacheInIdb } from './cacheRequest.js';
-
 import { handleAsJson,  rejectNon200, returnOrThrow } from '../lib.js';
 
 const _fetchRestaurantById = id =>
@@ -13,5 +12,5 @@ const _fetchRestaurantById = id =>
 /** Fetch a restaurant by its ID. */
 // fetchRestaurantById :: str -> Promise r
 export const fetchRestaurantById = id => !id ? Promise.resolve(null) :
-  idbKeyval.get(`restaurants/${id}`)
+  get(`restaurants/${id}`)
     .then(x => x ? x : _fetchRestaurantById(id));

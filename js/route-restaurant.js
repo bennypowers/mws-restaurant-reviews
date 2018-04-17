@@ -4,9 +4,8 @@ import { html, render } from '../node_modules/lit-html/lib/lit-extended.js';
 import { onGoogleMapReady } from './map-marker.js';
 import { getParameterByName } from './lib.js';
 
+const app = document.getElementById('app');
 const restaurantId = getParameterByName('id', location);
-
-const restaurantPromise = fetchRestaurantById(restaurantId);
 
 const breadcrumbTemplate = ({ name }) => html`
   <ul aria-label="Breadcrumb">
@@ -31,14 +30,18 @@ const goodMapRestaurant = ({ markers, restaurant }) => {
     </good-map>`;
 };
 
-const routeRestaurant = async ({ app }) => {
-  const restaurant = await restaurantPromise;
+const updateUi = restaurant => {
   const { markers } = window;
   const { name } = restaurant;
 
   render(breadcrumbTemplate({ name }), document.getElementById('breadcrumb'));
   render(restaurantDetails({ restaurant, restaurantId }), app);
   render(goodMapRestaurant({ markers, restaurant }), document.getElementById('good-map'));
+  return restaurant;
 };
+
+const routeRestaurant = () =>
+  fetchRestaurantById(restaurantId)
+    .then(updateUi);
 
 export default routeRestaurant;

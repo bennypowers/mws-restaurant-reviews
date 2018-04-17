@@ -1,7 +1,6 @@
 module.exports = {
   "globDirectory": ".",
   "globIgnores": [
-    "js/idb-keyval.js",
     "**/service-worker.js",
     "node_modules/**/node_modules/**/*",
     "node_modules/**/bower_components/**/*"

@@ -4,6 +4,7 @@ import { onGoogleMapReady } from './map-marker.js';
 import { uniqueCuisines, uniqueNeighbourhoods } from './restaurant-filters.js';
 import { restaurantList } from './view-list.js';
 
+const app = document.getElementById('app');
 const cuisineSelect = document.getElementById('cuisines-select') || {};
 const neighbourhoodSelect = document.getElementById('neighbourhoods-select') || {};
 
@@ -17,7 +18,7 @@ const goodMapList = ({ markers, restaurants }) => html`
     on-google-map-ready="${ onGoogleMapReady({ markers, restaurants }) }">
 </good-map>`;
 
-const doRender = ({ app }) => restaurants => {
+const updateUi = restaurants => {
   const restaurantContainer = document.getElementById('restaurant-container');
   if (restaurantContainer) restaurantContainer.remove();
 
@@ -31,9 +32,9 @@ const doRender = ({ app }) => restaurants => {
   render(goodMapList({ restaurants }), document.getElementById('good-map'));
 };
 
-const routeList = ({ app }) => fetchRestaurants()
-  .then(doRender({ app }))
+const routeList = () => fetchRestaurants()
+  .then(updateUi)
   .then(syncRestaurantsFromNetwork)
-  .then(doRender({ app }));
+  .then(updateUi);
 
 export default routeList;

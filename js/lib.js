@@ -1,43 +1,19 @@
-// NOTE: In real life, I would use an FP library like Crocks or Ramda.
-
-/*
- * MATH
- */
-
 export { add, prod, divideBy, subtractFrom } from '../node_modules/@power-elements/power-functions/math.js';
-
-/*
- * PREDICATES
- */
-
-export { eq, eqeq, uniqueByKey } from '../node_modules/@power-elements/power-functions/predicates.js';
-
-/*
- * COMBINATORS
- */
-
 export { and, compose, constant, identity } from '../node_modules/@power-elements/power-functions/combinators.js';
-
-/*
- * ARRAY FUNCTIONS
- */
-
+export { deepProp as prop } from '../node_modules/@power-elements/power-functions/object.js';
+export { eq, eqeq, uniqueByKey } from '../node_modules/@power-elements/power-functions/predicates.js';
+export { handleAsJson, handleAsText } from '../node_modules/@power-elements/power-functions/promise.js';
 export { map, find, filter, some, uniq } from '../node_modules/@power-elements/power-functions/array.js';
+export { trace, traceError } from '../node_modules/@power-elements/power-functions/core/trace.js';
+import { render } from '../node_modules/lit-html/lit-html.js'; 
+
+/* ARRAY FUNCTIONS */
 
 /** ensures that a value is always packed in an Array */
 export const asArray = x =>
   Array.isArray(x) ? x : [x];
 
-/*
- * POJO FUNCTIONS
- * Functions for dealing with Plain Old JavaScript Objects
- */
-
-export { deepProp as prop } from '../node_modules/@power-elements/power-functions/object.js';
-
-/*
- * STRING FUNCTIONS
- */
+/* STRING FUNCTIONS */
 
 /** Point-free string trim. Naive implementation. */
 // trim :: s -> s
@@ -65,15 +41,7 @@ export const nameToId = name =>
       .toLowerCase()
       .replace(/\W+/g, '');
 
-/*
- * LOGGING
- */
-
-export { trace, traceError } from '../node_modules/@power-elements/power-functions/core/trace.js';
-
-/*
- * PROMISE HELPERS
- */
+/* PROMISE HELPERS */
 
 /**
  * Rejects a response which does not have a 200-series status code
@@ -85,8 +53,6 @@ export const rejectNon200 = response =>
     ? Promise.reject(new Error(response.statusText || `Request failed. Returned status of ${response.status}`))
     : Promise.resolve(response);
 
-export { handleAsJson, handleAsText } from '../node_modules/@power-elements/power-functions/promise.js';
-
 /**
  * Helper function used to reject promise chains if final values are falsy.
  * @param  {String} message error message if result is falsey
@@ -97,15 +63,13 @@ export const returnOrThrow = message => value => {
   else throw new Error(message);
 };
 
-/*
- * DOM HELPERS
- */
+/* DOM HELPERS */
 
 /**
  * Get a parameter by name from page URL.
+ * URL constructor obviates need to parse urls ourselves.
  */
 export const getParameterByName = (name, urlString) =>
-  // URL constructor obviates need to parse urls ourselves.
   (new URL(urlString || window.location.href))
     .searchParams
     .get(name);
@@ -126,6 +90,20 @@ export const append = parent => child => parent.append(child);
 /** Point-free DOM remove. */
 // remove :: DOM -> DOM -> ()
 export const remove = element => element.remove();
+
+/** Appends a lit-html TemplateResult to a target element. */
+// HACK: Since we can't directly append a TemplateResult to an element,
+//       we render it to a temporary div, then append it to our container.
+export const renderAppend = (templateResult, target, options = {}) => {
+  const methodName = options.prepend ? 'prepend' : 'append';
+  let temp = document.createElement('div');
+  render(templateResult, temp);
+  const returnValue = target[methodName](...temp.children);
+  // Give GC a leg up, Just in case;
+  temp.innerHTML = '';
+  temp = null;
+  return returnValue;
+};
 
 /**
  * Random

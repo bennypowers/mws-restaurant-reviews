@@ -20,8 +20,8 @@ const importSpecifier = specifier => import(specifier);
 
 const parallelizeImports = map(importSpecifier);
 
-const runDefault = ({ app }) => ({ default: moduleDefault }) =>
-  moduleDefault({ app });
+const runDefault = ({ default: moduleDefault }) =>
+  moduleDefault();
 
 const router = ({ pathname }) => {
   // hook styles up to views
@@ -35,7 +35,7 @@ const router = ({ pathname }) => {
 
   // let 'er rip 🏎
   return import(`./route-${page}.js`)
-    .then( runDefault({ app }) );
+    .then(runDefault);
 };
 
 installRouter(router);
