@@ -91,6 +91,7 @@ html {
   order: 0;
   margin: 0;
   width: 100%;
+  overflow: hidden;
   position: relative;
   height: 100%;
 }
@@ -128,10 +129,12 @@ html {
 .restaurant #restaurant-info {
   position: absolute;
   align-items: center;
+  overflow: hidden;
   justify-content: space-between;
   display: flex;
   bottom: 0;
-  width: calc(100% - 2em);
+  left: 0;
+  right: 0;
   padding: 1em;
   background: hsla(0, 100%, 100%, 0.5);
 }

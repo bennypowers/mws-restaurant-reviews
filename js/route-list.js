@@ -1,4 +1,4 @@
-import { fetchRestaurants, syncRestaurantsFromNetwork } from './db/fetchRestaurants.js';
+import { fetchRestaurants, syncRestaurants } from './db/fetchRestaurants.js';
 import { html, render } from '../node_modules/lit-html/lib/lit-extended.js';
 import { onGoogleMapReady } from './map-marker.js';
 import { uniqueCuisines, uniqueNeighbourhoods } from './restaurant-filters.js';
@@ -28,13 +28,14 @@ const updateUi = restaurants => {
   const cuisine = cuisineSelect.value || 'all';
   const neighbourhood = neighbourhoodSelect.value || 'all';
 
+  render(html`<ul hidden></ul>`, document.getElementById('breadcrumb'));
   render(restaurantList({ cuisine, cuisines, neighbourhood, neighbourhoods, restaurants }), app);
   render(goodMapList({ restaurants }), document.getElementById('good-map'));
 };
 
 const routeList = () => fetchRestaurants()
   .then(updateUi)
-  .then(syncRestaurantsFromNetwork)
+  .then(syncRestaurants)
   .then(updateUi);
 
 export default routeList;

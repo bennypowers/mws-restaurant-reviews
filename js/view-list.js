@@ -1,15 +1,11 @@
 import { addMarkers } from './map-marker.js';
 import { byCuisineAndNeighbourhood, uniqueCuisines, uniqueNeighbourhoods } from './restaurant-filters.js';
-import { fetchRestaurants } from './db/fetchRestaurants.js';
 import { html, render } from '../node_modules/lit-html/lib/lit-extended.js';
 import { urlForRestaurant, imageUrlForRestaurant } from './map-marker.js';
 
 const app = document.getElementById('app');
 
-const onSelect = async () => {
-  // TODO: Much of this work is duplicated in route-list.js
-  // fetchRestaurants is cached in idb so it's cheap to await it on render.
-  const allRestaurants = await fetchRestaurants();
+const onSelect = allRestaurants => () => {
   const neighbourhoods = uniqueNeighbourhoods(allRestaurants);
   const neighbourhood = document.getElementById('neighbourhoods-select').value;
   const cuisines = uniqueCuisines(allRestaurants);
@@ -18,7 +14,7 @@ const onSelect = async () => {
   const { markers } = window;
 
   const restaurants = allRestaurants
-    .filter(byCuisineAndNeighbourhood(cuisine, neighbourhood));
+    .filter( byCuisineAndNeighbourhood(cuisine, neighbourhood) );
 
   const template = restaurantList({ restaurants, cuisine, cuisines, neighbourhoods, neighbourhood });
 
@@ -65,7 +61,7 @@ export const restaurantList = ({ restaurants, cuisine, cuisines, neighbourhoods,
       <select id="neighbourhoods-select"
           name="neighbourhoods"
           aria-label="Neighbourhoods"
-          on-change="${ onSelect }">
+          on-change="${ onSelect(restaurants) }">
         <option value="all">All Neighbourhoods</option>
         ${ neighbourhoods.map(optionTemplate(neighbourhood)) }
       </select>
@@ -73,7 +69,7 @@ export const restaurantList = ({ restaurants, cuisine, cuisines, neighbourhoods,
       <select id="cuisines-select"
           name="cuisines"
           aria-label="Cuisines"
-          on-change="${ onSelect }">
+          on-change="${ onSelect(restaurants) }">
         <option value="all">All Cuisines</option>
         ${ cuisines.map(optionTemplate(cuisine)) }
       </select>

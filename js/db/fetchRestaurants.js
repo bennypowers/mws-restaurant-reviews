@@ -2,7 +2,7 @@ import { cacheInIdb, getCachedResponses } from './cacheRequest.js';
 
 import { filter, handleAsJson, identity, rejectNon200 } from '../lib.js';
 
-export const syncRestaurantsFromNetwork = () =>
+export const syncRestaurants = () =>
   fetch('/api/restaurants')
     .then(rejectNon200)
     .then(handleAsJson)
@@ -10,11 +10,11 @@ export const syncRestaurantsFromNetwork = () =>
 
 const returnResultsOrFetch = results =>
     results.length ? results
-  : syncRestaurantsFromNetwork();
+  : syncRestaurants();
 
 /** Fetch all restaurants */
 // fetchRestaurants :: () -> Promise rs
 export const fetchRestaurants = () =>
   Promise.all( getCachedResponses('restaurants') )
-    .then(filter(identity))
+    .then( filter(identity) )
     .then(returnResultsOrFetch);

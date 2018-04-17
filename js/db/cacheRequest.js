@@ -61,6 +61,7 @@ export const cacheInIdb = key => value =>
     asArray(value)
       .map( storeAndCache(key) )
   ).then( constant(value) );
+
 const appendRequest = (key, value) => (pendingRequests = []) => {
   const newPending = [...pendingRequests, value];
   return set(key, newPending)

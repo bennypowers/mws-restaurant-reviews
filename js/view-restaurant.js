@@ -1,10 +1,11 @@
-import { fetchReviews } from './db/fetchReviews.js';
 import { putFavorite } from './db/putFavorite.js';
-import { renderAppend, placeholderImage, trim, trace } from './lib.js';
-import { html } from '../node_modules/lit-html/lib/lit-extended.js';
-import getDay from '../node_modules/date-fns/esm/getDay/index.js';
+import { fetchRestaurantById } from './db/fetchRestaurantById.js';
+import { fetchReviews } from './db/fetchReviews.js';
+import { byCreatedAtDesc, placeholderImage, trim } from './lib.js';
+import { html, render } from '../node_modules/lit-html/lib/lit-extended.js';
 import { imageUrlForRestaurant } from './map-marker.js';
 
+const app = document.getElementById('app');
 const upgradeElements = () => {
   Promise.all([
     import('./submit-review.js'),
@@ -14,7 +15,7 @@ const upgradeElements = () => {
 };
 
 const reviewCard = ({comments, createdAt, id, updatedAt, name, rating}) =>
-  html`<review-card id="${ id }"
+  html`<review-card id="review-${ id }"
       comments="${ comments }"
       createdAt="${ createdAt }"
       updatedAt="${ updatedAt }"
@@ -25,11 +26,17 @@ const reviewCard = ({comments, createdAt, id, updatedAt, name, rating}) =>
 const reviewsList = reviews =>
     !Array.isArray(reviews) ? html`There was a problem showing the reviews. Please try again.`
   : !reviews.length ? html`<p>No Reviews Yet!</p>`
-  : reviews.map(reviewCard);
+  : reviews
+    .sort(byCreatedAtDesc)
+    .map(reviewCard);
 
 // "optimistic UI"
-const onReviewSubmitted = event =>
-  renderAppend(reviewCard(event.detail), document.getElementById('restaurant'));
+const onReviewSubmitted = restaurantId => async () => {
+  const reviewsP = fetchReviews(restaurantId);
+  const restaurantP = fetchRestaurantById(restaurantId);
+  const [restaurant, reviews] = await Promise.all([restaurantP, reviewsP]);
+  return render(restaurantDetails({ restaurant, reviews }), app);
+};
 
 // takes a string like "11:00 am - 5:00 pm" and returns semantic html
 // str -> str
@@ -49,7 +56,7 @@ const days = [
 ];
 
 const isToday = dayString => {
-  const today = days[getDay(Date.now())];
+  const today = days[(new Date()).getDay()];
   return (dayString.toLowerCase() == today.toLowerCase());
 };
 
@@ -108,14 +115,10 @@ export const mapImageTemplate = restaurant => html`
   </figcaption>
 </figure>`;
 
-export const reviewsListTemplate = ({ restaurantId, restaurant = {} }) => {
-  const reviews = fetchReviews(restaurantId)
-    .then(reviewsList)
-    .catch(trace('fetchReviews'));
-
+export const reviewsListTemplate = ({ reviews, restaurant = {} }) => {
   return html`
   <h2>Reviews</h2>
-  <div id="reviews-list">${ reviews }</div>
+  <div id="reviews-list">${ reviewsList(reviews) }</div>
 
   <power-fab id="form-fab"
       label="+"
@@ -124,16 +127,16 @@ export const reviewsListTemplate = ({ restaurantId, restaurant = {} }) => {
 
   <submit-review id="review-fab"
       restaurantId="${restaurant.id}"
-      on-review-submitted="${ onReviewSubmitted }"></submit-review>`;
+      on-review-submitted="${ onReviewSubmitted(restaurant.id) }"></submit-review>`;
 };
 
-export const restaurantDetails = ({ restaurant = {} }) => html`
+export const restaurantDetails = ({ reviews = [], restaurant = {} }) => html`
 <div id="map-container">
   <div id="good-map"></div>
 </div>
 <section id="restaurant-container">${mapImageTemplate(restaurant)}</section>
 <section id="restaurant-details-container">${hoursAddressTemplate(restaurant)}</section>
-<section id="reviews-container" tabindex="0" aria-label="Reviews">${reviewsListTemplate({ restaurantId: restaurant.id, restaurant })}</section>
+<section id="reviews-container" tabindex="0" aria-label="Reviews">${reviewsListTemplate({ reviews, restaurant })}</section>
 `;
 
 requestIdleCallback(upgradeElements);

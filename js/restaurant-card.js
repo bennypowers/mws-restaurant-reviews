@@ -28,8 +28,6 @@ class RestaurantCard extends LitElement {
    * NOTE: we opt not to tab-index restaurant header, since the interactive
    *       control 'view details' will receive focus.
    *       name.tabIndex = 0;
-   * NOTE: It might be a little unorthodox to use both aria-label and the label element,
-   *       but in this case it give us emoji so I'm down.
    */
   render({ address, favourite, image, name, neighbourhood, id, url }) {
     const idFromName = nameToId(name);

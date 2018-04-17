@@ -46,6 +46,7 @@ class SubmitReview extends LitElement {
     Promise.all([
       import('../node_modules/@polymer/iron-form/iron-form.js'),
       import('../node_modules/@polymer/paper-input/paper-input.js'),
+      import('../node_modules/@polymer/paper-button/paper-button.js'),
       import('../node_modules/@polymer/paper-input/paper-textarea.js'),
       import('../node_modules/@polymer/paper-slider/paper-slider.js'),
     ]).then(() =>
