@@ -13,7 +13,7 @@ const fetchIfOnline = id => new Promise((resolve, reject) =>
     ? reject(new Error('Cannot fetch reviews: offline'))
     : resolve( syncReviews(id) ));
 
-const sameRestaurantId = id => r => r.restaurant_id == id;
+const sameRestaurantId = id => r => r && r.restaurant_id == id;
 
 /** Fetch reviews by restaurant id. */
 // fetchReviews :: () -> Promise rs

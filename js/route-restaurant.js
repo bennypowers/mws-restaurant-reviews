@@ -21,7 +21,7 @@ const scrollwheel = false;
 const backgroundColor = "transparent";
 
 const goodMapRestaurant = ({ markers, restaurant }) => {
-  const center = restaurant.latlng;
+  const { latlng: center } = restaurant || {};
   const mapOptions = JSON.stringify({ scrollwheel, backgroundColor, center });
   const restaurants = [restaurant];
   return html`
@@ -35,7 +35,7 @@ const goodMapRestaurant = ({ markers, restaurant }) => {
 
 const updateUi = ([restaurant, reviews] = []) => {
   const { markers } = window;
-  const { name } = restaurant;
+  const { name } = restaurant || {};
 
   render(breadcrumbTemplate({ name }), breadcrumb);
   render(restaurantDetails({ restaurant, reviews }), app);
