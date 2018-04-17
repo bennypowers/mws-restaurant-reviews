@@ -4,9 +4,9 @@ export default {
   plugins: [
     uglify(),
   ],
-  input: 'js/restaurant-reviews.js',
+  input: 'js/main.js',
   output: {
-    file: 'js/restaurant-reviews.min.js',
+    file: 'main.min.js',
     format: 'es',
   }
 };

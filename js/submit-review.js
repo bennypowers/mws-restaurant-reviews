@@ -1,9 +1,6 @@
 import { LitElement, html } from '../node_modules/@polymer/lit-element/lit-element.js';
-import OnlineMixin from './online-mixin.js';
-import { postReview } from './dbhelper.js';
+import { postReview } from './db/postReview.js';
 import { customEvent, trace } from './lib.js';
-
-import styles from './styles.js';
 
 const nullifyValue = l => l.value = null;
 
@@ -25,7 +22,7 @@ const closeDialog = component => reason => (
   reason
 );
 
-class SubmitReview extends OnlineMixin(LitElement) {
+class SubmitReview extends LitElement {
   static get properties() {
     return {
       restaurantId: String,
@@ -49,6 +46,7 @@ class SubmitReview extends OnlineMixin(LitElement) {
     Promise.all([
       import('../node_modules/@polymer/iron-form/iron-form.js'),
       import('../node_modules/@polymer/paper-input/paper-input.js'),
+      import('../node_modules/@polymer/paper-button/paper-button.js'),
       import('../node_modules/@polymer/paper-input/paper-textarea.js'),
       import('../node_modules/@polymer/paper-slider/paper-slider.js'),
     ]).then(() =>
@@ -75,8 +73,8 @@ class SubmitReview extends OnlineMixin(LitElement) {
     );
   }
 
-  render({ online, opened, restaurantId, spinning }) {
-    return html`${styles}
+  render({ opened, restaurantId, spinning }) {
+    return html`
     <style>
 
     :host {
@@ -114,7 +112,7 @@ class SubmitReview extends OnlineMixin(LitElement) {
 
     </style>
     <dialog id="dialog" open="${ opened }">
-      <div id="offline-warning" hidden?="${ online }">
+      <div id="offline-warning" hidden?="${ navigator.onLine }">
         <span>You appear to be offline.</span>
         <span>Your review will be posted when you come back online.</span>
       </div>

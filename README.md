@@ -43,6 +43,7 @@ Even among evergreen browsers, ES2015 and API support is not uniform, therefore,
 * Whenever possible, prefer to write small. pure transformations.
 * Prefer a point-free style so as to make borrowing the functor interface of `Array#map` or `Promise#then` more declarative.
 * Prefer to pass generalized curried functions first class over writing case-specific lambdas.
+* When one-offs are needed, name them.
 * Make use of functional techniques like function composition.
 * Treat Promises like monads, even though they have a [divergent API](https://github.com/promises-aplus/promises-spec/issues/94).
 * Try to keep impure code (code that involves side effects like querying the DOM or an external API, or writing changes to the DOM) separate from the pure code.
@@ -51,4 +52,4 @@ Having said that, we stop short of incorporating production-ready FP libraries l
 
 ## Weird Parts of JavaScript
 
-We have, in places, opted to use some lesser-known features of JavaScript to communicate our intent more clearly. There are many cases in main.js where some side effect is desired as part of an otherwise pure data flow. (see previous note). In these cases, we use the comma operator to run our side effects, returning the parameter afterward in order to maintain data flow. In these cases, parentheses help to emphasize that we are essentially performing the identity (`x => x`) with a brief, non-pure interlude.
+We have, in places, opted to use some lesser-known features of JavaScript to communicate our intent more clearly. There are some cases in the code where some side effect is desired as part of an otherwise pure data flow. (see previous note). In these cases, we use the comma operator to run our side effects, returning the parameter afterward in order to maintain data flow. In these cases, parentheses help to emphasize that we are essentially performing the identity (`x => x`) with a brief, non-pure interlude.

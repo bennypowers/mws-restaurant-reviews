@@ -1,5 +1,6 @@
 module.exports = {
   stack: [
+    // './push-middleware.js',
     'lws-body-parser',
     'lws-request-monitor',
     'lws-log',

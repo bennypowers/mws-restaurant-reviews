@@ -1,12 +1,6 @@
 import { LitElement, html } from '../node_modules/@polymer/lit-element/lit-element.js';
-
-import '../node_modules/@power-elements/emoji-checkbox/emoji-checkbox.js';
-
 import { nameToId, placeholderImage } from './lib.js';
-
-import { putFavorite } from './dbhelper.js';
-
-import styles from './styles.js';
+import { putFavorite } from './db/putFavorite.js';
 
 class RestaurantCard extends LitElement {
 
@@ -34,8 +28,6 @@ class RestaurantCard extends LitElement {
    * NOTE: we opt not to tab-index restaurant header, since the interactive
    *       control 'view details' will receive focus.
    *       name.tabIndex = 0;
-   * NOTE: It might be a little unorthodox to use both aria-label and the label element,
-   *       but in this case it give us emoji so I'm down.
    */
   render({ address, favourite, image, name, neighbourhood, id, url }) {
     const idFromName = nameToId(name);
@@ -43,9 +35,9 @@ class RestaurantCard extends LitElement {
     this.setAttribute('aria-labelledby', idFromName);
 
     return html`
-      ${styles}
       <style>
       :host {
+        --emoji-checkbox-width: 1.5em;
         display: block;
         overflow: hidden;
         background-color: #fff;
