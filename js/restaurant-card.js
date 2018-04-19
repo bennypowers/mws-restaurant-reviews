@@ -73,7 +73,7 @@ class RestaurantCard extends LitElement {
         text-transform: uppercase;
       }
 
-      a {
+      a.button {
         background-color: crimson;
         border-bottom: 3px solid #eee;
         color: #fff;
@@ -87,11 +87,16 @@ class RestaurantCard extends LitElement {
       }
 
       </style>
-      <lazy-image class="restaurant-image" fade
-          rootMargin="80px"
-          placeholder="${placeholderImage}"
-          src="${image}"
-          alt="Interior or exterior of ${name}"></lazy-image>
+
+      <a href="${url}">
+        <lazy-image class="restaurant-image" fade
+            rootMargin="80px"
+            placeholder="${placeholderImage}"
+            src="${image}"
+            alt="Interior or exterior of ${name}"
+        ></lazy-image>
+      </a>
+
       <h1 id="${idFromName}">
         ${name}
         <emoji-checkbox
@@ -107,9 +112,12 @@ class RestaurantCard extends LitElement {
             checked?="${favourite}"
             label="favourite"></emoji-checkbox>
       </h1>
+
       <p>${neighbourhood}</p>
+
       <address>${address}</address>
-      <a href="${url}">More Details</a>
+
+      <a class="button" href="${url}">More Details</a>
     `;
 
   }
