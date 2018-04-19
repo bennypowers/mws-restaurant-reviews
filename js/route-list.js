@@ -16,6 +16,7 @@ const goodMapList = ({ markers, restaurants }) => html`
 </good-map>`;
 
 const updateUi = restaurants => {
+  $('nav').removeAttribute('aria-label');
   const { value: cuisine = 'all' } = $('cuisines-select') || {};
   const cuisines = uniqueCuisines(restaurants);
   const { value: neighbourhood = 'all' } = $('neighbourhoods-select') || {};

@@ -30,6 +30,7 @@ const goodMapRestaurant = ({ markers, restaurant }) => {
 };
 
 const updateUi = ([restaurant, reviews] = []) => {
+  $('nav').setAttribute('aria-label', 'Breadcrumb');
   const { markers } = window;
   const { name } = restaurant || {};
 
