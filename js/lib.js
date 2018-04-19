@@ -5,7 +5,6 @@ export { eq, eqeq, uniqueByKey } from '../node_modules/@power-elements/power-fun
 export { handleAsJson, handleAsText } from '../node_modules/@power-elements/power-functions/promise.js';
 export { concat, map, find, filter, some, sort, uniq } from '../node_modules/@power-elements/power-functions/array.js';
 export { trace, traceError } from '../node_modules/@power-elements/power-functions/core/trace.js';
-import { render } from '../node_modules/lit-html/lit-html.js';
 
 /* ARRAY FUNCTIONS */
 

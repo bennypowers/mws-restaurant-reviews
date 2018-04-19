@@ -16,23 +16,20 @@ const goodMapList = ({ markers, restaurants }) => html`
 </good-map>`;
 
 const updateUi = restaurants => {
-  const restaurantContainer = document.getElementById('restaurant-container');
-  if (restaurantContainer) restaurantContainer.remove();
-
+  const { value: cuisine = 'all' } = $('cuisines-select') || {};
   const cuisines = uniqueCuisines(restaurants);
+  const { value: neighbourhood = 'all' } = $('neighbourhoods-select') || {};
   const neighbourhoods = uniqueNeighbourhoods(restaurants);
-
-  const cuisine = ($('cuisines-select') || {}).value || 'all';
-  const neighbourhood = ($('neighbourhoods-select') || {}).value || 'all';
-
-  render(html`<ul hidden></ul>`, document.getElementById('breadcrumb'));
+  render(html`<ul hidden></ul>`, $('#breadcrumb'));
   render(restaurantList({ cuisine, cuisines, neighbourhood, neighbourhoods, restaurants }), $('#app'));
-  render(goodMapList({ restaurants }), document.getElementById('good-map'));
+  render(goodMapList({ restaurants }), $('#good-map'));
 };
 
+import { trace } from './lib.js';
 const routeList = () => fetchRestaurants()
   .then(updateUi)
   .then(syncRestaurants)
+  .then(trace('syncRestaurants'))
   .then(updateUi);
 
 export default routeList;

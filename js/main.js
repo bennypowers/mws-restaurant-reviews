@@ -1,7 +1,5 @@
 import { installRouter } from './router.js';
-import { map } from './lib.js';
-
-const app = document.getElementById('app');
+import { $, map } from './lib.js';
 
 const imports = {
   list: [
@@ -14,6 +12,13 @@ const imports = {
     './review-card.js',
   ],
 };
+
+const upgradeElements = () => parallelizeImports([
+  '/node_modules/@power-elements/emoji-checkbox/emoji-checkbox.js',
+  '/node_modules/@power-elements/lazy-image/lazy-image.js',
+  '/node_modules/@power-elements/service-worker/service-worker.js',
+  '/bower_components/good-map/good-map.js',
+]);
 
 const scrollToTop = () => scrollTo(0, 0);
 
@@ -28,8 +33,8 @@ const router = ({ pathname }) => {
   // hook styles up to views
   const page = pathname === '/' ? 'list' : 'restaurant';
         page === 'restaurant'
-          ? app.classList.add('restaurant')
-          : app.classList.remove('restaurant');
+          ? $('#app').classList.add('restaurant')
+          : $('#app').classList.remove('restaurant');
 
   // Parallelize loading to speed up critical path render
   parallelizeImports( imports[page] );
@@ -41,12 +46,5 @@ const router = ({ pathname }) => {
 };
 
 installRouter(router);
-
-const upgradeElements = () => parallelizeImports([
-  '/node_modules/@power-elements/emoji-checkbox/emoji-checkbox.js',
-  '/node_modules/@power-elements/lazy-image/lazy-image.js',
-  '/node_modules/@power-elements/service-worker/service-worker.js',
-  '/bower_components/good-map/good-map.js',
-]);
 
 requestIdleCallback(upgradeElements);

@@ -5,8 +5,6 @@ import { html, render } from '../node_modules/lit-html/lib/lit-extended.js';
 import { onGoogleMapReady } from './map-marker.js';
 import { $, getParameterByName } from './lib.js';
 
-const restaurantId = getParameterByName('id', location);
-
 const breadcrumbTemplate = ({ name }) => html`
   <ul aria-label="Breadcrumb">
     <li><a href="/">Home</a></li>
@@ -15,6 +13,7 @@ const breadcrumbTemplate = ({ name }) => html`
 `;
 
 const scrollwheel = false;
+
 const backgroundColor = "transparent";
 
 const goodMapRestaurant = ({ markers, restaurant }) => {
@@ -37,24 +36,30 @@ const updateUi = ([restaurant, reviews] = []) => {
   render(breadcrumbTemplate({ name }), $('#breadcrumb'));
   render(restaurantDetails({ restaurant, reviews }), $('#app'));
   render(goodMapRestaurant({ markers, restaurant }), $('#good-map'));
+
+  // continue the fluent promise flow
   return [restaurant, reviews];
 };
 
-const syncs = id => ([restaurant, reviews]) => Promise.all([
+/** Get restaurant and reviews over the network */
+// syncs :: restaurant -> Promise<[restaurant, [review]]>
+const syncs = ([{id}]) => !id ? Promise.resolve([]) : Promise.all([
   syncRestaurant(id),
   syncReviews(id)
 ]);
 
-const fetches = restaurantId => Promise.all([
-  fetchRestaurantById(restaurantId),
-  fetchReviews(restaurantId)
+/** Get restaurant and reviews from cache */
+// syncs :: restaurant -> Promise<[restaurant, [review]]>
+const fetches = id => Promise.all([
+  fetchRestaurantById(id),
+  fetchReviews(id)
 ]);
 
 const routeRestaurant = () => {
   const id = getParameterByName('id', location);
   return fetches(id)
     .then(updateUi)
-    .then( syncs(id) )
+    .then(syncs)
     .then(updateUi);
 };
 

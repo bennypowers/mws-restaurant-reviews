@@ -1,3 +1,5 @@
+import { $ } from './lib.js';
+
 /** Restaurant page URL. */
 // urlForRestaurant :: str -> str
 export const urlForRestaurant = ({id}) =>
@@ -10,12 +12,10 @@ export const imageUrlForRestaurant = restaurant =>
 
 /** Adds a map marker to a google map */
 // mapMarker :: o -> p -> q
-export const mapMarker = map => restaurant => {
-  if (!restaurant) return;
+export const mapMarker = map => ({id, latlng: position, name: title} = {}) => {
+  if (!id && !position && !title) return;
   const animation = google.maps.Animation.DROP;
-  const position = restaurant.latlng;
-  const title = restaurant.name;
-  const url = urlForRestaurant(restaurant);
+  const url = `/restaurant?id=${ id }`;
   const marker = new google.maps.Marker({ animation, position, title, url, map });
         marker.addListener('click', () => window.location = url);
   return marker;
@@ -23,18 +23,17 @@ export const mapMarker = map => restaurant => {
 
 const nullifyMap = marker => marker.setMap(null);
 
-export const addMarkers = ({ map, restaurants = [], markers = [] }) =>
-  window.google ? (
-    markers.forEach(nullifyMap),
-    window.markers = restaurants.map( mapMarker(map) )
-  ) : null;
-
-const swapMaps = () => {
-  const map = document.getElementById('good-map');
-  map.style.opacity = 1;
+export const addMarkers = ({ map, restaurants = [], markers = [] }) => {
+  if (window.google) {
+    markers.map(nullifyMap);
+    window.markers = restaurants.map( mapMarker(map) );
+  }
 };
 
-export const onGoogleMapReady = ({ markers, restaurants }) => ({ detail: map }) => (
-  requestIdleCallback(swapMaps),
-  addMarkers({ map, restaurants, markers })
-);
+const swapMaps = () =>
+  $('#good-map').style.opacity = 1;
+
+export const onGoogleMapReady = ({ markers, restaurants }) => ({ detail: map }) => {
+  requestIdleCallback(swapMaps);
+  addMarkers({ map, restaurants, markers });
+};

@@ -43,8 +43,8 @@ const days = [
 ];
 
 const isToday = dayString => {
-  const today = days[(new Date()).getDay()];
-  return (dayString.toLowerCase() == today.toLowerCase());
+  const today = days[ ( new Date() ).getDay() ];
+  return dayString.toLowerCase() == today.toLowerCase();
 };
 
 const openTemplate = open => html`
@@ -52,7 +52,6 @@ const openTemplate = open => html`
     <strong>${ open ? 'Open Now!' : 'Now Closed' }</strong>
   </div>
 `;
-
 
 const addDays = (...args) =>
   import('/node_modules/date-fns/esm/addDays/index.js')

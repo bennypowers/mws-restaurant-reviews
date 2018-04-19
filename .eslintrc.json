@@ -26,6 +26,7 @@
     "files": [
       "restaurant-mocks.js",
       "redirect-everything.js",
+      "workbox-config.js",
       "lws.*.js"
     ],
     "env": {
