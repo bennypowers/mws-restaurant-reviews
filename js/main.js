@@ -16,6 +16,8 @@ const imports = {
   ],
 };
 
+const scrollToTop = () => scrollTo(0, 0);
+
 const importSpecifier = specifier => import(specifier);
 
 const parallelizeImports = map(importSpecifier);
@@ -35,7 +37,8 @@ const router = ({ pathname }) => {
 
   // let 'er rip 🏎
   return import(`./route-${page}.js`)
-    .then(runDefault);
+    .then(runDefault)
+    .then(scrollToTop);
 };
 
 installRouter(router);
