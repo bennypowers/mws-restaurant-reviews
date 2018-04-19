@@ -1,6 +1,5 @@
 module.exports = {
   stack: [
-    // './push-middleware.js',
     'lws-body-parser',
     'lws-request-monitor',
     'lws-log',
@@ -17,4 +16,5 @@ module.exports = {
   compress: true,
   mocks: 'restaurant-mocks.js',
   logFormat: 'dev',
+  spaAssetTest: /((\\.)|(.*\/api\/.*))/
 };
