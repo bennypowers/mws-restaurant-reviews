@@ -43,6 +43,7 @@
     "htmlhint": "^0.9.13",
     "parallelshell": "^3.0.2",
     "rollup": "^0.57.0",
+    "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-uglify": "^3.0.0",
     "stylelint": "^8.4.0"
   },

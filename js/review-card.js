@@ -1,7 +1,7 @@
 import '../node_modules/@power-elements/emoji-rating/emoji-rating.js';
 import { LitElement, html } from '../node_modules/@polymer/lit-element/lit-element.js';
 
-import formatDistance from '../node_modules/date-fns/esm/formatDistance/index.js';
+import { formatDistance } from './date-fns.min.js';
 
 import { nameToId } from './lib.js';
 

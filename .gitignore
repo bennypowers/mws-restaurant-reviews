@@ -2,3 +2,4 @@ node_modules
 bower_components
 *.min.js
 service-worker.js
+js/date-fns.min.js

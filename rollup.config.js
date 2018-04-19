@@ -1,12 +1,14 @@
+import resolve from 'rollup-plugin-node-resolve';
 import uglify from 'rollup-plugin-uglify';
 
 export default {
   plugins: [
+    resolve(),
     uglify(),
   ],
-  input: 'js/main.js',
+  input: 'js/date-fns.js',
   output: {
-    file: 'main.min.js',
+    file: 'js/date-fns.min.js',
     format: 'es',
   }
 };

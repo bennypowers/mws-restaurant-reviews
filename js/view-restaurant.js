@@ -3,8 +3,8 @@ import { fetchRestaurantById } from './db/fetchRestaurantById.js';
 import { fetchReviews } from './db/fetchReviews.js';
 import { $, byCreatedAtDesc, placeholderImage, trim } from './lib.js';
 import { html, render } from '../node_modules/lit-html/lib/lit-extended.js';
-import { until } from '../node_modules/lit-html/lib/until.js';
 import { imageUrlForRestaurant } from './map-marker.js';
+import { addDays, isWithinInterval, parse } from './date-fns.min.js';
 
 const intervalSeparator = ', ';
 const hoursSeparator = ' - ';
@@ -53,13 +53,7 @@ const openTemplate = open => html`
   </div>
 `;
 
-const addDays = (...args) =>
-  import('/node_modules/date-fns/esm/addDays/index.js')
-    .then(module => module.default(...args));
-
-const isOpenInInterval = date => async interval => {
-  const { default: isWithinInterval } = await import('/node_modules/date-fns/esm/isWithinInterval/index.js');
-  const { default: parse } = await import('/node_modules/date-fns/esm/parse/index.js');
+const isOpenInInterval = date => interval => {
   const [opening, closing] = interval.split(hoursSeparator);
   const start = parse(opening, 'h:mm a', date);
   const endProvisional = parse(closing, 'h:mm a', date);
@@ -68,25 +62,22 @@ const isOpenInInterval = date => async interval => {
   const openAfterMidnight = endHour === 24 || startHour > endHour;
   const end =
       !openAfterMidnight ? endProvisional
-    : await addDays(endProvisional, 1);
+    : addDays(endProvisional, 1);
 
   return isWithinInterval(date, { start, end });
 };
 
 const all = (a, b) => a && b;
 
-const openNow = async (openingHours) => {
+const openNow = openingHours => {
   if (!openingHours) return;
   const date = new Date();
   const todaysHours = openingHours[ days[ date.getDay() ] ];
 
-  const intervals = await Promise.all(
-    todaysHours
-      .split(intervalSeparator)
-      .map( isOpenInInterval(date) )
-  );
-
-  return intervals.reduce(all, true);
+  return todaysHours
+    .split(intervalSeparator)
+    .map( isOpenInInterval(date) )
+    .reduce(all, true);
 };
 
 const onCheckedChanged = (restaurant = {}) => event =>
@@ -134,7 +125,7 @@ const hoursTemplate = hours =>
 export const hoursAddressTemplate = ({ address, operating_hours }) => html`
   <section id="restaurant-address-open">
     <address id="restaurant-address" tabindex="0" aria-label="Address">${address}</address>
-    ${ until( openNow(operating_hours).then(openTemplate), '...' ) }
+    ${ openNow(operating_hours) }
   </section>
   <table id="restaurant-hours"
       tabindex="0"

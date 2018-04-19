@@ -3,7 +3,8 @@ module.exports = {
   "globIgnores": [
     "**/service-worker.js",
     "node_modules/**/node_modules/**/*",
-    "node_modules/**/bower_components/**/*"
+    "node_modules/**/bower_components/**/*",
+    "**/*.min.js"
   ],
   "globPatterns": [
     "js/**/*",
