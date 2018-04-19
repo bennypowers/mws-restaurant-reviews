@@ -7,16 +7,16 @@ We opted not to use the [development server provided by udacity]( https://github
 
 To run the dev server, install npm dependencies then run `npm start` (`sudo npm start` on mac 🍎 or linux 🐧, since we're running on the default ports). The page will be available at https://localhost.
 
-## Windows Server Bug
-
-I've found an issue which causes some lighthouse tests to fail specifically on Windows. While I'm working with the author of `local-web-server` to fix the issue, some lighthouse tests scores on windows may be affected. I've therefore uploaded a copy of the lighthouse test json that I got on my mac:
-
-https://pastebin.com/b4SFgdA5
-
-# HTTPS Certificates
+## HTTPS Certificates
 
 The development server is set to serve over http2, which requires a secure connection. In order to make this work locally, you must trust [lws' certicates](https://github.com/lwsjs/local-web-server/wiki/How-to-get-the-%22green-padlock%22-using-the-built-in-certificate), or you can use your own [self-signed cert](https://github.com/lwsjs/local-web-server/wiki/How-to-get-the-%22green-padlock%22-with-a-new-self-signed-certificate).
 To install the lws cert, even on windows, just follow the instructions in the link above. If you want to use a self-signed cert instead, just rebuild the docker image when you're done.
+
+# Offline Requests
+
+We have implemented offline request caching using the Background Sync API. Unfortunately, the only way to test this functionality is to actually disconnect the test machine from the internet. Clicking the `offline` checkbox in Chrome dev tools will not suffice. 
+
+See [workbox documentation](https://developers.google.com/web/tools/workbox/modules/workbox-background-sync#testing_workbox_background_sync) for more information.
 
 # Opinions
 
@@ -48,7 +48,9 @@ Even among evergreen browsers, ES2015 and API support is not uniform, therefore,
 * Treat Promises like monads, even though they have a [divergent API](https://github.com/promises-aplus/promises-spec/issues/94).
 * Try to keep impure code (code that involves side effects like querying the DOM or an external API, or writing changes to the DOM) separate from the pure code.
 
-Having said that, we stop short of incorporating production-ready FP libraries like [Crocks](https://github.com/evilsoft/crocks) or functional templating engines like [lit-html](https://github.com/Polymer/lit-html) for the sake of simplicity. So in cases where FP-purism conflicts with the KISS principle, we opt for simplicity.
+Having said that, we stop short of incorporating production-ready FP libraries like [Crocks](https://github.com/evilsoft/crocks) for the sake of simplicity. So in cases where FP-purism conflicts with the KISS principle, we opt for simplicity.
+
+We have, however, linked to our own miniature FP helper library [`power-functions`](https://www.npmjs.com/package/@power-elements/power-functions).
 
 ## Weird Parts of JavaScript
 
