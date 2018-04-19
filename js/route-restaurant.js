@@ -50,10 +50,12 @@ const fetches = restaurantId => Promise.all([
   fetchReviews(restaurantId)
 ]);
 
-const routeRestaurant = () =>
-  fetches(restaurantId)
+const routeRestaurant = () => {
+  const id = getParameterByName('id', location);
+  return fetches(id)
     .then(updateUi)
-    .then( syncs(restaurantId) )
+    .then( syncs(id) )
     .then(updateUi);
+};
 
 export default routeRestaurant;
