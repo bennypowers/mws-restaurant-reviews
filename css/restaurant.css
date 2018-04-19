@@ -1,43 +1,47 @@
 /* ====================== Restaurant Details ====================== */
 
-html {
-  --emoji-checkbox-width: 1.5em;
-}
-
 #form-fab {
-  background-color: crimson;
+  background-color: var(--restaurant-primary-color);
   position: fixed;
   bottom: 1em;
   right: 1em;
   z-index: 2000;
 }
 
+#breadcrumb {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  color: white;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 200;
+  padding-bottom: 4px;
+}
+
 #breadcrumb ul {
-  padding: 10px 40px 16px;
   list-style: none;
-  background-color: #ddd;
-  font-size: 20px;
-  width: calc(100% - 80px);
+  width: 100%;
   margin: 0;
+  padding: 0;
 }
 
 #breadcrumb li {
   display: inline;
+  color: white;
 }
 
 #breadcrumb li + li::before {
-  padding: 8px;
-  color: black;
   content: "/\00a0";
 }
 
 #breadcrumb li a {
-  color: #0062b5;
+  color: var(--restaurant-secondary-color);
   text-decoration: none;
 }
 
 #breadcrumb li a:hover {
-  color: #01447e;
+  color: #1592ff;
   text-decoration: underline;
 }
 
@@ -47,7 +51,7 @@ html {
 }
 
 #reviews-container h2 {
-  color: crimson;
+  color: var(--restaurant-primary-color);
   font-size: 24pt;
   font-weight: 300;
   letter-spacing: -1px;
@@ -59,8 +63,13 @@ html {
   padding: 0;
 }
 
-#restaurant-hours td {
+#restaurant-hours {
+  border-spacing: 0;
   color: #666;
+}
+
+#restaurant-hours td {
+  padding: 0.25em 1em;
 }
 
 #app.restaurant {
@@ -68,15 +77,10 @@ html {
   flex-flow: row wrap;
 }
 
-
 .today {
   font-weight: bold;
-}
-
-.restaurant #restaurant-container {
-  order: 1;
-  display: flex;
-  flex-flow: column;
+  background-color: var(--restaurant-secondary-color);
+  color: black;
 }
 
 .restaurant #map-container {
@@ -87,7 +91,19 @@ html {
   order: 2;
 }
 
-.restaurant #restaurant-image-container {
+#restaurant-container {
+  order: 1;
+  display: flex;
+  flex-flow: column;
+}
+
+#restaurant-address {
+  text-align: center;
+  padding: 0 1em;
+  font-size: 16px;
+}
+
+#restaurant-image-container {
   order: 0;
   margin: 0;
   width: 100%;
@@ -96,23 +112,23 @@ html {
   height: 100%;
 }
 
-.restaurant #restaurant-image {
+#restaurant-image {
   height: 100%;
   --lazy-image-img-height: 100%;
   --lazy-image-img-object-fit: cover;
 }
 
-.restaurant #restaurant-name {
+#restaurant-name {
   order: 0;
 }
 
-.restaurant #restaurant-info > * {
-  color: black;
+#restaurant-info > * {
+  color: white;
   margin-top: 0;
   margin-bottom: 0;
 }
 
-.restaurant #restaurant-details-container {
+#restaurant-details-container {
   padding: 1em;
   order: 2;
   justify-content: space-around;
@@ -121,12 +137,12 @@ html {
   width: 100%;
 }
 
-.restaurant #restaurant-cuisine {
+#restaurant-cuisine {
   margin-left: auto;
   margin-right: 1em;
 }
 
-.restaurant #restaurant-info {
+#restaurant-info {
   position: absolute;
   align-items: center;
   overflow: hidden;
@@ -136,7 +152,7 @@ html {
   left: 0;
   right: 0;
   padding: 1em;
-  background: hsla(0, 100%, 100%, 0.5);
+  background: linear-gradient(transparent, var(--restaurant-image-caption-color));
 }
 
 @media (min-width: 630px) {
@@ -145,29 +161,12 @@ html {
     grid-column-gap: 2%;
   }
 
-  .restaurant #map-container,
-  .restaurant #restaurant-container {
-    width: 50%;
-    max-width: 50%;
-  }
-
-  .restaurant #restaurant-details-container {
+  .restaurant #app {
     order: 2;
-    display: flex;
-    flex-flow: row nowrap;
-    width: 100%;
   }
 
   .restaurant #map-container {
     order: 1;
-  }
-
-  .restaurant #restaurant-container {
-    order: 0;
-  }
-
-  .restaurant #app {
-    order: 2;
   }
 
   .restaurant #good-map {
@@ -177,5 +176,30 @@ html {
   .restaurant #good-map good-map {
     min-height: initial;
     height: 100%;
+  }
+
+  .restaurant #map-container,
+  #restaurant-container {
+    width: 50%;
+    max-width: 50%;
+  }
+
+  #restaurant-details-container {
+    order: 2;
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+  }
+
+  #restaurant-container {
+    order: 0;
+  }
+
+  #restaurant-address {
+    order: 1;
+  }
+
+  #restaurant-hours {
+    order: 0;
   }
 }

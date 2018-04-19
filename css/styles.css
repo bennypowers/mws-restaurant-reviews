@@ -15,13 +15,13 @@ li {
 }
 
 a {
-  color: crimson;
+  color: var(--restaurant-primary-color);
   text-decoration: none;
 }
 
 a:hover,
 a:focus {
-  color: #3397db;
+  color: var(--restaurant-secondary-color);
   text-decoration: none;
 }
 
@@ -41,6 +41,10 @@ hgroup,
 menu,
 section {
   display: block;
+}
+
+#header nav {
+  position: relative;
 }
 
 #footer {

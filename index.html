@@ -50,22 +50,35 @@
        this is the google-recommended way to speed up critical rendering -->
 
   <style>
+  html {
+    --emoji-checkbox-width: 1.5em;
+    --restaurant-image-caption-color: hsla(0, 0%, 0%, 0.75);
+    --restaurant-primary-color: crimson;
+    --restaurant-secondary-color: #00c0ff;
+  }
+
   html, body {
     min-height: 100vh;
   }
 
+  html {
+    background-color: rgba(0,0,0,0.25)
+  }
+
   body {
     background: #fdfdfd;
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.5);
     color: #333;
     display: flex;
     flex-flow: column;
     font: 10pt Arial, Helvetica, sans-serif;
     line-height: 1.5;
-    margin: 0;
+    margin: 0 auto;
+    max-width: 1024px;
     position: relative;
   }
 
-  #app-shell {
+  #app {
     background-color: #f3f3f3;
     flex: 1;
   }
