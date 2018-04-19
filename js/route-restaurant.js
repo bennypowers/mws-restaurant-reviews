@@ -6,7 +6,7 @@ import { onGoogleMapReady } from './map-marker.js';
 import { $, getParameterByName } from './lib.js';
 
 const breadcrumbTemplate = ({ name }) => html`
-  <ul aria-label="Breadcrumb">
+  <ul>
     <li><a href="/">Home</a></li>
     <li aria-current="page">${ name }</li>
   </ul>
