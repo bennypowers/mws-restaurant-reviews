@@ -49,5 +49,4 @@ const upgradeElements = () => parallelizeImports([
   '/bower_components/good-map/good-map.js',
 ]);
 
-
 requestIdleCallback(upgradeElements);
