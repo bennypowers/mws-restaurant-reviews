@@ -1,15 +1,5 @@
 import { get, set } from '../../node_modules/idb-keyval/dist/idb-keyval.mjs';
-
-import {
-  asArray,
-  compose,
-  constant,
-  handleAsJson,
-  handleAsText,
-  rejectNon200,
-  trace,
-  uniq,
-} from '../lib.js';
+import { asArray, compose, constant, uniq } from '../lib.js';
 
 /** get and parse JSON from localStorage. */
 const parseLocalStorageJson = key =>
@@ -72,45 +62,3 @@ export const cacheRequest = (key, value) => {
   return get(key)
     .then(appendRequest(key, value));
 };
-
-const notTheResponse = response => request => {
-  const review = JSON.parse(request.request.body);
-  // We generate IDs on the server, so the only way to be sure that the cached
-  // review is not the one from the server is to manually check the relevant props.
-  return (
-    review.name != response.name &&
-    review.comments != response.comments &&
-    review.rating != response.rating
-  );
-};
-
-const updateCachedRequestList = (name, response) => requests => {
-  const updatedList = requests.filter( notTheResponse(response) );
-  return set(name, updatedList);
-};
-
-const handleOfflineSyncSuccess = name => response => {
-  get(name)
-    .then( updateCachedRequestList(name, response) );
-};
-
-const catchUp = name => ({url, request}) =>
-  fetch(url, request)
-    .then(rejectNon200)
-    .then(name === 'deleteReview' ? handleAsText : handleAsJson)
-    .then( handleOfflineSyncSuccess(name) )
-    .catch(trace('catchUp'));
-
-const catchUpRequests = name => (requests = []) =>
-  requests.forEach( catchUp(name) );
-
-const syncRequests = name =>
-  get(name)
-    .then( catchUpRequests(name) );
-
-export const attemptCatchUp = () => {
-  ['putFavorite', 'postReview', 'putReview', 'deleteReview']
-    .forEach(syncRequests);
-};
-
-window.addEventListener('online', attemptCatchUp);

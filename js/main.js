@@ -1,4 +1,3 @@
-import { attemptCatchUp } from './db/cacheRequest.js';
 import { installRouter } from './router.js';
 import { map } from './lib.js';
 
@@ -42,8 +41,6 @@ const router = ({ pathname }) => {
 };
 
 installRouter(router);
-
-attemptCatchUp();
 
 const upgradeElements = () => parallelizeImports([
   '/node_modules/@power-elements/emoji-checkbox/emoji-checkbox.js',

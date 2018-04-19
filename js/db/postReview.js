@@ -1,17 +1,19 @@
-import { cacheInIdb, cacheRequest } from './cacheRequest.js';
+import { cacheInIdb } from './cacheRequest.js';
 
 import { handleAsJson, rejectNon200, returnOrThrow } from '../lib.js';
 
-export const postReview = review => {
-  const method = 'POST';
-  const headers = {'Content-Type': 'application/json'};
-  const body = JSON.stringify(review);
-  const url = '/api/reviews';
-  const request = { method, headers, body };
-  return !navigator.onLine ? cacheRequest('postReview', { url, request })
-    : fetch(url, request)
-      .then(rejectNon200)
-      .then(handleAsJson)
-      .then(returnOrThrow(`Couldn't post review for restaurant ${review.restaurant_id}:`))
-      .then(cacheInIdb('reviews'));
-};
+const method = 'POST';
+const headers = { 'Content-Type': 'application/json' };
+
+const makeOptions = review => ({
+  body: JSON.stringify(review),
+  method,
+  headers,
+});
+
+export const postReview = review =>
+  fetch('/api/reviews', makeOptions(review))
+    .then(rejectNon200)
+    .then(handleAsJson)
+    .then(returnOrThrow(`Couldn't post review for restaurant ${review.restaurant_id}:`))
+    .then(cacheInIdb('reviews'));

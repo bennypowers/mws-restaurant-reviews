@@ -8,6 +8,10 @@ workbox.setConfig({ debug: false });
 workbox.skipWaiting();
 workbox.clientsClaim();
 
+const backgroundSyncPlugin = new workbox.backgroundSync.Plugin('apiRequestQueue', {
+  maxRetentionTime: 24 * 60 // Retry for max of 24 Hours
+});
+
 workbox.routing.registerRoute(
   /.*\.(?:js|html|css)/,
   workbox.strategies.cacheFirst({cacheName: workbox.core.cacheNames.precache})
@@ -25,7 +29,26 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
   /\/api\/.*/,
-  workbox.strategies.cacheFirst({cacheName: 'data-cache'})
+  workbox.strategies.networkOnly({
+    plugins: [backgroundSyncPlugin]
+  }),
+  'PUT'
+);
+
+workbox.routing.registerRoute(
+  /\/api\/.*/,
+  workbox.strategies.networkOnly({
+    plugins: [backgroundSyncPlugin]
+  }),
+  'POST'
+);
+
+workbox.routing.registerRoute(
+  /\/api\/.*/,
+  workbox.strategies.networkOnly({
+    plugins: [backgroundSyncPlugin]
+  }),
+  'DELETE'
 );
 
 workbox.routing.registerNavigationRoute('/index.html');

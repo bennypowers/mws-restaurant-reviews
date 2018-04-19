@@ -8,11 +8,6 @@ export const syncReviews = id =>
     .then(handleAsJson)
     .then(cacheInIdb('reviews'));
 
-const fetchIfOnline = id => new Promise((resolve, reject) =>
-  !navigator.onLine
-    ? reject(new Error('Cannot fetch reviews: offline'))
-    : resolve( syncReviews(id) ));
-
 const sameRestaurantId = id => r => r && r.restaurant_id == id;
 
 /** Fetch reviews by restaurant id. */
