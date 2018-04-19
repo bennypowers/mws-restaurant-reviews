@@ -44,7 +44,7 @@ const updateUi = ([restaurant, reviews] = []) => {
 
 /** Get restaurant and reviews over the network */
 // syncs :: restaurant -> Promise<[restaurant, [review]]>
-const syncs = ([{id}]) => !id ? Promise.resolve([]) : Promise.all([
+const syncs = id => () => Promise.all([
   syncRestaurant(id),
   syncReviews(id)
 ]);
@@ -60,7 +60,7 @@ const routeRestaurant = () => {
   const id = getParameterByName('id', location);
   return fetches(id)
     .then(updateUi)
-    .then(syncs)
+    .then(syncs(id))
     .then(updateUi);
 };
 

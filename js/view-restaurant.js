@@ -76,6 +76,7 @@ const isOpenInInterval = date => async interval => {
 const all = (a, b) => a && b;
 
 const openNow = async (openingHours) => {
+  if (!openingHours) return;
   const date = new Date();
   const todaysHours = openingHours[ days[ date.getDay() ] ];
 
@@ -178,8 +179,8 @@ export const restaurantDetails = ({ reviews = [], restaurant = {} }) => html`
   <div id="map-container">
     <div id="good-map"></div>
   </div>
-  <section id="restaurant-container">${mapImageTemplate(restaurant)}</section>
-  <section id="restaurant-details">${hoursAddressTemplate(restaurant)}</section>
-  <section id="reviews-container" tabindex="0" aria-label="Reviews">${reviewsListTemplate({ reviews, restaurant })}</section>`;
+  <section id="restaurant-container">${restaurant && mapImageTemplate(restaurant)}</section>
+  <section id="restaurant-details">${restaurant && hoursAddressTemplate(restaurant)}</section>
+  <section id="reviews-container" tabindex="0" aria-label="Reviews">${reviews.length && reviewsListTemplate({ reviews, restaurant })}</section>`;
 
 requestIdleCallback(upgradeElements);
