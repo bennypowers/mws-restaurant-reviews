@@ -7,6 +7,8 @@ We opted not to use the [development server provided by udacity]( https://github
 
 To run the dev server, install npm dependencies then run `npm start` (`sudo npm start` on mac 🍎 or linux 🐧, since we're running on the default ports). The page will be available at https://localhost.
 
+Because the dev server does not modify data.json, if the user posts a review or changes the `is_favorite` state of a restaurant, that change will only be held in memory by the server. In order to verify that the change has indeed been made after an offline request sync, open an incognito tab and browse to `https://localhost/api/reviews/?restaurant_id=3` or whichever id. You can also just clear the cache and hard refresh to get the same result and see the posted review in the page.
+
 ## HTTPS Certificates
 
 The development server is set to serve over http2, which requires a secure connection. In order to make this work locally, you must trust [lws' certicates](https://github.com/lwsjs/local-web-server/wiki/How-to-get-the-%22green-padlock%22-using-the-built-in-certificate), or you can use your own [self-signed cert](https://github.com/lwsjs/local-web-server/wiki/How-to-get-the-%22green-padlock%22-with-a-new-self-signed-certificate).
@@ -14,7 +16,7 @@ To install the lws cert, even on windows, just follow the instructions in the li
 
 # Offline Requests
 
-We have implemented offline request caching using the Background Sync API. Unfortunately, the only way to test this functionality is to actually disconnect the test machine from the internet. Clicking the `offline` checkbox in Chrome dev tools will not suffice. 
+We have implemented offline request caching using the Background Sync API. Unfortunately, the only way to test this functionality is to actually disconnect the test machine from the internet. Clicking the `offline` checkbox in Chrome dev tools will not suffice.
 
 See [workbox documentation](https://developers.google.com/web/tools/workbox/modules/workbox-background-sync#testing_workbox_background_sync) for more information.
 
