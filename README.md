@@ -5,7 +5,41 @@
 
 We opted not to use the [development server provided by udacity]( https://github.com/udacity/mws-restaurant-stage-2), instead we have created our own much simpler dev server within this very repository. It uses [local-web-server](https://github.com/lwsjs/local-web-server/wiki) to serve the static HTML, JS, and CSS, as well as provide database access via a mocked REST API available at `/api/`. As such, we have obviated the need for a database URL and port in the client side JS, as all requests now share a common origin.
 
-To run the dev server, install npm dependencies then run `npm start` (`sudo npm start` on mac 🍎 or linux 🐧, since we're running on the default ports). The page will be available at https://localhost.
+To run the dev server, first install dependencies by running
+```
+npm install
+```
+then start the server by running
+```
+npm start
+```
+If you're using mac 🍎 or linux 🐧, run the server as root with `sudo npm start` , since we're running on the default ports.
+
+The page will be available at https://localhost.
+
+## Server Routes
+
+The server serves restaurant data from the `/api` path.
+* To fetch all restaurants, GET `/api/restaurants`.
+* For a specific restaurant, GET `/api/restaurants/{id}` e.g. `https://localhost/api/restaurants/3`.
+* To change a restaurant's `is_favorite` state, PUT `/api/restaurants/{id}/?is_favorite={state}` e.g. `https://localhost/api/restaurants/3/?is_favorite=true`
+* To fetch all reviews, GET `/api/reviews`
+* To fetch a specific review by review ID, GET `/api/reviews/{id}` e.g. `https://localhost/api/reviews/33`
+* To fetch a specific review by restaurant ID, GET `/api/reviews/?restaurant_id={id}` e.g. `https://localhost/api/reviews?restaurant_id=3`
+* To post a new review, POST `/api/reviews` with a JSON review body e.g.
+  ```js
+  fetch('https://localhost/api/reviews', {
+    'credentials' :'omit',
+    'headers' :{
+      'content-type': 'application/json'
+    },
+    'body' :'{"comments":"Review Body","name":"Reviewer Name","rating":3,"restaurant_id":3}',
+    'method': 'POST',
+    'mode': 'cors'
+  });
+  ```
+
+The dev server serves a single-page-application at `/`. Any request for a file (with `.` in the filename) or to `/api` will return that request's response. All other requests will redirect to index.html.
 
 Because the dev server does not modify data.json, if the user posts a review or changes the `is_favorite` state of a restaurant, that change will only be held in memory by the server. In order to verify that the change has indeed been made after an offline request sync, open an incognito tab and browse to `https://localhost/api/reviews/?restaurant_id=3` or whichever id. You can also just clear the cache and hard refresh to get the same result and see the posted review in the page.
 
@@ -57,3 +91,6 @@ We have, however, linked to our own miniature FP helper library [`power-function
 ## Weird Parts of JavaScript
 
 We have, in places, opted to use some lesser-known features of JavaScript to communicate our intent more clearly. There are some cases in the code where some side effect is desired as part of an otherwise pure data flow. (see previous note). In these cases, we use the comma operator to run our side effects, returning the parameter afterward in order to maintain data flow. In these cases, parentheses help to emphasize that we are essentially performing the identity (`x => x`) with a brief, non-pure interlude.
+
+# Contribution
+If you would like to make a contribution, please open an issue with your bug or feature request. Include a reproduction or stack trace as relevant. Please refer to the open issue in pull requests.
